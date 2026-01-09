@@ -1,95 +1,216 @@
-# Sistema de Gestión de Gimnasio
+# 🏋️ GymPro Manager - Sistema de Gestión de Gimnasio
 
-Sistema web integral para gestión de gimnasio desarrollado con Django (Backend) y React + Vite (Frontend).
+Sistema completo para la gestión de gimnasios con Django REST Framework y React.
 
 ## 🚀 Stack Tecnológico
 
-| Capa | Tecnología |
-|------|------------|
-| Backend | Python 3.11+ / Django 5.x / DRF |
-| Frontend | React 18+ / Vite / Tailwind CSS |
-| Auth | JWT (SimpleJWT) |
-| DB | PostgreSQL 15+ (SQLite para desarrollo) |
+| Componente | Tecnología |
+|------------|------------|
+| **Backend** | Django 5.2 + Django REST Framework |
+| **Frontend** | React 18 + TypeScript + Vite |
+| **Base de Datos** | PostgreSQL 16 |
+| **Autenticación** | JWT (SimpleJWT) |
+| **Estilos** | Tailwind CSS v4 |
+| **Estado** | Zustand |
 
 ## 📁 Estructura del Proyecto
 
 ```
-├── backend/                 # API Django
-│   ├── apps/               # Aplicaciones Django
-│   │   ├── users/          # Autenticación y roles
-│   │   ├── members/        # Gestión de miembros
-│   │   ├── memberships/    # Planes y suscripciones
-│   │   ├── classes/        # Clases y reservas
-│   │   ├── payments/       # Pagos
-│   │   ├── staff/          # Personal
-│   │   ├── progress/       # Seguimiento físico
-│   │   ├── access/         # Control de acceso
-│   │   ├── reports/        # Reportes
-│   │   └── notifications/  # Notificaciones
-│   ├── config/             # Configuración Django
-│   └── core/               # Utilidades
-├── frontend/               # React + Vite
-└── docs/                   # Documentación
+Gestion-Gimnasio-App/
+├── backend/                    # API Django
+│   ├── apps/                   # Aplicaciones Django
+│   │   ├── users/              # Usuarios y roles
+│   │   ├── members/            # Miembros del gimnasio
+│   │   ├── memberships/        # Planes y membresías
+│   │   ├── classes/            # Clases y reservas
+│   │   ├── payments/           # Pagos y facturas
+│   │   ├── staff/              # Personal y horarios
+│   │   ├── progress/           # Progreso y logros
+│   │   ├── access/             # Control de acceso
+│   │   ├── analytics/          # Métricas del atleta
+│   │   └── ...                 # Más apps
+│   ├── config/                 # Configuración Django
+│   ├── venv/                   # Entorno virtual (no versionado)
+│   └── manage.py
+├── frontend/                   # App React
+│   ├── src/
+│   │   ├── components/         # Componentes reutilizables
+│   │   ├── layouts/            # Layouts (MainLayout)
+│   │   ├── pages/              # Páginas (Login, Dashboard)
+│   │   ├── services/           # Cliente API (axios)
+│   │   ├── stores/             # Estado global (Zustand)
+│   │   └── types/              # Tipos TypeScript
+│   └── ...
+└── docs/                       # Documentación adicional
 ```
 
 ## 🛠️ Configuración Inicial
 
-### 1. Backend (Django)
+### Requisitos Previos
+
+- Python 3.11+
+- Node.js 18+
+- PostgreSQL 16+
+
+### 1️⃣ Clonar el Repositorio
+
+```bash
+git clone https://github.com/tu-usuario/Gestion-Gimnasio-App.git
+cd Gestion-Gimnasio-App
+```
+
+### 2️⃣ Configurar Backend
 
 ```bash
 cd backend
 
-# Activar entorno virtual
-# Windows:
-venv\bin\activate
-# Linux/Mac:
+# Crear entorno virtual
+python -m venv venv
+
+# Activar entorno (Windows)
+venv\Scripts\activate
+# Activar entorno (Linux/Mac)
 source venv/bin/activate
 
-# Instalar dependencias (si es necesario)
+# Instalar dependencias
 pip install -r requirements.txt
 
+# Copiar variables de entorno
+cp .env.example .env
+# Editar .env con tus datos de PostgreSQL
+
 # Ejecutar migraciones
-python manage.py makemigrations
 python manage.py migrate
 
-# Crear superusuario
+# Crear superusuario (opcional)
 python manage.py createsuperuser
 
 # Ejecutar servidor
 python manage.py runserver
 ```
 
-### 2. Frontend (React) - Pendiente
+### 3️⃣ Configurar Frontend
 
 ```bash
 cd frontend
+
+# Instalar dependencias
 npm install
+
+# Copiar variables de entorno
+cp .env.example .env
+
+# Ejecutar en desarrollo
 npm run dev
 ```
 
-## ⚙️ Variables de Entorno
+### 4️⃣ Acceder a la Aplicación
 
-Copiar `.env.example` a `.env` y configurar:
+- **Frontend:** http://localhost:5173
+- **Backend API:** http://localhost:8000/api/
+- **Admin Django:** http://localhost:8000/admin/
 
-```env
-SECRET_KEY=tu-clave-secreta
-DEBUG=True
-DB_ENGINE=django.db.backends.sqlite3
+### 5️⃣ Credenciales de Prueba
+
+```
+Email: admin@gimnasio.com
+Password: admin123
 ```
 
-## 📋 Requisitos Pendientes
+## 📡 API Endpoints
 
-- [ ] Instalar PostgreSQL
-- [ ] Instalar Node.js
-- [ ] Configurar frontend React
+### Autenticación
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| POST | `/api/auth/login/` | Login (JWT) |
+| POST | `/api/auth/refresh/` | Refrescar token |
+| GET | `/api/users/me/` | Usuario actual |
 
-## 👥 Roles del Sistema
+### Miembros
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/members/` | Listar miembros |
+| POST | `/api/members/` | Crear miembro |
+| GET | `/api/members/{id}/` | Detalle miembro |
+| GET | `/api/members/stats/` | Estadísticas |
+| GET | `/api/members/expiring_soon/` | Por vencer |
 
-- **Administrador**: Acceso completo
-- **Empleado**: CRUD miembros + lectura
-- **Entrenador**: Gestión de clases propias
-- **Miembro**: Portal personal
+### Membresías
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/memberships/plans/` | Listar planes |
+| GET | `/api/memberships/` | Listar membresías |
+| POST | `/api/memberships/{id}/freeze/` | Congelar |
+| POST | `/api/memberships/{id}/unfreeze/` | Descongelar |
 
-## 📄 Licencia
+### Clases
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/classes/` | Listar clases |
+| GET | `/api/classes/types/` | Tipos de clase |
+| GET | `/api/classes/reservations/` | Reservaciones |
+| POST | `/api/classes/reservations/{id}/cancel/` | Cancelar reserva |
 
-Proyecto privado - Todos los derechos reservados
+### Pagos
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/payments/` | Listar pagos |
+| POST | `/api/payments/` | Registrar pago |
+| GET | `/api/payments/stats/` | Estadísticas |
+
+## 🗃️ Modelos de Datos
+
+El sistema cuenta con 40+ modelos organizados en las siguientes categorías:
+
+- **Usuarios:** User, Role
+- **Miembros:** Member, MembershipPlan, Membership
+- **Clases:** ClassType, GymClass, Reservation, Routine
+- **Pagos:** Payment, Invoice
+- **Personal:** Staff, Schedule
+- **Progreso:** ProgressLog, Achievement
+- **Analytics:** MetricType, AthleteMetric, PerformanceGoal
+- **Documentos:** Contract, Waiver, Feedback
+- **Equipamiento:** Equipment, MaintenanceRecord
+- **Notificaciones:** Notification, EmailLog, NotificationPreference
+
+## 🔐 Roles del Sistema
+
+| Rol | Permisos |
+|-----|----------|
+| **admin** | Acceso total al sistema |
+| **manager** | Gestión de miembros, clases, pagos |
+| **trainer** | Gestión de clases y rutinas |
+| **receptionist** | Registro de accesos y pagos |
+| **member** | Acceso a su perfil y reservas |
+
+## 🧪 Ejecutar Tests
+
+```bash
+# Backend
+cd backend
+python manage.py test
+
+# Frontend
+cd frontend
+npm run test
+```
+
+## 📦 Build para Producción
+
+```bash
+# Frontend
+cd frontend
+npm run build
+```
+
+## 🤝 Contribuir
+
+1. Fork el repositorio
+2. Crea una rama (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit tus cambios (`git commit -m 'feat: descripción'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
+
+## 📝 Licencia
+
+MIT License - ver [LICENSE](LICENSE) para más detalles.
