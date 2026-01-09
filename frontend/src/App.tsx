@@ -9,6 +9,9 @@ import MainLayout from './layouts/MainLayout';
 // Pages
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
+import MembersPage from './pages/MembersPage';
+import MemberFormPage from './pages/MemberFormPage';
+import MemberDetailPage from './pages/MemberDetailPage';
 
 // Components
 import ProtectedRoute from './components/ProtectedRoute';
@@ -41,7 +44,14 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/members" element={<PlaceholderPage title="Miembros" />} />
+            
+            {/* Members */}
+            <Route path="/members" element={<MembersPage />} />
+            <Route path="/members/new" element={<MemberFormPage />} />
+            <Route path="/members/:id" element={<MemberDetailPage />} />
+            <Route path="/members/:id/edit" element={<MemberFormPage />} />
+            
+            {/* Placeholder pages */}
             <Route path="/memberships" element={<PlaceholderPage title="Membresías" />} />
             <Route path="/classes" element={<PlaceholderPage title="Clases" />} />
             <Route path="/staff" element={<PlaceholderPage title="Entrenadores" />} />

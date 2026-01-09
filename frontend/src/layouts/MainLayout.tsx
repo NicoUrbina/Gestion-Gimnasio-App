@@ -101,7 +101,7 @@ export default function MainLayout() {
       </aside>
 
       {/* Main content */}
-      <div className="lg:pl-64">
+      <div className={`transition-all duration-300 ${sidebarOpen ? 'lg:pl-64' : 'lg:pl-64'}`}>
         {/* Top bar */}
         <header className="sticky top-0 z-30 bg-white border-b border-slate-200 px-4 py-3">
           <div className="flex items-center justify-between">
@@ -114,7 +114,7 @@ export default function MainLayout() {
             </button>
 
             {/* Search (placeholder) */}
-            <div className="hidden md:block flex-1 max-w-md">
+            <div className="hidden md:block flex-1 max-w-md ml-4">
               <input
                 type="text"
                 placeholder="Buscar miembros, clases..."
@@ -180,7 +180,7 @@ export default function MainLayout() {
         </header>
 
         {/* Page content */}
-        <main className="p-4 lg:p-6">
+        <main className="p-4 lg:p-8">
           <Outlet />
         </main>
       </div>
