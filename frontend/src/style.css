@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* Custom styles */
+:root {
+  --primary-color: #3b82f6;
+  --secondary-color: #10b981;
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+}
