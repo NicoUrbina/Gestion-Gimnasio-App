@@ -60,6 +60,7 @@ class MemberCreateSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         from apps.users.models import User, Role
+        from django.db import transaction
         
         # Extraer datos del usuario
         email = validated_data.pop('email')
@@ -67,22 +68,23 @@ class MemberCreateSerializer(serializers.ModelSerializer):
         first_name = validated_data.pop('first_name')
         last_name = validated_data.pop('last_name')
         
-        # Obtener o crear rol de miembro
-        member_role, _ = Role.objects.get_or_create(
-            name='member',
-            defaults={'description': 'Miembro del gimnasio'}
-        )
-        
-        # Crear usuario
-        user = User.objects.create_user(
-            email=email,
-            username=email,
-            password=password,
-            first_name=first_name,
-            last_name=last_name,
-            role=member_role
-        )
-        
-        # Crear miembro
-        member = Member.objects.create(user=user, **validated_data)
-        return member
+        with transaction.atomic():
+            # Obtener o crear rol de miembro
+            member_role, _ = Role.objects.get_or_create(
+                name='member',
+                defaults={'description': 'Miembro del gimnasio'}
+            )
+            
+            # Crear usuario
+            user = User.objects.create_user(
+                email=email,
+                username=email, # SimpleJWT y Django admin a veces requieren username
+                password=password,
+                first_name=first_name,
+                last_name=last_name,
+                role=member_role
+            )
+            
+            # Crear miembro
+            member = Member.objects.create(user=user, **validated_data)
+            return member
