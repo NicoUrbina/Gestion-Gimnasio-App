@@ -1,0 +1,409 @@
+// Copia este código en dbdiagram.io para generar el diagrama visual
+// Ve a: https://dbdiagram.io/d
+// Click en "Import" (arriba) o pega esto directamente
+
+// =================================
+// USUARIOS Y ROLES
+// =================================
+
+Table roles {
+  id int [pk, increment]
+  name varchar [unique, not null]
+  description text
+}
+
+Table users {
+  id int [pk, increment]
+  email varchar [unique, not null]
+  username varchar [unique, not null]
+  password varchar [not null]
+  first_name varchar
+  last_name varchar
+  phone varchar
+  photo varchar
+  role_id int [ref: > roles.id]
+  is_active boolean [default: true]
+  date_joined datetime
+  last_login datetime
+}
+
+// =================================
+// MIEMBROS
+// =================================
+
+Table members {
+  id int [pk, increment]
+  user_id int [ref: - users.id, unique]
+  date_of_birth date
+  gender varchar
+  phone varchar
+  address text
+  emergency_contact_name varchar
+  emergency_contact_phone varchar
+  medical_notes text
+  subscription_status varchar [note: 'active, inactive, expired, frozen']
+  joined_date date
+  last_access datetime
+  created_at datetime
+  updated_at datetime
+}
+
+// =================================
+// MEMBRESÍAS
+// =================================
+
+Table membership_plans {
+  id int [pk, increment]
+  name varchar [not null]
+  description text
+  price decimal [not null]
+  duration_days int [not null]
+  max_classes_per_month int
+  includes_trainer boolean [default: false]
+  can_freeze boolean [default: true]
+  max_freeze_days int [default: 30]
+  is_active boolean [default: true]
+  created_at datetime
+  updated_at datetime
+}
+
+Table memberships {
+  id int [pk, increment]
+  member_id int [ref: > members.id]
+  plan_id int [ref: > membership_plans.id]
+  start_date date [not null]
+  end_date date [not null]
+  status varchar [note: 'active, frozen, expired, cancelled']
+  frozen_at datetime
+  frozen_days_used int [default: 0]
+  notes text
+  created_at datetime
+  updated_at datetime
+}
+
+Table membership_freezes {
+  id int [pk, increment]
+  membership_id int [ref: > memberships.id]
+  start_date date [not null]
+  end_date date
+  reason text
+  created_at datetime
+}
+
+// =================================
+// STAFF
+// =================================
+
+Table staff {
+  id int [pk, increment]
+  user_id int [ref: - users.id, unique]
+  staff_type varchar [note: 'trainer, receptionist, manager, maintenance']
+  specializations json
+  bio text
+  certifications json
+  hire_date date
+  hourly_rate decimal
+  is_instructor boolean [default: false]
+  is_active boolean [default: true]
+  created_at datetime
+  updated_at datetime
+}
+
+Table schedules {
+  id int [pk, increment]
+  staff_id int [ref: > staff.id]
+  day_of_week int [note: '0=Lunes, 6=Domingo']
+  start_time time
+  end_time time
+  is_available boolean [default: true]
+}
+
+// =================================
+// CLASES
+// =================================
+
+Table class_types {
+  id int [pk, increment]
+  name varchar [not null]
+  description text
+  default_duration_minutes int [default: 60]
+  default_capacity int [default: 20]
+  color varchar [default: '#6366f1']
+  icon varchar
+  is_active boolean [default: true]
+  created_at datetime
+  updated_at datetime
+}
+
+Table gym_classes {
+  id int [pk, increment]
+  class_type_id int [ref: > class_types.id]
+  instructor_id int [ref: > staff.id]
+  title varchar [not null]
+  description text
+  start_datetime datetime [not null]
+  end_datetime datetime [not null]
+  capacity int [not null]
+  location varchar
+  is_recurring boolean [default: false]
+  is_cancelled boolean [default: false]
+  cancellation_reason text
+  created_at datetime
+  updated_at datetime
+}
+
+Table reservations {
+  id int [pk, increment]
+  gym_class_id int [ref: > gym_classes.id]
+  member_id int [ref: > members.id]
+  status varchar [note: 'confirmed, cancelled, attended, no_show, waitlist']
+  waitlist_position int
+  reserved_at datetime
+  cancelled_at datetime
+  attended_at datetime
+  created_at datetime
+  updated_at datetime
+}
+
+Table routines {
+  id int [pk, increment]
+  trainer_id int [ref: > staff.id]
+  name varchar [not null]
+  description text
+  difficulty_level varchar [note: 'beginner, intermediate, advanced']
+  duration_minutes int
+  is_active boolean [default: true]
+  created_at datetime
+  updated_at datetime
+}
+
+Table routine_assignments {
+  id int [pk, increment]
+  member_id int [ref: > members.id]
+  routine_id int [ref: > routines.id]
+  assigned_by_id int [ref: > users.id]
+  assigned_at datetime
+  notes text
+}
+
+// =================================
+// PAGOS
+// =================================
+
+Table payments {
+  id int [pk, increment]
+  member_id int [ref: > members.id]
+  membership_id int [ref: > memberships.id]
+  amount decimal [not null]
+  payment_method varchar [note: 'cash, card, transfer, other']
+  status varchar [note: 'pending, completed, cancelled, refunded']
+  reference_number varchar
+  description text
+  notes text
+  payment_date datetime
+  created_by_id int [ref: > users.id]
+  created_at datetime
+  updated_at datetime
+}
+
+Table invoices {
+  id int [pk, increment]
+  payment_id int [ref: - payments.id, unique]
+  invoice_number varchar [unique, not null]
+  issued_date date
+  subtotal decimal
+  tax decimal
+  total decimal
+  pdf_file varchar
+  created_at datetime
+}
+
+// =================================
+// PROGRESO
+// =================================
+
+Table progress_logs {
+  id int [pk, increment]
+  member_id int [ref: > members.id]
+  date date [not null]
+  weight decimal
+  height decimal
+  body_fat_percentage decimal
+  muscle_mass decimal
+  chest decimal
+  waist decimal
+  hips decimal
+  notes text
+  registered_by_id int [ref: > users.id]
+  created_at datetime
+  updated_at datetime
+}
+
+Table achievements {
+  id int [pk, increment]
+  member_id int [ref: > members.id]
+  achievement_type varchar [note: 'attendance, weight_loss, strength, etc']
+  title varchar [not null]
+  description text
+  achieved_date date
+  icon varchar
+  created_at datetime
+}
+
+// =================================
+// ACCESO
+// =================================
+
+Table access_logs {
+  id int [pk, increment]
+  member_id int [ref: > members.id]
+  access_type varchar [note: 'entry, exit']
+  timestamp datetime [not null]
+  registered_by_id int [ref: > users.id]
+  notes text
+}
+
+Table abandonment_alerts {
+  id int [pk, increment]
+  member_id int [ref: > members.id]
+  days_inactive int [not null]
+  status varchar [note: 'pending, contacted, resolved, ignored']
+  created_at datetime
+  resolved_at datetime
+  resolved_by_id int [ref: > users.id]
+  notes text
+}
+
+// =================================
+// ANALYTICS
+// =================================
+
+Table metric_types {
+  id int [pk, increment]
+  name varchar [not null]
+  description text
+  category varchar [note: 'body, strength, cardio, flexibility']
+  unit varchar [note: 'kg, cm, reps, seconds, etc']
+  is_higher_better boolean [default: true]
+  min_value decimal
+  max_value decimal
+  color varchar
+  icon varchar
+  is_active boolean [default: true]
+}
+
+Table athlete_metrics {
+  id int [pk, increment]
+  member_id int [ref: > members.id]
+  metric_type_id int [ref: > metric_types.id]
+  value decimal [not null]
+  recorded_date date [not null]
+  recorded_time time
+  notes text
+  recorded_by_id int [ref: > users.id]
+  source varchar [note: 'manual, device, app']
+  created_at datetime
+}
+
+Table performance_goals {
+  id int [pk, increment]
+  member_id int [ref: > members.id]
+  metric_type_id int [ref: > metric_types.id]
+  initial_value decimal [not null]
+  target_value decimal [not null]
+  current_value decimal
+  start_date date [not null]
+  target_date date [not null]
+  status varchar [note: 'active, achieved, failed, abandoned']
+  achieved_date date
+  notes text
+  created_at datetime
+  updated_at datetime
+}
+
+Table training_logs {
+  id int [pk, increment]
+  member_id int [ref: > members.id]
+  date date [not null]
+  duration_minutes int [not null]
+  training_type varchar
+  intensity varchar [note: 'low, medium, high, extreme']
+  calories_burned int
+  gym_class_id int [ref: > gym_classes.id]
+  routine_id int [ref: > routines.id]
+  exercises_data json
+  notes text
+  mood_before varchar
+  mood_after varchar
+  created_at datetime
+}
+
+// =================================
+// EQUIPAMIENTO
+// =================================
+
+Table equipment_categories {
+  id int [pk, increment]
+  name varchar [not null]
+  description text
+}
+
+Table equipment {
+  id int [pk, increment]
+  name varchar [not null]
+  category_id int [ref: > equipment_categories.id]
+  serial_number varchar
+  status varchar [note: 'available, in_use, maintenance, retired']
+  location varchar
+  purchase_date date
+  warranty_until date
+  is_reservable boolean [default: false]
+  notes text
+  created_at datetime
+  updated_at datetime
+}
+
+Table maintenance_records {
+  id int [pk, increment]
+  equipment_id int [ref: > equipment.id]
+  maintenance_type varchar [note: 'preventive, corrective, emergency']
+  description text
+  scheduled_date date
+  completed_date date
+  status varchar [note: 'scheduled, in_progress, completed, cancelled']
+  cost decimal
+  performed_by_id int [ref: > users.id]
+  notes text
+  created_at datetime
+}
+
+// =================================
+// DOCUMENTOS
+// =================================
+
+Table contracts {
+  id int [pk, increment]
+  member_id int [ref: > members.id]
+  contract_number varchar [unique, not null]
+  status varchar [note: 'draft, active, expired, cancelled']
+  signed_date date
+  end_date date
+  file varchar
+  notes text
+  created_at datetime
+  updated_at datetime
+}
+
+Table feedback {
+  id int [pk, increment]
+  member_id int [ref: > members.id]
+  feedback_type varchar [note: 'suggestion, complaint, praise, question']
+  rating int [note: '1-5 stars']
+  subject varchar
+  comments text
+  is_resolved boolean [default: false]
+  resolved_by_id int [ref: > users.id]
+  response text
+  created_at datetime
+  resolved_at datetime
+}
