@@ -38,3 +38,15 @@ CREATE USER gimnasio_user WITH PASSWORD 'tu_password_seguro';
 GRANT ALL PRIVILEGES ON DATABASE gimnasio_db TO gimnasio_user;
 \q
 ```
+
+Verificar si se creo exitosamente:
+ejecutar en terminal:
+psql -U gimnasio_user -d gimnasio_db -h localhost
+
+Te pedirá la contraseña de la BD, ingresa la contraseña que estableciste en el paso 3.
+
+Si todo esta bien, deberias ver algo como esto:
+psql (server 18.1)
+Type "help" for help.
+
+gimnasio_db= >
