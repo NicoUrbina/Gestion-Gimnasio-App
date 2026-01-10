@@ -2,11 +2,11 @@
 
 ## Estado del Sistema
 
-| Herramienta | Estado | Versión |
-|-------------|--------|---------|
-| Python | ✅ Instalado | 3.11.9 |
-| PostgreSQL | ❌ Pendiente | - |
-| Node.js | ❌ Pendiente | - |
+| Herramienta | Versión  |
+| ----------- | -------- |
+| Python      | 3.11+    |
+| PostgreSQL  | 18.x     |
+| Node.js     | 24.x LTS |
 
 ---
 
@@ -38,4 +38,3 @@ CREATE USER gimnasio_user WITH PASSWORD 'tu_password_seguro';
 GRANT ALL PRIVILEGES ON DATABASE gimnasio_db TO gimnasio_user;
 \q
 ```
-
