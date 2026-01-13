@@ -22,6 +22,7 @@ import MembershipsListPage from './pages/memberships/MembershipsListPage';
 // Classes
 import ClassesCalendarPage from './pages/classes/ClassesCalendarPage';
 import MyReservationsPage from './pages/classes/MyReservationsPage';
+import ClassFormPage from './pages/classes/ClassFormPage';
 
 // Components
 import ProtectedRoute from './components/ProtectedRoute';
@@ -70,6 +71,8 @@ function App() {
             
             {/* Classes */}
             <Route path="/classes" element={<ClassesCalendarPage />} />
+            <Route path="/classes/new" element={<ClassFormPage />} />
+            <Route path="/classes/:id/edit" element={<ClassFormPage />} />
             <Route path="/classes/my-reservations" element={<MyReservationsPage />} />
             
             {/* Placeholder pages */}
