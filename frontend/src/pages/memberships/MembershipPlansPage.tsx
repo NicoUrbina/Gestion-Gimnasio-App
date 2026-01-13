@@ -20,7 +20,7 @@ export default function MembershipPlansPage() {
       setLoading(true);
       setError(null);
       const data = await membershipPlanService.getAll();
-      setPlans(data);
+      setPlans(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Error fetching membership plans:', err);
       setError('No se pudieron cargar los planes. Intenta nuevamente.');

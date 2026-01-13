@@ -22,9 +22,10 @@ export default function MyReservationsPage() {
     try {
       setLoading(true);
       const data = await reservationService.getMyReservations();
-      setReservations(data);
+      setReservations(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching reservations:', error);
+      setReservations([]);
     } finally {
       setLoading(false);
     }

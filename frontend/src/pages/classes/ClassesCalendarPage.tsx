@@ -41,14 +41,14 @@ export default function ClassesCalendarPage() {
       }
 
       const [classesData, typesData, reservationsData] = await Promise.all([
-        gymClassService.getAll(filters),
-        classTypeService.getAll(),
-        reservationService.getMyReservations().catch(() => []), // Puede fallar si no es miembro
+        gymClassService.getAll(filters).catch(() => []),
+        classTypeService.getAll().catch(() => []),
+        reservationService.getMyReservations().catch(() => []),
       ]);
 
-      setClasses(classesData);
-      setClassTypes(typesData);
-      setMyReservations(reservationsData);
+      setClasses(Array.isArray(classesData) ? classesData : []);
+      setClassTypes(Array.isArray(typesData) ? typesData : []);
+      setMyReservations(Array.isArray(reservationsData) ? reservationsData : []);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {

@@ -2,13 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Plus,
-  Search,
   Filter,
   Snowflake,
   Play,
   AlertCircle,
-  ChevronLeft,
-  ChevronRight,
 } from 'lucide-react';
 import { membershipService } from '../../services/memberships';
 import MembershipStatusBadge from '../../components/memberships/MembershipStatusBadge';
