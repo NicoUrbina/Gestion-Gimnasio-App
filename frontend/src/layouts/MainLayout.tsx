@@ -11,8 +11,9 @@ import {
   LogOut,
   Menu,
   X,
-  Bell,
-  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Zap,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -30,7 +31,7 @@ export default function MainLayout() {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -38,149 +39,130 @@ export default function MainLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-black">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-screen w-64 bg-slate-900 transform transition-transform duration-300 lg:translate-x-0 ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed top-0 left-0 z-50 h-screen bg-zinc-900 border-r border-zinc-800 transform transition-all duration-300 ${sidebarCollapsed ? 'w-20' : 'w-64'
+          } ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+          }`}
       >
         {/* Logo */}
-        <div className="flex items-center gap-3 px-6 py-5 border-b border-slate-800">
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-xl flex items-center justify-center">
-            <Dumbbell className="w-5 h-5 text-white" />
-          </div>
-          <span className="text-lg font-bold text-white">GymPro</span>
+        <div className="flex items-center justify-between px-4 py-5 border-b border-zinc-800">
+          {!sidebarCollapsed && (
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/30">
+                <Zap className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-xl font-black text-white uppercase tracking-tight">GymPro</span>
+            </div>
+          )}
+
+          {/* Collapse button - Desktop */}
+          <button
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            className="hidden lg:flex p-2 text-gray-400 hover:text-orange-500 hover:bg-zinc-800 rounded-lg transition-colors"
+          >
+            {sidebarCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+          </button>
+
+          {/* Close button - Mobile */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="ml-auto lg:hidden text-slate-400 hover:text-white"
+            className="lg:hidden p-2 text-gray-400 hover:text-white rounded-lg"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Navigation */}
-        <nav className="px-3 py-4 space-y-1">
+        <nav className="px-3 py-4 space-y-2">
           {navigation.map((item) => (
             <NavLink
               key={item.name}
               to={item.href}
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                  isActive
-                    ? 'bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all group ${isActive
+                  ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
+                  : 'text-gray-400 hover:text-white hover:bg-zinc-800'
                 }`
               }
             >
-              <item.icon className="w-5 h-5" />
-              {item.name}
+              <item.icon className="w-5 h-5 flex-shrink-0" />
+              {!sidebarCollapsed && <span>{item.name}</span>}
             </NavLink>
           ))}
         </nav>
 
         {/* User section at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-800">
+        <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-zinc-800">
+          {!sidebarCollapsed && user && (
+            <div className="px-3 py-3 mb-2 rounded-lg bg-zinc-800/50">
+              <p className="text-sm font-bold text-white truncate">{user.full_name}</p>
+              <p className="text-xs text-gray-500 uppercase truncate">{user.role || 'Usuario'}</p>
+            </div>
+          )}
+
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 w-full px-4 py-3 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-xl transition-all"
+            className="flex items-center justify-center gap-3 w-full px-4 py-3 text-gray-400 hover:text-red-400 hover:bg-zinc-800 rounded-lg transition-all"
+            title="Cerrar sesión"
           >
-            <LogOut className="w-5 h-5" />
-            <span className="text-sm font-medium">Cerrar sesión</span>
+            <LogOut className="w-5 h-5 flex-shrink-0" />
+            {!sidebarCollapsed && <span className="text-sm font-semibold">Cerrar sesión</span>}
           </button>
         </div>
       </aside>
 
       {/* Main content */}
-      <div className={`transition-all duration-300 ${sidebarOpen ? 'lg:pl-64' : 'lg:pl-64'}`}>
+      <div
+        className={`transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'
+          }`}
+      >
         {/* Top bar */}
-        <header className="sticky top-0 z-30 bg-white border-b border-slate-200 px-4 py-3">
-          <div className="flex items-center justify-between">
+        <header className="sticky top-0 z-30 bg-zinc-900/80 backdrop-blur-xl border-b border-zinc-800">
+          <div className="flex items-center justify-between px-4 lg:px-6 py-4">
             {/* Mobile menu button */}
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg"
+              className="lg:hidden p-2 text-gray-400 hover:text-white hover:bg-zinc-800 rounded-lg"
             >
               <Menu className="w-6 h-6" />
             </button>
 
-            {/* Search (placeholder) */}
-            <div className="hidden md:block flex-1 max-w-md ml-4">
-              <input
-                type="text"
-                placeholder="Buscar miembros, clases..."
-                className="w-full px-4 py-2 bg-slate-100 border border-transparent rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white focus:border-purple-500 transition-all"
-              />
+            {/* Page title or search */}
+            <div className="flex-1 lg:mx-4">
+              <h2 className="text-lg font-bold text-white uppercase tracking-wide lg:hidden">
+                GymPro
+              </h2>
             </div>
 
             {/* Right section */}
             <div className="flex items-center gap-3">
-              {/* Notifications */}
-              <button className="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg">
-                <Bell className="w-5 h-5" />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
-              </button>
-
-              {/* User menu */}
-              <div className="relative">
-                <button
-                  onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center gap-2 p-1.5 hover:bg-slate-100 rounded-xl transition-colors"
-                >
-                  <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-lg flex items-center justify-center text-white font-semibold text-sm">
-                    {user?.first_name?.charAt(0) || 'U'}
-                  </div>
-                  <div className="hidden sm:block text-left">
-                    <p className="text-sm font-medium text-slate-900">{user?.full_name}</p>
-                    <p className="text-xs text-slate-500 capitalize">{user?.role || 'Usuario'}</p>
-                  </div>
-                  <ChevronDown className="w-4 h-4 text-slate-400" />
-                </button>
-
-                {userMenuOpen && (
-                  <>
-                    <div
-                      className="fixed inset-0 z-40"
-                      onClick={() => setUserMenuOpen(false)}
-                    />
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-50">
-                      <button
-                        onClick={() => {
-                          setUserMenuOpen(false);
-                          navigate('/settings');
-                        }}
-                        className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-100"
-                      >
-                        Mi perfil
-                      </button>
-                      <button
-                        onClick={() => {
-                          setUserMenuOpen(false);
-                          handleLogout();
-                        }}
-                        className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50"
-                      >
-                        Cerrar sesión
-                      </button>
-                    </div>
-                  </>
-                )}
+              {/* User info */}
+              <div className="flex items-center gap-3 px-3 py-2 bg-zinc-800 rounded-lg">
+                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-orange-500/30">
+                  {user?.first_name?.charAt(0) || 'U'}
+                </div>
+                <div className="hidden sm:block">
+                  <p className="text-sm font-bold text-white">{user?.full_name || 'Admin Sistema'}</p>
+                  <p className="text-xs text-gray-400 uppercase">{user?.role || 'Admin'}</p>
+                </div>
               </div>
             </div>
           </div>
         </header>
 
         {/* Page content */}
-        <main className="p-4 lg:p-8">
+        <main className="min-h-screen">
           <Outlet />
         </main>
       </div>
