@@ -90,6 +90,16 @@ class Membership(models.Model):
     end_date = models.DateField(
         verbose_name='Fecha de vencimiento'
     )
+    max_classes_per_month = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Máximo de clases por mes',
+        help_text='Dejar en blanco para ilimitado'
+    )
+    freeze_days_per_year = models.IntegerField(
+        default=14,
+        verbose_name='Días de congelación por año'
+    )
     status = models.CharField(
         max_length=20, 
         choices=STATUS_CHOICES, 
