@@ -7,7 +7,7 @@ import { useAuthStore } from './stores/authStore';
 import MainLayout from './layouts/MainLayout';
 
 // Pages
-import LoginPage from './pages/auth/LoginPage';
+import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import MembersPage from './pages/MembersPage';
 import MemberFormPage from './pages/MemberFormPage';

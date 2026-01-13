@@ -6,8 +6,11 @@ import {
   ChevronRight,
   Filter,
   Loader2,
+  AlertCircle,
+  CheckCircle,
 } from 'lucide-react';
 import { gymClassService, classTypeService, reservationService } from '../../services/classes';
+import { membershipService } from '../../services/memberships';
 import ClassCard from '../../components/classes/ClassCard';
 import type { GymClass, ClassType, Reservation } from '../../types';
 
@@ -19,9 +22,11 @@ export default function ClassesCalendarPage() {
   const [loading, setLoading] = useState(true);
   const [currentWeekStart, setCurrentWeekStart] = useState(getWeekStart(new Date()));
   const [selectedType, setSelectedType] = useState<string>('all');
+  const [activeMembership, setActiveMembership] = useState<any>(null);
 
   useEffect(() => {
     fetchData();
+    fetchMemberships();
   }, [currentWeekStart, selectedType]);
 
   const fetchData = async () => {
@@ -56,14 +61,42 @@ export default function ClassesCalendarPage() {
     }
   };
 
-  const handleReserve = async (gymClass: GymClass) => {
-    // TODO: Obtener member ID del usuario actual
+  const fetchMemberships = async () => {
     try {
-      await reservationService.create(gymClass.id, 1); // Placeholder member ID
-      await fetchData(); // Refresh
-      alert('¡Reserva exitosa!');
+      const data = await membershipService.getMyMemberships();
+      const membershipList = Array.isArray(data) ? data : [];
+      const active = membershipList.find((m: any) => m.status === 'active');
+      setActiveMembership(active || null);
+    } catch (error) {
+      console.error('Error fetching memberships:', error);
+      setActiveMembership(null);
+    }
+  };
+
+  const handleReserve = async (gymClass: GymClass) => {
+    // Validate active membership before reserving
+    if (!activeMembership) {
+      alert('⚠️ No tienes una membresía activa.\n\nContacta con el gimnasio para activar tu membresía antes de reservar clases.');
+      return;
+    }
+
+    try {
+      await reservationService.create(gymClass.id, 1);
+      await fetchData();
+      alert('✅ ¡Reserva exitosa!');
     } catch (error: any) {
-      alert(error.response?.data?.message || 'Error al reservar');
+      const errorMsg = error.response?.data?.detail || error.response?.data?.message || 'Error al reservar';
+      
+      // Show user-friendly error messages
+      if (errorMsg.includes('membresía activa')) {
+        alert('⚠️ ' + errorMsg);
+      } else if (errorMsg.includes('límite')) {
+        alert('📊 ' + errorMsg + '\n\nConsulta con el gimnasio para actualizar tu plan.');
+      } else if (errorMsg.includes('ya tienes')) {
+        alert('ℹ️ ' + errorMsg);
+      } else {
+        alert('❌ ' + errorMsg);
+      }
     }
   };
 
@@ -128,6 +161,47 @@ export default function ClassesCalendarPage() {
           Nueva Clase
         </button>
       </div>
+
+      {/* Membership Status Alert */}
+      {!activeMembership ? (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold text-amber-900">No tienes membresía activa</p>
+              <p className="text-sm text-amber-700 mt-1">
+                Necesitas una membresía activa para reservar clases. Contacta con el gimnasio.
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <CheckCircle className="w-5 h-5 text-green-600" />
+              <div>
+                <p className="font-semibold text-green-900">Membresía Activa: {activeMembership.plan_name}</p>
+                <p className="text-sm text-green-700">
+                  Válida hasta: {new Date(activeMembership.end_date).toLocaleDateString('es-ES')}
+                </p>
+              </div>
+            </div>
+            {activeMembership.max_classes_per_month && (
+              <div className="text-right">
+                <p className="text-sm text-green-700">Clases este mes</p>
+                <p className="text-lg font-bold text-green-900">
+                  {myReservations.filter((r: any) => {
+                    const resDate = new Date(r.reserved_at);
+                    const now = new Date();
+                    return resDate.getMonth() === now.getMonth() && r.status === 'confirmed';
+                  }).length} / {activeMembership.max_classes_per_month}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Filters and Week Navigation */}
       <div className="bg-white rounded-2xl border border-slate-200 p-4">
