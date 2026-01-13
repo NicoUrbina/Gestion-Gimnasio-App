@@ -1,5 +1,5 @@
 /**
- * Página de Login
+ * Login Page - Dark Theme con estilo fitness moderno
  */
 import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -23,34 +23,47 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-            <div className="max-w-md w-full space-y-8 p-10 bg-white rounded-2xl shadow-2xl">
-                {/* Logo y título */}
-                <div className="text-center">
-                    <div className="mx-auto h-16 w-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mb-4">
-                        <span className="text-white text-3xl font-bold">G</span>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-zinc-900 to-black relative overflow-hidden">
+            {/* Decorative elements */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"></div>
+                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-orange-600/10 rounded-full blur-3xl"></div>
+            </div>
+
+            <div className="relative z-10 w-full max-w-md px-6">
+                {/* Logo y Branding */}
+                <div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl mb-6 shadow-lg shadow-orange-500/50">
+                        <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
                     </div>
-                    <h2 className="text-3xl font-bold text-gray-900">
-                        GymPro Manager
-                    </h2>
-                    <p className="mt-2 text-sm text-gray-600">
-                        Ingresa a tu cuenta
+                    <h1 className="text-4xl font-black text-white uppercase tracking-tight mb-2">
+                        GymPro
+                    </h1>
+                    <p className="text-gray-400 text-sm uppercase tracking-widest">
+                        Manager System
                     </p>
                 </div>
 
-                {/* Formulario */}
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                    {error && (
-                        <div className="rounded-lg bg-red-50 border border-red-200 p-4">
-                            <p className="text-sm text-red-800">{error}</p>
-                        </div>
-                    )}
+                {/* Form Card */}
+                <div className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-2xl p-8 shadow-2xl">
+                    <h2 className="text-2xl font-bold text-white mb-6">
+                        Iniciar Sesión
+                    </h2>
 
-                    <div className="space-y-4">
-                        {/* Email */}
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                        {/* Error Alert */}
+                        {error && (
+                            <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4">
+                                <p className="text-red-400 text-sm font-medium">{error}</p>
+                            </div>
+                        )}
+
+                        {/* Email Input */}
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                                Correo electrónico
+                            <label htmlFor="email" className="block text-sm font-semibold text-gray-300 mb-2 uppercase tracking-wide">
+                                Email
                             </label>
                             <input
                                 id="email"
@@ -58,14 +71,14 @@ export default function LoginPage() {
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
-                                placeholder="admin@gimnasio.com"
+                                className="w-full px-4 py-3 bg-black/50 border border-zinc-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition"
+                                placeholder="tu@email.com"
                             />
                         </div>
 
-                        {/* Password */}
+                        {/* Password Input */}
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="password" className="block text-sm font-semibold text-gray-300 mb-2 uppercase tracking-wide">
                                 Contraseña
                             </label>
                             <input
@@ -74,38 +87,49 @@ export default function LoginPage() {
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                                className="w-full px-4 py-3 bg-black/50 border border-zinc-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition"
                                 placeholder="••••••••"
                             />
                         </div>
-                    </div>
 
-                    {/* Submit button */}
-                    <button
-                        type="submit"
-                        disabled={isLoading}
-                        className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-                    >
-                        {isLoading ? (
-                            <span className="flex items-center gap-2">
-                                <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                Iniciando sesión...
-                            </span>
-                        ) : (
-                            'Iniciar Sesión'
-                        )}
-                    </button>
+                        {/* Submit Button */}
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className="w-full py-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold rounded-lg shadow-lg shadow-orange-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 uppercase tracking-wide"
+                        >
+                            {isLoading ? (
+                                <span className="flex items-center justify-center gap-3">
+                                    <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Cargando...
+                                </span>
+                            ) : (
+                                'Ingresar'
+                            )}
+                        </button>
 
-                    {/* Credenciales de prueba */}
-                    <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <p className="text-xs text-gray-600 font-medium mb-2">Credenciales de prueba:</p>
-                        <p className="text-xs text-gray-500">Email: admin@gimnasio.com</p>
-                        <p className="text-xs text-gray-500">Password: admin123</p>
-                    </div>
-                </form>
+                        {/* Test Credentials */}
+                        <div className="mt-6 p-4 bg-zinc-800/50 border border-zinc-700 rounded-lg">
+                            <p className="text-xs text-gray-400 font-semibold mb-2 uppercase tracking-wide">Credenciales de prueba:</p>
+                            <div className="space-y-1">
+                                <p className="text-xs text-gray-500 font-mono">
+                                    <span className="text-gray-400">Email:</span> admin@gimnasio.com
+                                </p>
+                                <p className="text-xs text-gray-500 font-mono">
+                                    <span className="text-gray-400">Pass:</span> admin123
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                {/* Footer */}
+                <p className="text-center text-gray-600 text-xs mt-8 uppercase tracking-widest">
+                    GymPro Manager © 2026
+                </p>
             </div>
         </div>
     );
