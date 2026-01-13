@@ -20,6 +20,13 @@ export default function PaymentCard({
 }: PaymentCardProps) {
   const formatAmount = (value: number | string) => {
     const num = typeof value === 'string' ? parseFloat(value) : value;
+    
+    // Si es entero (como pending count), mostrar sin decimales
+    if (Number.isInteger(num)) {
+      return num.toString();
+    }
+    
+    // Si no, mostrar como moneda
     return new Intl.NumberFormat('es-ES', {
       style: 'currency',
       currency: 'USD',

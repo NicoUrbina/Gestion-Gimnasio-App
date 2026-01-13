@@ -63,12 +63,16 @@ export interface Membership {
   member_name: string;
   plan: number;
   plan_name: string;
+  plan_price: string;
   start_date: string;
   end_date: string;
   status: 'active' | 'frozen' | 'expired' | 'cancelled';
   status_display: string;
-  days_remaining: number;
-  is_expiring_soon: boolean;
+  freeze_start_date: string | null;
+  freeze_end_date: string | null;
+  notes: string;
+  created_at: string;
+  updated_at: string;
 }
 
 // Tipos para clases

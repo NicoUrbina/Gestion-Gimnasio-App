@@ -1,15 +1,14 @@
+```javascript
 import { useEffect, useState } from 'react';
-import { 
-  Users, 
-  CreditCard, 
-  TrendingUp, 
+import { useNavigate } from 'react-router-dom';
+import {
+  Users,
+  CreditCard,
+  TrendingUp,
   Calendar,
-  ArrowUpRight,
-  ArrowDownRight,
-  Activity,
+  DollarSign,
   Clock,
-  AlertTriangle,
-  CheckCircle2,
+  Loader2,
 } from 'lucide-react';
 import api from '../services/api';
 

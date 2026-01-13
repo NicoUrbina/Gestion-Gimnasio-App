@@ -27,6 +27,8 @@ import ClassFormPage from './pages/classes/ClassFormPage';
 // Payments
 import PaymentsPage from './pages/payments/PaymentsPage';
 import MyPaymentsPage from './pages/payments/MyPaymentsPage';
+import PaymentFormPage from './pages/payments/PaymentFormPage';
+import PaymentDetailPage from './pages/payments/PaymentDetailPage';
 
 // Components
 import ProtectedRoute from './components/ProtectedRoute';
@@ -82,6 +84,9 @@ function App() {
             {/* Payments */}
             <Route path="/payments" element={<PaymentsPage />} />
             <Route path="/payments/my-payments" element={<MyPaymentsPage />} />
+            <Route path="/payments/submit" element={<PaymentFormPage />} />
+            <Route path="/payments/new" element={<PaymentFormPage />} />
+            <Route path="/payments/:id" element={<PaymentDetailPage />} />
             
             {/* Placeholder pages */}
             <Route path="/staff" element={<PlaceholderPage title="Entrenadores" />} />
