@@ -162,7 +162,7 @@ export default function MainLayout() {
         </header>
 
         {/* Page content */}
-        <main className="min-h-screen">
+        <main className="p-6 lg:p-8">
           <Outlet />
         </main>
       </div>
