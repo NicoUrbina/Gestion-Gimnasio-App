@@ -7,7 +7,7 @@ import { useAuthStore } from './stores/authStore';
 import MainLayout from './layouts/MainLayout';
 
 // Pages
-import LoginPage from './pages/LoginPage';
+import LoginPage from './pages/auth/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import MembersPage from './pages/MembersPage';
 import MemberFormPage from './pages/MemberFormPage';
@@ -25,7 +25,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Toaster 
+      <Toaster
         position="top-right"
         toastOptions={{
           duration: 4000,
@@ -44,13 +44,13 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
-            
+
             {/* Members */}
             <Route path="/members" element={<MembersPage />} />
             <Route path="/members/new" element={<MemberFormPage />} />
             <Route path="/members/:id" element={<MemberDetailPage />} />
             <Route path="/members/:id/edit" element={<MemberFormPage />} />
-            
+
             {/* Placeholder pages */}
             <Route path="/memberships" element={<PlaceholderPage title="Membresías" />} />
             <Route path="/classes" element={<PlaceholderPage title="Clases" />} />
