@@ -7,7 +7,7 @@ import { useAuthStore } from './stores/authStore';
 import MainLayout from './layouts/MainLayout';
 
 // Pages
-import LoginPage from './pages/LoginPage';
+import LoginPage from './pages/auth/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import MembersPage from './pages/MembersPage';
 import MemberFormPage from './pages/MemberFormPage';
@@ -81,6 +81,7 @@ function App() {
             <Route path="/classes/:id/edit" element={<ClassFormPage />} />
             <Route path="/classes/my-reservations" element={<MyReservationsPage />} />
             
+<<<<<<< HEAD
             {/* Payments */}
             <Route path="/payments" element={<PaymentsPage />} />
             <Route path="/payments/my-payments" element={<MyPaymentsPage />} />
@@ -88,6 +89,8 @@ function App() {
             <Route path="/payments/new" element={<PaymentFormPage />} />
             <Route path="/payments/:id" element={<PaymentDetailPage />} />
             
+=======
+>>>>>>> origin/main
             {/* Placeholder pages */}
             <Route path="/staff" element={<PlaceholderPage title="Entrenadores" />} />
             <Route path="/progress" element={<PlaceholderPage title="Progreso" />} />
