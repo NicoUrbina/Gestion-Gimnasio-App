@@ -171,6 +171,7 @@ SIMPLE_JWT = {
 
 
 # CORS
+# CORS_ALLOW_ALL_ORIGINS = True  # DEBUG: Permitir todo para probar
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS',
     default='http://localhost:5173,http://127.0.0.1:5173',
