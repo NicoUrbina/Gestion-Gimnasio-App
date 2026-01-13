@@ -13,6 +13,12 @@ import MembersPage from './pages/MembersPage';
 import MemberFormPage from './pages/MemberFormPage';
 import MemberDetailPage from './pages/MemberDetailPage';
 
+// Memberships
+import MembershipPlansPage from './pages/memberships/MembershipPlansPage';
+import MembershipPlanFormPage from './pages/memberships/MembershipPlanFormPage';
+import AssignMembershipPage from './pages/memberships/AssignMembershipPage';
+import MembershipsListPage from './pages/memberships/MembershipsListPage';
+
 // Components
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -51,8 +57,14 @@ function App() {
             <Route path="/members/:id" element={<MemberDetailPage />} />
             <Route path="/members/:id/edit" element={<MemberFormPage />} />
             
+            {/* Memberships */}
+            <Route path="/memberships" element={<MembershipsListPage />} />
+            <Route path="/memberships/plans" element={<MembershipPlansPage />} />
+            <Route path="/memberships/plans/new" element={<MembershipPlanFormPage />} />
+            <Route path="/memberships/plans/:id/edit" element={<MembershipPlanFormPage />} />
+            <Route path="/memberships/assign" element={<AssignMembershipPage />} />
+            
             {/* Placeholder pages */}
-            <Route path="/memberships" element={<PlaceholderPage title="Membresías" />} />
             <Route path="/classes" element={<PlaceholderPage title="Clases" />} />
             <Route path="/staff" element={<PlaceholderPage title="Entrenadores" />} />
             <Route path="/progress" element={<PlaceholderPage title="Progreso" />} />
