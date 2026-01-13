@@ -19,6 +19,10 @@ import MembershipPlanFormPage from './pages/memberships/MembershipPlanFormPage';
 import AssignMembershipPage from './pages/memberships/AssignMembershipPage';
 import MembershipsListPage from './pages/memberships/MembershipsListPage';
 
+// Classes
+import ClassesCalendarPage from './pages/classes/ClassesCalendarPage';
+import MyReservationsPage from './pages/classes/MyReservationsPage';
+
 // Components
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -64,8 +68,11 @@ function App() {
             <Route path="/memberships/plans/:id/edit" element={<MembershipPlanFormPage />} />
             <Route path="/memberships/assign" element={<AssignMembershipPage />} />
             
+            {/* Classes */}
+            <Route path="/classes" element={<ClassesCalendarPage />} />
+            <Route path="/classes/my-reservations" element={<MyReservationsPage />} />
+            
             {/* Placeholder pages */}
-            <Route path="/classes" element={<PlaceholderPage title="Clases" />} />
             <Route path="/staff" element={<PlaceholderPage title="Entrenadores" />} />
             <Route path="/progress" element={<PlaceholderPage title="Progreso" />} />
             <Route path="/settings" element={<PlaceholderPage title="Configuración" />} />

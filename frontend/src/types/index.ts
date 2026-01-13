@@ -86,7 +86,7 @@ export interface GymClass {
   id: number;
   class_type: number;
   class_type_name: string;
-  instructor: number;
+  instructor: number | null;
   instructor_name: string;
   title: string;
   description: string;
@@ -161,3 +161,58 @@ export interface PerformanceGoal {
   days_remaining: number;
   is_on_track: boolean;
 }
+
+// Tipos para Clases y Reservas
+export interface ClassType {
+  id: number;
+  name: string;
+  description: string;
+  default_duration_minutes: number;
+  default_capacity: number;
+  color: string;
+  icon: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface GymClass {
+  id: number;
+  class_type: number;
+  class_type_name: string;
+  instructor: number | null;
+  instructor_name: string;
+  title: string;
+  description: string;
+  start_datetime: string;
+  end_datetime: string;
+  capacity: number;
+  location: string;
+  is_recurring: boolean;
+  is_cancelled: boolean;
+  cancellation_reason: string;
+  available_spots: number;
+  is_full: boolean;
+  confirmed_reservations_count: number;
+  waitlist_count: number;
+  color: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Reservation {
+  id: number;
+  gym_class: number;
+  class_title: string;
+  member: number;
+  member_name: string;
+  status: 'confirmed' | 'waitlist' | 'cancelled' | 'attended' | 'no_show';
+  status_display: string;
+  waitlist_position: number | null;
+  reserved_at: string;
+  cancelled_at: string | null;
+  attended_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
