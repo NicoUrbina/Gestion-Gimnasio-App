@@ -70,6 +70,29 @@ class Payment(models.Model):
         blank=True,
         verbose_name='Notas'
     )
+    receipt_image = models.ImageField(
+        upload_to='receipts/',
+        blank=True,
+        null=True,
+        verbose_name='Comprobante'
+    )
+    rejection_reason = models.TextField(
+        blank=True,
+        verbose_name='Motivo de rechazo'
+    )
+    approved_by = models.ForeignKey(
+        'users.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='payments_approved',
+        verbose_name='Aprobado por'
+    )
+    approved_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Fecha de aprobación'
+    )
     payment_date = models.DateTimeField(
         default=timezone.now,
         verbose_name='Fecha de pago'
@@ -96,6 +119,27 @@ class Payment(models.Model):
         """Marca el pago como completado"""
         if self.status == 'pending':
             self.status = 'completed'
+            self.save()
+            return True
+        return False
+    
+    def approve(self, approved_by_user):
+        """Aprueba un pago pendiente"""
+        if self.status == 'pending':
+            self.status = 'completed'
+            self.approved_by = approved_by_user
+            self.approved_at = timezone.now()
+            self.save()
+            return True
+        return False
+    
+    def reject(self, reason, rejected_by_user):
+        """Rechaza un pago pendiente"""
+        if self.status == 'pending':
+            self.status = 'cancelled'
+            self.rejection_reason = reason
+            self.approved_by = rejected_by_user  # Usuario que rechazó
+            self.approved_at = timezone.now()
             self.save()
             return True
         return False

@@ -50,14 +50,30 @@ export const membershipPlanService = {
  */
 export const membershipService = {
   /**
-   * Obtener todas las membresías con filtros opcionales
+   * Get all memberships with optional filters
    */
-  async getAll(filters?: {
+  getAll: async (filters?: {
     status?: 'active' | 'frozen' | 'expired' | 'cancelled';
     member?: number;
-  }): Promise<Membership[]> {
-    const response = await api.get('/memberships/', { params: filters });
-    return response.data.results || response.data;
+  }): Promise<Membership[]> => {
+    const params = new URLSearchParams();
+    if (filters?.status) params.append('status', filters.status);
+    if (filters?.member) params.append('member', filters.member.toString());
+    
+    const response = await api.get(`/memberships/?${params.toString()}`);
+    return response.data;
+  },
+
+  /**
+   * Get my memberships (for logged-in member)
+   */
+  getMyMemberships: async (): Promise<Membership[]> => {
+    // Obtener el usuario actual y luego sus membresías
+    const userResponse = await api.get('/users/me/');
+    const memberId = userResponse.data.member_profile;
+    
+    const response = await api.get(`/memberships/?member=${memberId}`);
+    return response.data;
   },
 
   /**

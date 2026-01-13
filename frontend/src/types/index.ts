@@ -63,12 +63,16 @@ export interface Membership {
   member_name: string;
   plan: number;
   plan_name: string;
+  plan_price: string;
   start_date: string;
   end_date: string;
   status: 'active' | 'frozen' | 'expired' | 'cancelled';
   status_display: string;
-  days_remaining: number;
-  is_expiring_soon: boolean;
+  freeze_start_date: string | null;
+  freeze_end_date: string | null;
+  notes: string;
+  created_at: string;
+  updated_at: string;
 }
 
 // Tipos para clases
@@ -202,17 +206,64 @@ export interface GymClass {
 
 export interface Reservation {
   id: number;
+  member: number;
   gym_class: number;
   class_title: string;
+  reserved_at: string;
+  status: 'confirmed' | 'waitlist' | 'cancelled' | 'attended' | 'no_show';
+  waitlist_position: number | null;
+  attended_at: string | null;
+  cancelled_at: string | null;
+  created_at: string;
+}
+
+// Payments
+export type PaymentMethod = 'cash' | 'card' | 'transfer' | 'mobile' | 'other';
+export type PaymentStatus = 'pending' | 'completed' | 'cancelled' | 'refunded';
+
+export interface Payment {
+  id: number;
   member: number;
   member_name: string;
-  status: 'confirmed' | 'waitlist' | 'cancelled' | 'attended' | 'no_show';
+  membership: number | null;
+  amount: string;
+  payment_method: PaymentMethod;
+  payment_method_display: string;
+  status: PaymentStatus;
   status_display: string;
-  waitlist_position: number | null;
-  reserved_at: string;
-  cancelled_at: string | null;
-  attended_at: string | null;
+  reference_number: string;
+  description: string;
+  notes: string;
+  receipt_image?: string;
+  rejection_reason?: string;
+  approved_by?: number;
+  approved_at?: string;
+  payment_date: string;
+  created_by: number | null;
   created_at: string;
   updated_at: string;
 }
 
+export interface Invoice {
+  id: number;
+  payment: number;
+  payment_info: Payment;
+  invoice_number: string;
+  issued_date: string;
+  subtotal: string;
+  tax: string;
+  total: string;
+  pdf_file: string;
+  created_at: string;
+}
+
+export interface PaymentStats {
+  month: {
+    total: number;
+    count: number;
+  };
+  today: {
+    total: number;
+    count: number;
+  };
+}

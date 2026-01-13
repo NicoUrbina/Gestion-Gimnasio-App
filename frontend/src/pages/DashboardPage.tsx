@@ -1,15 +1,14 @@
+```javascript
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Users,
   CreditCard,
   TrendingUp,
   Calendar,
-  ArrowUpRight,
-  AlertTriangle,
-  CheckCircle2,
-  Activity,
+  DollarSign,
   Clock,
-  Zap,
+  Loader2,
 } from 'lucide-react';
 import api from '../services/api';
 
@@ -48,7 +47,7 @@ export default function DashboardPage() {
           api.get('/payments/stats/'),
           api.get('/members/expiring_soon/'),
         ]);
-
+        
         setStats({
           members: membersRes.data,
           payments: paymentsRes.data,
@@ -70,144 +69,130 @@ export default function DashboardPage() {
       value: stats?.members.active || 0,
       total: stats?.members.total || 0,
       icon: Users,
-      gradient: 'from-orange-500 to-orange-600',
+      color: 'from-purple-500 to-purple-600',
+      bgColor: 'bg-purple-50',
       change: stats?.members.active_percentage || 0,
+      changeType: 'positive' as const,
     },
     {
       title: 'Ingresos del Mes',
       value: `$${(stats?.payments.month.total || 0).toLocaleString()}`,
       subtitle: `${stats?.payments.month.count || 0} pagos`,
       icon: CreditCard,
-      gradient: 'from-emerald-500 to-emerald-600',
+      color: 'from-emerald-500 to-emerald-600',
+      bgColor: 'bg-emerald-50',
     },
     {
       title: 'Ingresos de Hoy',
       value: `$${(stats?.payments.today.total || 0).toLocaleString()}`,
       subtitle: `${stats?.payments.today.count || 0} pagos`,
       icon: TrendingUp,
-      gradient: 'from-cyan-500 to-cyan-600',
+      color: 'from-cyan-500 to-cyan-600',
+      bgColor: 'bg-cyan-50',
     },
     {
       title: 'Por Vencer',
       value: expiring.length,
       subtitle: 'próximos 7 días',
       icon: Calendar,
-      gradient: 'from-amber-500 to-amber-600',
+      color: 'from-amber-500 to-amber-600',
+      bgColor: 'bg-amber-50',
       alert: expiring.length > 0,
     },
   ];
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-400">Cargando dashboard...</p>
-        </div>
+      <div className="flex items-center justify-center h-64">
+        <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
-
+    <div className="space-y-6">
       {/* Header */}
-      <div className="mb-10">
-        <h1 className="text-4xl font-black text-white uppercase tracking-tight flex items-center gap-4 mb-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/30">
-            <Zap className="text-white" size={24} />
-          </div>
-          Dashboard
-        </h1>
-        <p className="text-gray-400 text-sm uppercase tracking-wide ml-16">
-          Resumen General del Gimnasio
-        </p>
+      <div>
+        <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
+        <p className="text-slate-500 mt-1">Resumen general del gimnasio</p>
       </div>
 
-      {/* Stats Grid - Más espaciado */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((stat, index) => (
           <div
             key={index}
-            className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 hover:border-orange-500/50 transition-all group"
+            className="bg-white rounded-2xl p-5 border border-slate-200 hover:shadow-lg transition-shadow"
           >
-            <div className="flex items-start justify-between mb-6">
-              <div className={`p-4 rounded-xl bg-gradient-to-br ${stat.gradient} shadow-lg`}>
-                <stat.icon className="w-6 h-6 text-white" />
+            <div className="flex items-start justify-between">
+              <div className={`p-3 rounded-xl ${stat.bgColor}`}>
+                <stat.icon className={`w-6 h-6 bg-gradient-to-r ${stat.color} bg-clip-text`} style={{ color: stat.color.includes('purple') ? '#a855f7' : stat.color.includes('emerald') ? '#10b981' : stat.color.includes('cyan') ? '#06b6d4' : '#f59e0b' }} />
               </div>
               {stat.alert && (
-                <span className="px-2.5 py-1 bg-amber-500/20 border border-amber-500/50 text-amber-400 text-xs font-bold rounded uppercase flex items-center gap-1">
+                <span className="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full flex items-center gap-1">
                   <AlertTriangle className="w-3 h-3" />
-                  Alerta
+                  Atención
                 </span>
               )}
             </div>
-
-            <div className="space-y-2">
-              <p className="text-3xl font-black text-white">{stat.value}</p>
-              <p className="text-sm text-gray-400 uppercase tracking-wider font-semibold">
-                {stat.title}
+            <div className="mt-4">
+              <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
+              <p className="text-sm text-slate-500 mt-1">
+                {stat.subtitle || (stat.total ? `de ${stat.total} totales` : '')}
               </p>
-              {stat.subtitle && (
-                <p className="text-xs text-gray-500">{stat.subtitle}</p>
-              )}
-              {stat.total && (
-                <p className="text-xs text-gray-500">de {stat.total} totales</p>
-              )}
             </div>
-
             {stat.change !== undefined && (
-              <div className="mt-6 pt-4 border-t border-zinc-800 flex items-center gap-2">
-                <ArrowUpRight className="w-4 h-4 text-emerald-500" />
-                <span className="text-sm font-bold text-emerald-400">{stat.change}%</span>
-                <span className="text-xs text-gray-500 uppercase">activos</span>
+              <div className="mt-3 flex items-center gap-1">
+                {stat.changeType === 'positive' ? (
+                  <ArrowUpRight className="w-4 h-4 text-emerald-500" />
+                ) : (
+                  <ArrowDownRight className="w-4 h-4 text-red-500" />
+                )}
+                <span className={`text-sm font-medium ${stat.changeType === 'positive' ? 'text-emerald-600' : 'text-red-600'}`}>
+                  {stat.change}%
+                </span>
+                <span className="text-sm text-slate-400">activos</span>
               </div>
             )}
           </div>
         ))}
       </div>
 
-      {/* Content Grid - Más espaciado */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mt-12">
-
+      {/* Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Membresías por vencer */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
-          <div className="px-7 py-5 border-b border-zinc-800 flex items-center justify-between">
-            <h2 className="font-bold text-white text-lg uppercase tracking-wide flex items-center gap-3">
-              <Calendar className="w-6 h-6 text-orange-500" />
-              Membresías por Vencer
-            </h2>
-            <span className="px-3 py-1.5 bg-orange-500/20 border border-orange-500/50 text-orange-400 text-sm font-bold rounded-full">
-              {expiring.length}
-            </span>
+        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+          <div className="px-5 py-4 border-b border-slate-100">
+            <div className="flex items-center justify-between">
+              <h2 className="font-semibold text-slate-900">Membresías por Vencer</h2>
+              <span className="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full">
+                {expiring.length} miembros
+              </span>
+            </div>
           </div>
-
-          <div className="divide-y divide-zinc-800">
+          <div className="divide-y divide-slate-100">
             {expiring.length === 0 ? (
-              <div className="px-7 py-16 text-center">
-                <CheckCircle2 className="w-16 h-16 mx-auto mb-4 text-emerald-500" />
-                <p className="text-gray-400 text-sm">No hay membresías por vencer esta semana</p>
+              <div className="px-5 py-8 text-center text-slate-400">
+                <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-emerald-400" />
+                <p>No hay membresías por vencer esta semana</p>
               </div>
             ) : (
               expiring.slice(0, 5).map((member) => (
-                <div
-                  key={member.member_id}
-                  className="px-7 py-5 flex items-center justify-between hover:bg-zinc-800/50 transition-colors"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-orange-500/30">
-                      {member.name.charAt(0).toUpperCase()}
+                <div key={member.member_id} className="px-5 py-3 flex items-center justify-between hover:bg-slate-50">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                      {member.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="font-semibold text-white mb-1">{member.name}</p>
-                      <p className="text-xs text-gray-500">{member.email}</p>
+                      <p className="font-medium text-slate-900 text-sm">{member.name}</p>
+                      <p className="text-xs text-slate-400">{member.email}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className={`text-lg font-bold ${member.days_remaining <= 2 ? 'text-red-400' : 'text-amber-400'}`}>
-                      {member.days_remaining}
+                    <p className={`text-sm font-medium ${member.days_remaining <= 2 ? 'text-red-600' : 'text-amber-600'}`}>
+                      {member.days_remaining} días
                     </p>
-                    <p className="text-xs text-gray-500 uppercase">días</p>
+                    <p className="text-xs text-slate-400">restantes</p>
                   </div>
                 </div>
               ))
@@ -216,30 +201,25 @@ export default function DashboardPage() {
         </div>
 
         {/* Actividad Reciente */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
-          <div className="px-7 py-5 border-b border-zinc-800">
-            <h2 className="font-bold text-white text-lg uppercase tracking-wide flex items-center gap-3">
-              <Activity className="w-6 h-6 text-orange-500" />
-              Actividad de Hoy
-            </h2>
+        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+          <div className="px-5 py-4 border-b border-slate-100">
+            <h2 className="font-semibold text-slate-900">Actividad de Hoy</h2>
           </div>
-          <div className="p-7">
-            <div className="flex items-center justify-center h-64">
+          <div className="p-5">
+            <div className="flex items-center justify-center h-48 text-slate-400">
               <div className="text-center">
-                <Activity className="w-16 h-16 mx-auto mb-4 text-gray-700" />
-                <p className="text-sm text-gray-500 uppercase tracking-wide">Gráfica próximamente</p>
+                <Activity className="w-12 h-12 mx-auto mb-3 text-slate-300" />
+                <p className="text-sm">Gráfica de actividad próximamente</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Quick Actions - Más espaciado y mejorado */}
-      <div className="mt-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 shadow-2xl shadow-orange-500/30">
-        <h3 className="font-black text-white text-xl mb-6 uppercase tracking-wide">
-          Acciones Rápidas
-        </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Quick Actions */}
+      <div className="bg-gradient-to-r from-purple-600 to-cyan-600 rounded-2xl p-6 text-white">
+        <h3 className="font-semibold text-lg mb-4">Acciones Rápidas</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { label: 'Nuevo Miembro', icon: Users },
             { label: 'Registrar Pago', icon: CreditCard },
@@ -248,17 +228,14 @@ export default function DashboardPage() {
           ].map((action, index) => (
             <button
               key={index}
-              className="flex flex-col items-center justify-center gap-3 px-6 py-6 bg-black/20 hover:bg-black/30 backdrop-blur-sm rounded-xl transition-all border border-white/10 hover:border-white/30 hover:scale-105"
+              className="flex items-center gap-2 px-4 py-3 bg-white/20 hover:bg-white/30 rounded-xl transition-colors"
             >
-              <action.icon className="w-7 h-7 text-white" />
-              <span className="text-sm font-bold text-white uppercase tracking-wide text-center leading-tight">
-                {action.label}
-              </span>
+              <action.icon className="w-5 h-5" />
+              <span className="text-sm font-medium">{action.label}</span>
             </button>
           ))}
         </div>
       </div>
-
     </div>
   );
 }

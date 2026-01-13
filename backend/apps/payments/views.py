@@ -69,6 +69,64 @@ class PaymentViewSet(viewsets.ModelViewSet):
                 'count': today_payments.count()
             }
         })
+    
+    @action(detail=False, methods=['get'])
+    def my_payments(self, request):
+        """Pagos del usuario actual (si es miembro)"""
+        if not hasattr(request.user, 'member_profile'):
+            return Response({'detail': 'No eres un miembro'}, status=400)
+        
+        payments = Payment.objects.filter(
+            member=request.user.member_profile
+        ).select_related('member__user', 'membership')
+        
+        serializer = self.get_serializer(payments, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['post'])
+    def approve(self, request, pk=None):
+        """Aprobar un pago pendiente"""
+        payment = self.get_object()
+        
+        if not request.user.is_staff:
+            return Response({'detail': 'No tienes permisos'}, status=403)
+        
+        if payment.approve(request.user):
+            return Response({
+                'detail': 'Pago aprobado exitosamente',
+                'payment': PaymentSerializer(payment).data
+            })
+        else:
+            return Response({'detail': 'El pago no está pendiente'}, status=400)
+    
+    @action(detail=True, methods=['post'])
+    def reject(self, request, pk=None):
+        """Rechazar un pago pendiente"""
+        payment = self.get_object()
+        
+        if not request.user.is_staff:
+            return Response({'detail': 'No tienes permisos'}, status=403)
+        
+        reason = request.data.get('reason', '')
+        if not reason:
+            return Response({'detail': 'Debes proporcionar un motivo'}, status=400)
+        
+        if payment.reject(reason, request.user):
+            return Response({
+                'detail': 'Pago rechazado',
+                'payment': PaymentSerializer(payment).data
+            })
+        else:
+            return Response({'detail': 'El pago no está pendiente'}, status=400)
+    
+    @action(detail=False, methods=['get'])
+    def pending_count(self, request):
+        """Contador de pagos pendientes"""
+        if not request.user.is_staff:
+            return Response({'count': 0})
+        
+        count = Payment.objects.filter(status='pending').count()
+        return Response({'count': count})
 
 
 class InvoiceViewSet(viewsets.ModelViewSet):

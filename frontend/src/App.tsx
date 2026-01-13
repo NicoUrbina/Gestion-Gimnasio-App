@@ -24,6 +24,12 @@ import ClassesCalendarPage from './pages/classes/ClassesCalendarPage';
 import MyReservationsPage from './pages/classes/MyReservationsPage';
 import ClassFormPage from './pages/classes/ClassFormPage';
 
+// Payments
+import PaymentsPage from './pages/payments/PaymentsPage';
+import MyPaymentsPage from './pages/payments/MyPaymentsPage';
+import PaymentFormPage from './pages/payments/PaymentFormPage';
+import PaymentDetailPage from './pages/payments/PaymentDetailPage';
+
 // Components
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -36,7 +42,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Toaster
+      <Toaster 
         position="top-right"
         toastOptions={{
           duration: 4000,
@@ -55,7 +61,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
-
+            
             {/* Members */}
             <Route path="/members" element={<MembersPage />} />
             <Route path="/members/new" element={<MemberFormPage />} />
@@ -75,6 +81,16 @@ function App() {
             <Route path="/classes/:id/edit" element={<ClassFormPage />} />
             <Route path="/classes/my-reservations" element={<MyReservationsPage />} />
             
+<<<<<<< HEAD
+            {/* Payments */}
+            <Route path="/payments" element={<PaymentsPage />} />
+            <Route path="/payments/my-payments" element={<MyPaymentsPage />} />
+            <Route path="/payments/submit" element={<PaymentFormPage />} />
+            <Route path="/payments/new" element={<PaymentFormPage />} />
+            <Route path="/payments/:id" element={<PaymentDetailPage />} />
+            
+=======
+>>>>>>> origin/main
             {/* Placeholder pages */}
             <Route path="/staff" element={<PlaceholderPage title="Entrenadores" />} />
             <Route path="/progress" element={<PlaceholderPage title="Progreso" />} />
