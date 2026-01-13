@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {  Plus, Loader2, DollarSign, CheckCircle, XCircle, Filter } from 'lucide-react';
+import {  Plus, Loader2, DollarSign, CheckCircle, XCircle, Filter, Download } from 'lucide-react';
 import { paymentService } from '../../services/payments';
 import PaymentStatusBadge from '../../components/payments/PaymentStatusBadge';
 import PaymentMethodIcon from '../../components/payments/PaymentMethodIcon';
@@ -15,6 +15,8 @@ export default function PaymentsPage() {
   const [activeTab, setActiveTab] = useState<TabType>('all');
   const [pendingCount, setPendingCount] = useState(0);
   const [acting, setActing] = useState<number | null>(null);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   useEffect(() => {
     fetchPayments();
@@ -83,6 +85,15 @@ export default function PaymentsPage() {
 
   const filtered = filterPayments();
 
+  const handleExport = () => {
+    const params = new URLSearchParams();
+    if (startDate) params.append('start_date', startDate);
+    if (endDate) params.append('end_date', endDate);
+    
+    const url = `http://localhost:8000/api/payments/export_report/?${params.toString()}`;
+    window.open(url, '_blank');
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -97,6 +108,39 @@ export default function PaymentsPage() {
           <Plus className="w-5 h-5" />
           Registrar Pago
         </button>
+      </div>
+
+      {/* Filters and Export */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-4">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div>
+              <label className="block text-xs text-slate-500 mb-1">Desde</label>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-slate-500 mb-1">Hasta</label>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+            </div>
+          </div>
+          <button
+            onClick={handleExport}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white font-medium rounded-xl hover:bg-green-700 transition-colors"
+          >
+            <Download className="w-4 h-4" />
+            Exportar Excel
+          </button>
+        </div>
       </div>
 
       {/* Tabs */}
