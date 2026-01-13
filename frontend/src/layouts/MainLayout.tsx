@@ -124,7 +124,7 @@ export default function MainLayout() {
 
       {/* Main content */}
       <div
-        className={`transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'
+        className={`min-h-screen transition-all duration-300 ${sidebarCollapsed ? 'ml-0 lg:ml-20' : 'ml-0 lg:ml-64'
           }`}
       >
         {/* Top bar */}
