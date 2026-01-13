@@ -97,6 +97,14 @@ export const paymentService = {
     const response = await api.get('/payments/pending_count/');
     return response.data.count;
   },
+
+  getChartData: async (): Promise<{
+    revenue: { labels: string[]; revenues: number[] };
+    payment_methods: { labels: string[]; values: number[] };
+  }> => {
+    const response = await api.get('/payments/chart_data/');
+    return response.data;
+  },
 };
 
 /**

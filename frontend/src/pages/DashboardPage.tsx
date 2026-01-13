@@ -42,10 +42,11 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [membersRes, paymentsRes, expiringRes] = await Promise.all([
+        const [membersRes, paymentsRes, expiringRes, chartsRes] = await Promise.all([
           api.get('/members/stats/'),
           api.get('/payments/stats/'),
           api.get('/members/expiring_soon/'),
+          paymentService.getChartData(),
         ]);
         
         setStats({
@@ -53,6 +54,7 @@ export default function DashboardPage() {
           payments: paymentsRes.data,
         });
         setExpiring(expiringRes.data);
+        setChartData(chartsRes);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
       } finally {
