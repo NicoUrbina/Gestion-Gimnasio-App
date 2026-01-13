@@ -24,6 +24,10 @@ import ClassesCalendarPage from './pages/classes/ClassesCalendarPage';
 import MyReservationsPage from './pages/classes/MyReservationsPage';
 import ClassFormPage from './pages/classes/ClassFormPage';
 
+// Payments
+import PaymentsPage from './pages/payments/PaymentsPage';
+import MyPaymentsPage from './pages/payments/MyPaymentsPage';
+
 // Components
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -74,6 +78,10 @@ function App() {
             <Route path="/classes/new" element={<ClassFormPage />} />
             <Route path="/classes/:id/edit" element={<ClassFormPage />} />
             <Route path="/classes/my-reservations" element={<MyReservationsPage />} />
+            
+            {/* Payments */}
+            <Route path="/payments" element={<PaymentsPage />} />
+            <Route path="/payments/my-payments" element={<MyPaymentsPage />} />
             
             {/* Placeholder pages */}
             <Route path="/staff" element={<PlaceholderPage title="Entrenadores" />} />

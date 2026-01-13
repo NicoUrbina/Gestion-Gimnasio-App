@@ -16,9 +16,10 @@ class PaymentSerializer(serializers.ModelSerializer):
             'id', 'member', 'member_name', 'membership', 'amount',
             'payment_method', 'payment_method_display', 'status', 'status_display',
             'reference_number', 'description', 'notes', 'payment_date',
+            'receipt_image', 'rejection_reason', 'approved_by', 'approved_at',
             'created_by', 'created_at', 'updated_at'
         ]
-        read_only_fields = ['created_at', 'updated_at']
+        read_only_fields = ['created_at', 'updated_at', 'approved_by', 'approved_at']
 
 
 class PaymentCreateSerializer(serializers.ModelSerializer):
@@ -26,12 +27,17 @@ class PaymentCreateSerializer(serializers.ModelSerializer):
         model = Payment
         fields = [
             'member', 'membership', 'amount', 'payment_method',
-            'reference_number', 'description', 'notes'
+            'reference_number', 'description', 'notes', 'receipt_image'
         ]
     
     def create(self, validated_data):
         validated_data['created_by'] = self.context['request'].user
-        validated_data['status'] = 'completed'
+        # Si el usuario es staff, marca como completado automáticamente
+        if self.context['request'].user.is_staff:
+            validated_data['status'] = 'completed'
+        else:
+            # Si es miembro, marca como pendiente
+            validated_data['status'] = 'pending'
         return super().create(validated_data)
 
 
