@@ -37,17 +37,6 @@ export default function TableSkeleton({ rows = 5, columns = 5 }: TableSkeletonPr
           </div>
         ))}
       </div>
-
-      <style jsx>{`
-        @keyframes shimmer {
-          100% {
-            transform: translateX(100%);
-          }
-        }
-        .animate-shimmer {
-          animation: shimmer 2s infinite;
-        }
-      `}</style>
     </div>
   );
 }

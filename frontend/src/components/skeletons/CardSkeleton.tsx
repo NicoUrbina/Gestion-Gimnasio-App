@@ -15,17 +15,6 @@ export default function CardSkeleton() {
       
       {/* Subtitle */}
       <div className="h-3 w-1/2 bg-slate-700 rounded animate-pulse" />
-
-      <style jsx>{`
-        @keyframes shimmer {
-          100% {
-            transform: translateX(100%);
-          }
-        }
-        .animate-shimmer {
-          animation: shimmer 2s infinite;
-        }
-      `}</style>
     </div>
   );
 }
