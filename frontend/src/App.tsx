@@ -33,8 +33,12 @@ import PaymentDetailPage from './pages/payments/PaymentDetailPage';
 // Notifications
 import NotificationsPage from './pages/NotificationsPage';
 
+// Error pages
+import NotFoundPage from './pages/NotFoundPage';
+
 // Components
 import ProtectedRoute from './components/ProtectedRoute';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
   const { checkAuth } = useAuthStore();
@@ -53,10 +57,24 @@ function App() {
             background: '#1e293b',
             color: '#fff',
             borderRadius: '12px',
+            border: '1px solid #334155',
+          },
+          success: {
+            iconTheme: {
+              primary: '#f97316',
+              secondary: '#fff',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#fff',
+            },
           },
         }}
       />
-      <Routes>
+      <ErrorBoundary>
+        <Routes>
         {/* Public routes */}
         <Route path="/login" element={<LoginPage />} />
 
@@ -84,7 +102,6 @@ function App() {
             <Route path="/classes/:id/edit" element={<ClassFormPage />} />
             <Route path="/classes/my-reservations" element={<MyReservationsPage />} />
             
-<<<<<<< HEAD
             {/* Payments */}
             <Route path="/payments" element={<PaymentsPage />} />
             <Route path="/payments/my-payments" element={<MyPaymentsPage />} />
@@ -92,8 +109,6 @@ function App() {
             <Route path="/payments/new" element={<PaymentFormPage />} />
             <Route path="/payments/:id" element={<PaymentDetailPage />} />
             
-=======
->>>>>>> origin/main
             {/* Placeholder pages */}
             <Route path="/staff" element={<PlaceholderPage title="Entrenadores" />} />
             <Route path="/progress" element={<PlaceholderPage title="Progreso" />} />
@@ -101,10 +116,13 @@ function App() {
           </Route>
         </Route>
 
-        {/* Default redirect */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
+          {/* Default redirect */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          
+          {/* 404 - Catch all */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }

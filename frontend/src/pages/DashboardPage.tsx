@@ -1,16 +1,21 @@
-```javascript
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Users,
+ Users,
   CreditCard,
   TrendingUp,
   Calendar,
   DollarSign,
   Clock,
   Loader2,
+  AlertTriangle,
+  ArrowUpRight,
+  ArrowDownRight,
+  CheckCircle2,
+  Activity,
 } from 'lucide-react';
 import api from '../services/api';
+import { paymentService } from '../services/payments';
 
 interface Stats {
   members: {
@@ -37,6 +42,7 @@ interface ExpiringMember {
 export default function DashboardPage() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [expiring, setExpiring] = useState<ExpiringMember[]>([]);
+  const [chartData, setChartData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
