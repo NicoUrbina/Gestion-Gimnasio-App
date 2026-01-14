@@ -16,6 +16,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { useState } from 'react';
+import NotificationBell from '../components/notifications/NotificationBell';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -147,6 +148,9 @@ export default function MainLayout() {
 
             {/* Right section */}
             <div className="flex items-center gap-3">
+              {/* Notification Bell */}
+              <NotificationBell />
+              
               {/* User info */}
               <div className="flex items-center gap-3 px-3 py-2 bg-zinc-800 rounded-lg">
                 <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-orange-500/30">

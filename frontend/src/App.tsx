@@ -30,6 +30,9 @@ import MyPaymentsPage from './pages/payments/MyPaymentsPage';
 import PaymentFormPage from './pages/payments/PaymentFormPage';
 import PaymentDetailPage from './pages/payments/PaymentDetailPage';
 
+// Notifications
+import NotificationsPage from './pages/NotificationsPage';
+
 // Components
 import ProtectedRoute from './components/ProtectedRoute';
 
