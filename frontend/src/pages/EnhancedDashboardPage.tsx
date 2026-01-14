@@ -4,8 +4,8 @@ import {
   Calendar, TrendingUp, Dumbbell, CreditCard, 
   Activity, Clock, AlertCircle, ArrowRight, CheckCircle 
 } from 'lucide-react';
-import api from '../../services/api';
-import Spinner from '../../components/Spinner';
+import api from '../services/api';
+import Spinner from '../components/Spinner';
 
 interface DashboardStats {
   membership: {
