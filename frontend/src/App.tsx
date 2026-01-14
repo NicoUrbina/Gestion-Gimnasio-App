@@ -33,6 +33,27 @@ import PaymentDetailPage from './pages/payments/PaymentDetailPage';
 // Notifications
 import NotificationsPage from './pages/NotificationsPage';
 
+// Evaluations (Phase 5)
+import RequestEvaluationPage from './pages/evaluations/RequestEvaluationPage';
+import EvaluationHistoryPage from './pages/evaluations/EvaluationHistoryPage';
+import EvaluationFormPage from './pages/evaluations/EvaluationFormPage';
+
+// Workouts (Phase 5)
+import MyRoutinePage from './pages/workouts/MyRoutinePage';
+import ExerciseLibraryPage from './pages/workouts/ExerciseLibraryPage';
+import RoutineBuilderPage from './pages/workouts/RoutineBuilderPage';
+
+// Progress (Phase 6)
+import EvolutionChartsPage from './pages/progress/EvolutionChartsPage';
+import UpdateProgressPage from './pages/progress/UpdateProgressPage';
+
+// Memberships - Renewal (Phase 7)
+import RenewalPortalPage from './pages/memberships/RenewalPortalPage';
+
+// Public & Dashboard (Phase 8)
+import PublicRegistrationPage from './pages/PublicRegistrationPage';
+import EnhancedDashboardPage from './pages/EnhancedDashboardPage';
+
 // Error pages
 import NotFoundPage from './pages/NotFoundPage';
 
@@ -76,12 +97,15 @@ function App() {
       <ErrorBoundary>
         <Routes>
         {/* Public routes */}
+        <Route path="/register" element={<PublicRegistrationPage />} />
         <Route path="/login" element={<LoginPage />} />
 
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
+            {/* Enhanced Dashboard (Phase 8) */}
+            <Route path="/dashboard" element={<EnhancedDashboardPage />} />
+            <Route path="/dashboard/old" element={<DashboardPage />} />
             
             {/* Members */}
             <Route path="/members" element={<MembersPage />} />
@@ -95,9 +119,11 @@ function App() {
             <Route path="/memberships/plans/new" element={<MembershipPlanFormPage />} />
             <Route path="/memberships/plans/:id/edit" element={<MembershipPlanFormPage />} />
             <Route path="/memberships/assign" element={<AssignMembershipPage />} />
+            <Route path="/memberships/renew" element={<RenewalPortalPage />} />
             
             {/* Classes */}
             <Route path="/classes" element={<ClassesCalendarPage />} />
+            <Route path="/classes/calendar" element={<ClassesCalendarPage />} />
             <Route path="/classes/new" element={<ClassFormPage />} />
             <Route path="/classes/:id/edit" element={<ClassFormPage />} />
             <Route path="/classes/my-reservations" element={<MyReservationsPage />} />
@@ -109,9 +135,28 @@ function App() {
             <Route path="/payments/new" element={<PaymentFormPage />} />
             <Route path="/payments/:id" element={<PaymentDetailPage />} />
             
+            {/* Evaluations (Phase 5) */}
+            <Route path="/evaluations" element={<EvaluationHistoryPage />} />
+            <Route path="/evaluations/request" element={<RequestEvaluationPage />} />
+            <Route path="/evaluations/:id/form" element={<EvaluationFormPage />} />
+            
+            {/* Workouts (Phase 5) */}
+            <Route path="/workouts/my-routine" element={<MyRoutinePage />} />
+            <Route path="/workouts/exercises" element={<ExerciseLibraryPage />} />
+            <Route path="/workouts/builder" element={<RoutineBuilderPage />} />
+            <Route path="/workouts/routines" element={<PlaceholderPage title="Mis Rutinas" />} />
+            
+            {/* Progress (Phase 6) */}
+            <Route path="/progress" element={<EvolutionChartsPage />} />
+            <Route path="/progress/evolution" element={<EvolutionChartsPage />} />
+            <Route path="/progress/update" element={<UpdateProgressPage />} />
+            <Route path="/progress/log" element={<UpdateProgressPage />} />
+            
+            {/* Notifications */}
+            <Route path="/notifications" element={<NotificationsPage />} />
+            
             {/* Placeholder pages */}
             <Route path="/staff" element={<PlaceholderPage title="Entrenadores" />} />
-            <Route path="/progress" element={<PlaceholderPage title="Progreso" />} />
             <Route path="/settings" element={<PlaceholderPage title="Configuración" />} />
           </Route>
         </Route>

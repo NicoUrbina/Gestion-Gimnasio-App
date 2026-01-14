@@ -52,6 +52,7 @@ LOCAL_APPS = [
     'apps.notifications',
     'apps.equipment',
     'apps.assessments',
+    'apps.workouts',  # Phase 5: Workout routines
     'apps.documents',
     'apps.analytics',
     'apps.common',
