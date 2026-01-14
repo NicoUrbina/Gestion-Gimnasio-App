@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserPlus, Mail, Lock, Phone, Calendar, AlertCircle, CheckCircle } from 'lucide-react';
-import api from '../../services/api';
+import api from '../services/api';
 import toast from 'react-hot-toast';
 
 export default function PublicRegistrationPage() {
