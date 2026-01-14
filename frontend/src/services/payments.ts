@@ -20,6 +20,7 @@ export const paymentService = {
     if (filters?.member) params.append('member', filters.member.toString());
     
     const response = await api.get(`/payments/?${params.toString()}`);
+    if (response.data.results) return response.data.results;
     return response.data;
   },
 
@@ -28,6 +29,7 @@ export const paymentService = {
    */
   getMyPayments: async (): Promise<Payment[]> => {
     const response = await api.get('/payments/my_payments/');
+    if (response.data.results) return response.data.results;
     return response.data;
   },
 
