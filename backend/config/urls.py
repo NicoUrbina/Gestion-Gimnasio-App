@@ -20,4 +20,6 @@ urlpatterns = [
     path('api/progress/', include('apps.progress.urls')),
     path('api/access/', include('apps.access.urls')),
     path('api/analytics/', include('apps.analytics.urls')),
+    path('api/', include('apps.assessments.urls')),  # Evaluaciones y metas
+    path('api/', include('apps.workouts.urls')),  # Rutinas y ejercicios
 ]

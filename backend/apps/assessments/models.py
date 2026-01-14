@@ -10,6 +10,14 @@ from django.utils import timezone
 class FitnessAssessment(models.Model):
     """Evaluaciones físicas completas del atleta"""
     
+    # Estados del proceso
+    STATUS_CHOICES = [
+        ('pending', 'Pendiente'),
+        ('scheduled', 'Agendada'),
+        ('completed', 'Completada'),
+        ('cancelled', 'Cancelada'),
+    ]
+    
     member = models.ForeignKey(
         'members.Member',
         on_delete=models.CASCADE,
@@ -20,9 +28,46 @@ class FitnessAssessment(models.Model):
         'staff.Staff',
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         related_name='assessments_performed',
         verbose_name='Evaluado por'
     )
+    
+    # Workflow fields
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending',
+        verbose_name='Estado'
+    )
+    requested_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Fecha de solicitud'
+    )
+    scheduled_for = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Programada para'
+    )
+    completed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Completada el'
+    )
+    
+    # Información del cliente
+    personal_goals = models.TextField(
+        blank=True,
+        verbose_name='Objetivos personales',
+        help_text='Lo que el cliente quiere lograr'
+    )
+    medical_notes = models.TextField(
+        blank=True,
+        verbose_name='Notas médicas',
+        help_text='Condiciones médicas, lesiones, restricciones'
+    )
+    
+    # Campo existente renombrado para consistencia
     assessment_date = models.DateField(
         default=timezone.now,
         verbose_name='Fecha de evaluación'
@@ -62,6 +107,40 @@ class FitnessAssessment(models.Model):
     
     # Flexibilidad
     sit_and_reach = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name='Sit and reach (cm)')
+    
+    # Nivel de fitness general
+    fitness_level = models.CharField(
+        max_length=20,
+        choices=[
+            ('beginner', 'Principiante'),
+            ('intermediate', 'Intermedio'),
+            ('advanced', 'Avanzado'),
+            ('athlete', 'Atleta'),
+        ],
+        null=True,
+        blank=True,
+        verbose_name='Nivel de fitness'
+    )
+    
+    # Evaluaciones por capacidad (1-10)
+    cardio_level = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Nivel cardiovascular',
+        help_text='Escala 1-10'
+    )
+    strength_level = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Nivel de fuerza',
+        help_text='Escala 1-10'
+    )
+    flexibility_level = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Nivel de flexibilidad',
+        help_text='Escala 1-10'
+    )
     
     observations = models.TextField(blank=True, verbose_name='Observaciones')
     recommendations = models.TextField(blank=True, verbose_name='Recomendaciones')
