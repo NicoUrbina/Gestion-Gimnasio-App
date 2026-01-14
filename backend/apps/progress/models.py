@@ -148,3 +148,124 @@ class Achievement(models.Model):
     
     def __str__(self):
         return f"{self.member} - {self.title}"
+
+
+class WorkoutSession(models.Model):
+    """Sesión de entrenamiento registrada por el atleta"""
+    
+    member = models.ForeignKey(
+        'members.Member',
+        on_delete=models.CASCADE,
+        related_name='workout_sessions',
+        verbose_name='Miembro'
+    )
+    routine = models.ForeignKey(
+        'workouts.WorkoutRoutine',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='sessions',
+        verbose_name='Rutina'
+    )
+    date = models.DateTimeField(
+        verbose_name='Fecha'
+    )
+    completed = models.BooleanField(
+        default=False,
+        verbose_name='Completada'
+    )
+    duration_minutes = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Duración (minutos)'
+    )
+    
+    # Notas y feedback
+    notes = models.TextField(
+        blank=True,
+        verbose_name='Notas del atleta',
+        help_text='Cómo se sintió, dificultades, etc.'
+    )
+    trainer_feedback = models.TextField(
+        blank=True,
+        verbose_name='Feedback del entrenador'
+    )
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = 'Sesión de Entrenamiento'
+        verbose_name_plural = 'Sesiones de Entrenamiento'
+        ordering = ['-date']
+    
+    def __str__(self):
+        return f"{self.member} - {self.date.strftime('%Y-%m-%d')}"
+
+
+class ExerciseLog(models.Model):
+    """Log detallado de ejercicio dentro de una sesión"""
+    
+    session = models.ForeignKey(
+        WorkoutSession,
+        on_delete=models.CASCADE,
+        related_name='exercise_logs',
+        verbose_name='Sesión'
+    )
+    exercise = models.ForeignKey(
+        'workouts.Exercise',
+        on_delete=models.CASCADE,
+        verbose_name='Ejercicio'
+    )
+    routine_exercise = models.ForeignKey(
+        'workouts.RoutineExercise',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='Ejercicio de rutina'
+    )
+    
+    # Plan vs Realidad
+    planned_sets = models.PositiveIntegerField(
+        verbose_name='Series planeadas'
+    )
+    planned_reps = models.PositiveIntegerField(
+        verbose_name='Repeticiones planeadas'
+    )
+    
+    actual_sets = models.PositiveIntegerField(
+        verbose_name='Series realizadas'
+    )
+    actual_reps = models.PositiveIntegerField(
+        verbose_name='Repeticiones realizadas'
+    )
+    weight_used = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        verbose_name='Peso usado (kg)'
+    )
+    
+    # Evaluación del atleta
+    difficulty_rating = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Dificultad (1-10)',
+        help_text='Qué tan difícil fue el ejercicio'
+    )
+    completed = models.BooleanField(
+        default=True,
+        verbose_name='Completado'
+    )
+    notes = models.TextField(
+        blank=True,
+        verbose_name='Notas'
+    )
+    
+    class Meta:
+        verbose_name = 'Log de Ejercicio'
+        verbose_name_plural = 'Logs de Ejercicios'
+        ordering = ['id']
+    
+    def __str__(self):
+        return f"{self.exercise.name} - {self.actual_sets}x{self.actual_reps} @ {self.weight_used}kg"
+
