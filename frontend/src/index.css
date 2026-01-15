@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Base styles */
+/* Base styles 
 * {
   margin: 0;
   padding: 0;
@@ -17,7 +17,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar 
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -37,13 +37,13 @@ body {
   background: #94a3b8;
 }
 
-/* Focus visible */
+/* Focus visible 
 :focus-visible {
   outline: 2px solid #a855f7;
   outline-offset: 2px;
 }
 
-/* Custom animations */
+/* Custom animations 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }

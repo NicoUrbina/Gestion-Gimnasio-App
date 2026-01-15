@@ -62,13 +62,13 @@ export default function HeroHeader({
                 <>
                   <button
                     onClick={onLoginClick}
-                    className="px-4 py-2 text-white border border-orange-500 rounded-lg font-semibold text-sm uppercase tracking-wide hover:bg-orange-500/10 transition-all duration-200"
+                    className="px-8 py-4 text-white border border-orange-500 rounded-lg font-semibold text-sm uppercase tracking-wide hover:bg-orange-500/10 transition-all duration-200"
                   >
                     Iniciar Sesión
                   </button>
                   <button
                     onClick={onSignupClick}
-                    className="px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold text-sm uppercase tracking-wide hover:bg-orange-600 shadow-lg shadow-orange-500/40 hover:shadow-orange-500/60 transition-all duration-200"
+                    className="px-8 py-4 bg-orange-500 text-white rounded-lg font-semibold text-sm uppercase tracking-wide hover:bg-orange-600 shadow-lg shadow-orange-500/40 hover:shadow-orange-500/60 transition-all duration-200"
                   >
                     Registrarse
                   </button>
