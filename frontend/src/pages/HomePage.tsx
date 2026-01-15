@@ -1,4 +1,5 @@
 import HeroHeader from "../components/HeroHeader"
+import PricingSection from "../components/PricingSection"
 import { useNavigate } from "react-router-dom"
 import { useAuthStore } from "../stores/authStore"
 
@@ -30,13 +31,7 @@ export default function HomePage() {
         onLogoutClick={handleLogoutClick}
       />
 
-      {/* Additional sections can be added below the hero */}
-      <section className="bg-black py-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl font-black text-white mb-4 uppercase">Próximas Secciones</h2>
-          <p className="text-gray-400 text-lg">Membresías, Clases, Instructores y más...</p>
-        </div>
-      </section>
+      <PricingSection />
     </div>
   )
 }
