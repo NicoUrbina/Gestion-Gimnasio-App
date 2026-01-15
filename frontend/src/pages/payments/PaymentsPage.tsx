@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {  Plus, Loader2, DollarSign, CheckCircle, XCircle, Filter, Download } from 'lucide-react';
+import { Plus, Loader2, DollarSign, CheckCircle, XCircle, Download } from 'lucide-react';
 import { paymentService } from '../../services/payments';
 import PaymentStatusBadge from '../../components/payments/PaymentStatusBadge';
 import PaymentMethodIcon from '../../components/payments/PaymentMethodIcon';
@@ -47,7 +47,7 @@ export default function PaymentsPage() {
 
   const handleApprove = async (id: number) => {
     if (!confirm('¿Aprobar este pago?')) return;
-    
+
     try {
       setActing(id);
       await paymentService.approve(id);
@@ -64,7 +64,7 @@ export default function PaymentsPage() {
   const handleReject = async (id: number) => {
     const reason = prompt('Motivo del rechazo:');
     if (!reason) return;
-    
+
     try {
       setActing(id);
       await paymentService.reject(id, reason);
@@ -89,7 +89,7 @@ export default function PaymentsPage() {
     const params = new URLSearchParams();
     if (startDate) params.append('start_date', startDate);
     if (endDate) params.append('end_date', endDate);
-    
+
     const url = `http://localhost:8000/api/payments/export_report/?${params.toString()}`;
     window.open(url, '_blank');
   };

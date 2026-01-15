@@ -8,7 +8,7 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  
+
   // Actions
   login: (credentials: LoginCredentials) => Promise<boolean>;
   logout: () => void;
@@ -18,7 +18,7 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       user: null,
       isAuthenticated: false,
       isLoading: false,
@@ -26,22 +26,22 @@ export const useAuthStore = create<AuthState>()(
 
       login: async (credentials) => {
         set({ isLoading: true, error: null });
-        
+
         try {
           const response = await api.post<LoginResponse>('/auth/login/', credentials);
           const { access, refresh, user } = response.data;
-          
+
           // Guardar tokens
           localStorage.setItem('access_token', access);
           localStorage.setItem('refresh_token', refresh);
-          
+
           set({
             user,
             isAuthenticated: true,
             isLoading: false,
             error: null,
           });
-          
+
           return true;
         } catch (error: any) {
           const message = error.response?.data?.detail || 'Error al iniciar sesión';

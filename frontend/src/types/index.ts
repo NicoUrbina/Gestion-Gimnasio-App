@@ -110,7 +110,7 @@ export interface Payment {
   member: number;
   member_name: string;
   amount: string;
-  payment_method: string;
+  payment_method: PaymentMethod;
   payment_method_display: string;
   status: 'pending' | 'completed' | 'cancelled' | 'refunded';
   status_display: string;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Loader2, DollarSign, CheckCircle, XCircle, Download, Calendar, User } from 'lucide-react';
+import { ArrowLeft, Loader2, DollarSign, CheckCircle, XCircle, User } from 'lucide-react';
 import { paymentService } from '../../services/payments';
 import PaymentStatusBadge from '../../components/payments/PaymentStatusBadge';
 import PaymentMethodIcon from '../../components/payments/PaymentMethodIcon';
@@ -207,9 +207,8 @@ export default function PaymentDetailPage() {
               {payment.approved_at && (
                 <div className="flex gap-3">
                   <div className="flex flex-col items-center">
-                    <div className={`w-2 h-2 rounded-full mt-1.5 ${
-                      payment.status === 'completed' ? 'bg-green-500' : 'bg-red-500'
-                    }`} />
+                    <div className={`w-2 h-2 rounded-full mt-1.5 ${payment.status === 'completed' ? 'bg-green-500' : 'bg-red-500'
+                      }`} />
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-slate-900 text-sm">
