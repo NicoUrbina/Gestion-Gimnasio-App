@@ -1,15 +1,16 @@
-import { Check, Dumbbell, Snowflake, Calendar } from 'lucide-react';
+import { Check, Dumbbell, Snowflake, Calendar, Trash2 } from 'lucide-react';
 import type { MembershipPlan } from '../../types';
 
 interface PlanCardProps {
   plan: MembershipPlan;
   onSelect?: (plan: MembershipPlan) => void;
   onEdit?: (plan: MembershipPlan) => void;
+  onDelete?: (plan: MembershipPlan) => void;
   selected?: boolean;
   isPopular?: boolean;
 }
 
-export default function PlanCard({ plan, onSelect, onEdit, selected, isPopular }: PlanCardProps) {
+export default function PlanCard({ plan, onSelect, onEdit, onDelete, selected, isPopular }: PlanCardProps) {
   const duration = getDurationLabel(plan.duration_days);
   
   return (
@@ -84,16 +85,32 @@ export default function PlanCard({ plan, onSelect, onEdit, selected, isPopular }
         </ul>
 
         {/* Botones de acción */}
-        {onEdit && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit(plan);
-            }}
-            className="w-full px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl transition-colors"
-          >
-            Editar Plan
-          </button>
+        {(onEdit || onDelete) && (
+          <div className="flex gap-2">
+            {onEdit && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(plan);
+                }}
+                className="flex-1 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl transition-colors"
+              >
+                Editar
+              </button>
+            )}
+            {onDelete && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(plan);
+                }}
+                className="px-4 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 font-medium rounded-xl transition-colors"
+                title="Eliminar plan"
+              >
+                <Trash2 className="w-5 h-5" />
+              </button>
+            )}
+          </div>
         )}
       </div>
     </div>
