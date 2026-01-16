@@ -6,6 +6,7 @@ import { useAuthStore } from '../stores/authStore';
 const Login = () => {
   const navigate = useNavigate();
   const { login, isLoading, error, clearError } = useAuthStore();
+  const logoSrc = `${import.meta.env.BASE_URL}Img/nexo-logo.png`;
   
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -47,7 +48,7 @@ const Login = () => {
         {/* LOGO (Centrado Arriba) */}
         <div className="flex justify-center mb-0.5">
           <img
-            src="/video/nexo-logo.png"
+            src={logoSrc}
             alt="Logo Nexo"
             className="h-20 w-auto object-contain"
           />
