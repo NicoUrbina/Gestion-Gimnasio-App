@@ -9,13 +9,13 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
 
                     {/* COLUMNA 1: LOGO Y DESCRIPCIÓN */}
-                    <div className="space-y-0">
+                    <div className="space-y-6">
                         {/* AQUÍ VA TU LOGO EXACTAMENTE COMO EN EL HEADER */}
                         <Link to="/" className="inline-block">
                             <img
-                                src="/public/img/nexo-logo.png"
+                                src="/img/nexo-logo.png"
                                 alt="Nexo Gym Logo"
-                                className="h-25 object-contain"
+                                className="h-10 object-contain"
                             />
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed">
