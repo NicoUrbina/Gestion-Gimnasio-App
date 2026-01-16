@@ -1,18 +1,30 @@
 import { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
-import { Link } from 'react-router-dom'; // Asumiendo que usas React Router
+import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../stores/authStore';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { login, isLoading, error, clearError } = useAuthStore();
+  
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Datos del login:', formData);
-    // Aquí iría tu lógica de conexión con el backend
+    clearError();
+    
+    const success = await login({ 
+      email: formData.email, 
+      password: formData.password 
+    });
+    
+    if (success) {
+      navigate('/dashboard');
+    }
   };
 
   return (
@@ -45,6 +57,13 @@ const Login = () => {
           INICIAR <span className="text-orange-500">SESIÓN</span>
         </h2>
 
+        {/* Error Alert */}
+        {error && (
+          <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg backdrop-blur-sm">
+            <p className="text-red-200 text-sm font-medium text-center">{error}</p>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-6">
 
           {/* Input: Email */}
@@ -54,6 +73,7 @@ const Login = () => {
               <input
                 type="email"
                 placeholder="Correo Electrónico"
+                required
                 className="w-full bg-transparent border-none text-white placeholder-gray-400 focus:ring-0 focus:outline-none"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -68,6 +88,7 @@ const Login = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Contraseña"
+                required
                 className="w-full bg-transparent border-none text-white placeholder-gray-400 focus:ring-0 focus:outline-none"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -85,9 +106,17 @@ const Login = () => {
           {/* Botón de Acción */}
           <button
             type="submit"
-            className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-full transition-all duration-300 transform hover:scale-[1.02] shadow-lg mt-6"
+            disabled={isLoading}
+            className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-full transition-all duration-300 transform hover:scale-[1.02] shadow-lg mt-6 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
           >
-            INICIAR SESIÓN
+            {isLoading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                CARGANDO...
+              </>
+            ) : (
+              'INICIAR SESIÓN'
+            )}
           </button>
 
           {/* Enlaces del Footer */}
