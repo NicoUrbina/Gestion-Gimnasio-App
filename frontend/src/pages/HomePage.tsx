@@ -1,6 +1,8 @@
 import HeroHeader from "../components/HeroHeader"
 import PricingSection from "../components/PricingSection"
 import ClassesScheduleSection from "../components/ClassesScheduleSection"
+import InstructorsSection from "../components/InstructorsSection"
+import ContactSection from "../components/ContactSection"
 import { useNavigate } from "react-router-dom"
 import { useAuthStore } from "../stores/authStore"
 
@@ -35,6 +37,10 @@ export default function HomePage() {
       <PricingSection />
 
       <ClassesScheduleSection />
+
+      <InstructorsSection />
+
+      <ContactSection />
     </div>
   )
 }

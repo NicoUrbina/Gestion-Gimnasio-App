@@ -37,7 +37,7 @@ export default function HeroHeader({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo - Left */}
-            <Link to="/" className="flex items-center gap-3 flex-shrink-0 group">
+            <Link to="/" className="flex items-center gap-3 shrink-0 group">
               <div className="w-40 h-40 rounded-lg flex items-center justify-center">
                 <img src={logoSrc} alt="NEXO Logo" className="w-30 h-30 object-contain" />
               </div>
@@ -130,7 +130,7 @@ export default function HeroHeader({
           >
             <source src={heroVideoSrc} type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-slate-900/20 to-black/40 opacity-35 pointer-events-none"></div>
+          <div className="absolute inset-0 bg-linear-to-b from-black/30 via-slate-900/20 to-black/40 opacity-35 pointer-events-none"></div>
         </div>
 
         {/* Dark Overlay */}
@@ -143,7 +143,7 @@ export default function HeroHeader({
             <div>
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white uppercase tracking-tighter leading-tight mb-4">
                 Transforma tu{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-400 to-orange-600">
                   Cuerpo
                 </span>
               </h1>
