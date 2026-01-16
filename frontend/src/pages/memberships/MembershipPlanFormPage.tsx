@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
 import { membershipPlanService } from '../../services/memberships';
 import type { MembershipPlan } from '../../types';
+import toast from 'react-hot-toast';
 
 type FormData = Omit<MembershipPlan, 'id' | 'created_at' | 'updated_at'>;
 
@@ -65,14 +66,18 @@ export default function MembershipPlanFormPage() {
 
       if (isEditMode && id) {
         await membershipPlanService.update(parseInt(id), formData);
+        toast.success('Plan actualizado correctamente');
       } else {
         await membershipPlanService.create(formData);
+        toast.success('Plan creado correctamente');
       }
 
       navigate('/memberships/plans');
     } catch (err: any) {
       console.error('Error saving plan:', err);
-      setError(err.response?.data?.message || 'Error al guardar el plan');
+      const errorMessage = err.response?.data?.message || 'Error al guardar el plan';
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setSaving(false);
     }
