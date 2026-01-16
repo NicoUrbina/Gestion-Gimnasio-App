@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Plus, Search, Dumbbell, Filter } from 'lucide-react';
+import { Search, Dumbbell } from 'lucide-react';
 import { workoutService } from '../../services/workouts';
 import type { Exercise, MuscleGroup } from '../../types/workouts';
 import Spinner from '../../components/Spinner';

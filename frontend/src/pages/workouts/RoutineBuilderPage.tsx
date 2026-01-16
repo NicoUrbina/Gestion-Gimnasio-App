@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Save, Trash2, User, Calendar, Target, Dumbbell, Clock } from 'lucide-react';
+import { Plus, Save, Trash2, Target, Dumbbell } from 'lucide-react';
 import { workoutService } from '../../services/workouts';
 import api from '../../services/api';
 import type { Exercise, MuscleGroup, WorkoutRoutineCreate, RoutineExerciseCreate } from '../../types/workouts';
@@ -27,12 +27,12 @@ export default function RoutineBuilderPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  
+
   // Data sources
   const [members, setMembers] = useState<Member[]>([]);
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [muscleGroups, setMuscleGroups] = useState<MuscleGroup[]>([]);
-  
+
   // Form state
   const [selectedMember, setSelectedMember] = useState<number | null>(null);
   const [routineName, setRoutineName] = useState('');
@@ -40,12 +40,12 @@ export default function RoutineBuilderPage() {
   const [goal, setGoal] = useState('');
   const [durationWeeks, setDurationWeeks] = useState(4);
   const [selectedDay, setSelectedDay] = useState(1);
-  
+
   // Routine exercises organized by day
-  const [routineExercises, setRoutineExercises] = useState<{[key: number]: RoutineExerciseCreate[]}>({
+  const [routineExercises, setRoutineExercises] = useState<{ [key: number]: RoutineExerciseCreate[] }>({
     1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: []
   });
-  
+
   // Exercise selector
   const [showExerciseSelector, setShowExerciseSelector] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -63,7 +63,7 @@ export default function RoutineBuilderPage() {
         workoutService.getExercises(),
         workoutService.getMuscleGroups(),
       ]);
-      
+
       setMembers(membersRes.data.map((m: any) => ({
         id: m.id,
         user: m.user,
@@ -91,12 +91,12 @@ export default function RoutineBuilderPage() {
       weight_kg: null,
       notes: '',
     };
-    
+
     setRoutineExercises({
       ...routineExercises,
       [selectedDay]: [...dayExercises, newExercise]
     });
-    
+
     setShowExerciseSelector(false);
     setSearchTerm('');
     toast.success(`${exercise.name} agregado`);
@@ -212,7 +212,7 @@ export default function RoutineBuilderPage() {
               <Target className="w-5 h-5 text-orange-500" />
               Información General
             </h2>
-            
+
             <div className="space-y-4">
               {/* Member */}
               <div>
@@ -328,11 +328,10 @@ export default function RoutineBuilderPage() {
                     key={value}
                     type="button"
                     onClick={() => setSelectedDay(value)}
-                    className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
-                      isSelected
+                    className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${isSelected
                         ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
                         : 'bg-gray-100 text-slate-900 hover:bg-gray-200'
-                    }`}
+                      }`}
                   >
                     {label}
                     {dayExercises.length > 0 && (
@@ -482,7 +481,7 @@ export default function RoutineBuilderPage() {
             {/* Modal Header */}
             <div className="p-6 border-b-2 border-gray-100">
               <h3 className="text-xl font-bold text-slate-900">Seleccionar Ejercicio</h3>
-              
+
               {/* Filters */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
                 <input
