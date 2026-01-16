@@ -1,3 +1,4 @@
+import type { ComponentType, ReactNode } from "react"
 import { Facebook, Instagram, Twitter, MapPin, Phone, Mail } from "lucide-react"
 import { Link } from "react-router-dom"
 
@@ -13,7 +14,7 @@ const Footer = () => {
                         {/* AQUÍ VA TU LOGO EXACTAMENTE COMO EN EL HEADER */}
                         <Link to="/" className="inline-block">
                             <img
-                                src="/img/nexo-logo.png"
+                                src="/Img/nexo-logo.png"
                                 alt="Nexo Gym Logo"
                                 className="h-10 object-contain"
                             />
@@ -81,7 +82,7 @@ const Footer = () => {
                 {/* BARRA INFERIOR (COPYRIGHT) */}
                 <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-gray-500 text-xs">
-                        © {new Date().getFullYear()} GIMNASIO NEXO. Todos los derechos reservados.
+                        {new Date().getFullYear()} GIMNASIO NEXO. Todos los derechos reservados.
                     </p>
                     <p className="text-gray-600 text-xs flex items-center gap-1">
                         Diseñado con <span className="text-orange-600 text-lg">●</span> potencia pura.
@@ -93,7 +94,7 @@ const Footer = () => {
 };
 
 // Componente pequeño para los Links (Hover Naranja)
-const FooterLink = ({ to, children }: { to: string; children: React.ReactNode }) => (
+const FooterLink = ({ to, children }: { to: string; children: ReactNode }) => (
     <li>
         <Link
             to={to}
@@ -105,7 +106,7 @@ const FooterLink = ({ to, children }: { to: string; children: React.ReactNode })
 );
 
 // Componente pequeño para los Iconos Sociales
-const SocialLink = ({ Icon }: { Icon: React.ComponentType<{ size?: number }> }) => (
+const SocialLink = ({ Icon }: { Icon: ComponentType<{ size?: number }> }) => (
     <a
         href="#"
         className="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center text-gray-400 hover:bg-orange-600 hover:text-white transition-all duration-300"
