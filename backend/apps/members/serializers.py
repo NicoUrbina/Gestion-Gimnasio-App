@@ -58,6 +58,13 @@ class MemberCreateSerializer(serializers.ModelSerializer):
             'emergency_contact_name', 'emergency_contact_phone', 'medical_notes'
         ]
     
+    def validate_email(self, value):
+        """Validar que el email no exista"""
+        from apps.users.models import User
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError('Ya existe un usuario con este email.')
+        return value
+    
     def create(self, validated_data):
         from apps.users.models import User, Role
         from django.db import transaction
