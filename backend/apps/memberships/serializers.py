@@ -6,6 +6,9 @@ from .models import MembershipPlan, Membership, MembershipFreeze
 
 
 class MembershipPlanSerializer(serializers.ModelSerializer):
+    # Make description optional explicitly
+    description = serializers.CharField(required=False, allow_blank=True)
+    
     class Meta:
         model = MembershipPlan
         fields = [
@@ -14,6 +17,7 @@ class MembershipPlanSerializer(serializers.ModelSerializer):
             'max_freeze_days', 'is_active', 'created_at', 'updated_at'
         ]
         read_only_fields = ['created_at', 'updated_at']
+
 
 
 class MembershipSerializer(serializers.ModelSerializer):
