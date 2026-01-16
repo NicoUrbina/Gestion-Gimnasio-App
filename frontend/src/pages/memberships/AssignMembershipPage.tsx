@@ -137,7 +137,7 @@ export default function AssignMembershipPage() {
             <option value="">-- Selecciona un miembro --</option>
             {members.map(member => (
               <option key={member.id} value={member.id}>
-                {member.user?.first_name || 'Sin nombre'} {member.user?.last_name || ''} ({member.user?.email || 'Sin email'})
+                {member.full_name || 'Sin nombre'} ({member.email || 'Sin email'})
               </option>
             ))}
           </select>

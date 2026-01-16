@@ -28,6 +28,8 @@ export interface LoginResponse extends AuthTokens {
 export interface Member {
   id: number;
   user: User;
+  full_name?: string; // From MemberListSerializer
+  email?: string; // From MemberListSerializer
   date_of_birth: string | null;
   gender: string;
   phone: string;
