@@ -7,16 +7,16 @@ const Footer = () => {
         <footer className="w-full bg-black text-white pt-16 pb-8 border-t-4 border-orange-600 font-sans">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
 
                     {/* COLUMNA 1: LOGO Y DESCRIPCIÓN */}
-                    <div className="space-y-6">
+                    <div className="space-y-1">
                         {/* AQUÍ VA TU LOGO EXACTAMENTE COMO EN EL HEADER */}
                         <Link to="/" className="inline-block">
                             <img
-                                src="/Img/nexo-logo.png"
+                                src="/public/img/nexo-logo.png"
                                 alt="Nexo Gym Logo"
-                                className="h-10 object-contain"
+                                className="h-20 object-contain"
                             />
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed">
@@ -76,6 +76,28 @@ const Footer = () => {
                                 <span className="break-all">info@nexogym.com</span>
                             </li>
                         </ul>
+                    </div>
+
+                    {/* COLUMNA 5: SUSCRIPCIÓN */}
+                    <div>
+                        <h3 className="text-lg font-bold mb-6 tracking-wide text-white">
+                            ÚNETE A NEXO
+                        </h3>
+                        <div className="space-y-4">
+                            <p className="text-gray-400 text-sm leading-relaxed">
+                                Suscríbete para recibir las últimas noticias y ofertas exclusivas.
+                            </p>
+                            <div className="space-y-3">
+                                <input
+                                    type="email"
+                                    placeholder="Entrar como e-mail"
+                                    className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all duration-200"
+                                />
+                                <button className="w-full px-4 py-3 bg-orange-500 text-white rounded-lg font-semibold text-sm uppercase tracking-wide hover:bg-orange-600 shadow-lg shadow-orange-500/40 hover:shadow-orange-500/60 transform hover:scale-105 transition-all duration-200">
+                                    SUSCRIBIRSE
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
