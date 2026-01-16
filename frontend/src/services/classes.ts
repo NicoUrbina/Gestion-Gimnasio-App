@@ -10,6 +10,7 @@ export const classTypeService = {
    */
   async getAll(): Promise<ClassType[]> {
     const response = await api.get('/classes/types/');
+    if (response.data.results) return response.data.results;
     return response.data;
   },
 
@@ -44,6 +45,7 @@ export const gymClassService = {
     instructor?: number;
   }): Promise<GymClass[]> {
     const response = await api.get('/classes/', { params: filters });
+    if (response.data.results) return response.data.results;
     return response.data;
   },
 
@@ -97,6 +99,7 @@ export const reservationService = {
    */
   async getMyReservations(): Promise<Reservation[]> {
     const response = await api.get('/classes/reservations/');
+    if (response.data.results) return response.data.results;
     return response.data;
   },
 

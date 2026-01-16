@@ -61,6 +61,10 @@ export const membershipService = {
     if (filters?.member) params.append('member', filters.member.toString());
     
     const response = await api.get(`/memberships/?${params.toString()}`);
+    // Handle DRF pagination
+    if (response.data.results) {
+      return response.data.results;
+    }
     return response.data;
   },
 
@@ -73,6 +77,10 @@ export const membershipService = {
     const memberId = userResponse.data.member_profile;
     
     const response = await api.get(`/memberships/?member=${memberId}`);
+    // Handle DRF pagination
+    if (response.data.results) {
+      return response.data.results;
+    }
     return response.data;
   },
 

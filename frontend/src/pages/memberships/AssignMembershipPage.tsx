@@ -43,7 +43,8 @@ export default function AssignMembershipPage() {
         membershipPlanService.getAll(),
       ]);
       setMembers(membersData.data.results || membersData.data);
-      setPlans(plansData.filter(p => p.is_active));
+      const plansArray = Array.isArray(plansData) ? plansData : (plansData.results || plansData.data || []);
+      setPlans(plansArray.filter(p => p.is_active));
     } catch (err) {
       console.error('Error fetching data:', err);
       setError('No se pudieron cargar los datos');
@@ -136,7 +137,7 @@ export default function AssignMembershipPage() {
             <option value="">-- Selecciona un miembro --</option>
             {members.map(member => (
               <option key={member.id} value={member.id}>
-                {member.user.first_name} {member.user.last_name} ({member.user.email})
+                {member.user?.first_name || 'Sin nombre'} {member.user?.last_name || ''} ({member.user?.email || 'Sin email'})
               </option>
             ))}
           </select>

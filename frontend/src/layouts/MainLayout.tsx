@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   Users,
   CreditCard,
+  DollarSign,
   Calendar,
   Dumbbell,
   TrendingUp,
@@ -21,6 +22,7 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Miembros', href: '/members', icon: Users },
   { name: 'Membresías', href: '/memberships', icon: CreditCard },
+  { name: 'Pagos', href: '/payments', icon: DollarSign },
   { name: 'Clases', href: '/classes', icon: Calendar },
   { name: 'Entrenadores', href: '/staff', icon: Dumbbell },
   { name: 'Progreso', href: '/progress', icon: TrendingUp },
@@ -123,9 +125,10 @@ export default function MainLayout() {
       </aside>
 
       {/* Main content */}
-      <div
-        className={`min-h-screen transition-all duration-300 ${sidebarCollapsed ? 'ml-0 lg:ml-20' : 'ml-0 lg:ml-64'
-          }`}
+      <div 
+        className={`min-h-screen transition-all duration-300 ${
+          sidebarCollapsed ? "lg:pl-20" : "lg:pl-64"
+        }`}
       >
         {/* Top bar */}
         <header className="sticky top-0 z-30 bg-zinc-900/80 backdrop-blur-xl border-b border-zinc-800">
@@ -163,7 +166,9 @@ export default function MainLayout() {
 
         {/* Page content */}
         <main className="p-6 lg:p-8">
-          <Outlet />
+          <div className="max-w-7xl mx-auto">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
