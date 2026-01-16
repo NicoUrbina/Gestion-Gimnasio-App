@@ -4,6 +4,7 @@ import { Plus, Loader2 } from 'lucide-react';
 import { membershipPlanService } from '../../services/memberships';
 import PlanCard from '../../components/memberships/PlanCard';
 import type { MembershipPlan } from '../../types';
+import toast from 'react-hot-toast';
 
 export default function MembershipPlansPage() {
   const navigate = useNavigate();
@@ -17,10 +18,15 @@ export default function MembershipPlansPage() {
 
   const fetchPlans = async () => {
     try {
+      console.log('Fetching membership plans...');
       setLoading(true);
       setError(null);
       const data = await membershipPlanService.getAll();
+      console.log('API Response:', data);
+      console.log('Is Array?', Array.isArray(data));
+      console.log('Data length:', Array.isArray(data) ? data.length : 'Not an array');
       setPlans(Array.isArray(data) ? data : []);
+      console.log('Plans set to state:', Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Error fetching membership plans:', err);
       setError('No se pudieron cargar los planes. Intenta nuevamente.');
@@ -35,6 +41,27 @@ export default function MembershipPlansPage() {
 
   const handleCreatePlan = () => {
     navigate('/memberships/plans/new');
+  };
+
+  const handleDeletePlan = async (plan: MembershipPlan) => {
+    const confirmed = window.confirm(
+      `¿Estás seguro de que deseas eliminar el plan "${plan.name}"?\n\nEsta acción no se puede deshacer.`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await membershipPlanService.delete(plan.id);
+      toast.success('Plan eliminado correctamente');
+      // Actualizar la lista removiendo el plan eliminado
+      setPlans(prevPlans => prevPlans.filter(p => p.id !== plan.id));
+    } catch (error: any) {
+      console.error('Error deleting plan:', error);
+      const errorMessage = error.response?.data?.detail || 
+                          error.response?.data?.message || 
+                          'Error al eliminar el plan';
+      toast.error(errorMessage);
+    }
   };
 
   // Determinar el plan más popular (por ahora, el del medio)
@@ -92,6 +119,7 @@ export default function MembershipPlansPage() {
                   key={plan.id}
                   plan={plan}
                   onEdit={handleEditPlan}
+                  onDelete={handleDeletePlan}
                   isPopular={index === popularPlanIndex}
                 />
               ))}

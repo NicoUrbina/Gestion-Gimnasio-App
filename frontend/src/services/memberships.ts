@@ -10,6 +10,10 @@ export const membershipPlanService = {
    */
   async getAll(): Promise<MembershipPlan[]> {
     const response = await api.get('/memberships/plans/');
+    // Handle DRF pagination
+    if (response.data.results) {
+      return response.data.results;
+    }
     return response.data;
   },
 
