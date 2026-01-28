@@ -9,7 +9,7 @@ import MainLayout from "./layouts/MainLayout"
 
 // Pages
 import LoginPage from "./pages/LoginPage"
-import DashboardPage from "./pages/DashboardPage"
+import RoleBasedDashboard from "./components/RoleBasedDashboard"
 import MembersPage from "./pages/MembersPage"
 import MemberFormPage from "./pages/MemberFormPage"
 import MemberDetailPage from "./pages/MemberDetailPage"
@@ -75,7 +75,7 @@ function App() {
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/dashboard" element={<RoleBasedDashboard />} />
 
             {/* Members */}
             <Route path="/members" element={<MembersPage />} />

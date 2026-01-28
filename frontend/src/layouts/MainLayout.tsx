@@ -1,14 +1,6 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import {
-  LayoutDashboard,
-  Users,
-  CreditCard,
-  DollarSign,
-  Calendar,
-  Dumbbell,
-  TrendingUp,
-  Settings,
   LogOut,
   Menu,
   X,
@@ -17,23 +9,16 @@ import {
   Zap,
 } from 'lucide-react';
 import { useState } from 'react';
-
-const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Miembros', href: '/members', icon: Users },
-  { name: 'Membresías', href: '/memberships', icon: CreditCard },
-  { name: 'Pagos', href: '/payments', icon: DollarSign },
-  { name: 'Clases', href: '/classes', icon: Calendar },
-  { name: 'Entrenadores', href: '/staff', icon: Dumbbell },
-  { name: 'Progreso', href: '/progress', icon: TrendingUp },
-  { name: 'Configuración', href: '/settings', icon: Settings },
-];
+import { getNavigationForRole } from '../utils/rolePermissions';
 
 export default function MainLayout() {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  // Obtener navegación filtrada según el rol del usuario
+  const navigation = getNavigationForRole(user?.role || null);
 
   const handleLogout = () => {
     logout();

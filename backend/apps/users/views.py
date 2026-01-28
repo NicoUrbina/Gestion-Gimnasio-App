@@ -236,5 +236,97 @@ class UserViewSet(viewsets.ModelViewSet):
                 'current_weight': None
             }
         })
+    
+    @action(detail=False, methods=['get'])
+    def stats(self, request):
+        """
+        Estadísticas mejoradas para el usuario actual
+        GET /api/users/me/stats/
+        
+        Para members retorna datos completos de membresía, clases y progreso
+        Para trainers/admin/staff retorna stats básicas
+        """
+        from apps.members.models import Member
+        from apps.memberships.models import Membership
+        from apps.classes.models import Reservation
+        from apps.payments.models import Payment
+        from django.utils import timezone
+        from datetime import timedelta
+        from django.db.models import Sum, Count
+        
+        user = request.user
+        now = timezone.now()
+        today = now.date()
+        
+        # Si es member, retornar stats completas
+        try:
+            member = user.member_profile
+            
+            # Membresía activa
+            active_membership = Membership.objects.filter(
+                member=member,
+                status='active'
+            ).first()
+            
+            days_remaining = None
+            if active_membership:
+                delta = active_membership.end_date - today
+                days_remaining = delta.days
+            
+            # Reservas próximas
+            upcoming_reservations = Reservation.objects.filter(
+                member=member,
+                gym_class__start_datetime__gte=now,
+                status__in=['confirmed', 'waitlist']
+            ).count()
+            
+            # Clases asistidas este mes
+            month_start = now.replace(day=1, hour=0, minute=0, second=0)
+            classes_attended = Reservation.objects.filter(
+                member=member,
+                gym_class__start_datetime__gte=month_start,
+                status='attended'
+            ).count()
+            
+            # Racha actual (días consecutivos con asistencia)
+            # Simplificado: contar días únicos de asistencia en últimas 2 semanas
+            two_weeks_ago = now - timedelta(days=14)
+            attended_dates = Reservation.objects.filter(
+                member=member,
+                gym_class__start_datetime__gte=two_weeks_ago,
+                status='attended'
+            ).values_list('gym_class__start_datetime__date', flat=True).distinct()
+            
+            current_streak = len(set(attended_dates))
+            
+            # Objetivo mensual (asumido: 12 clases/mes)
+            monthly_goal = 12
+            monthly_progress = classes_attended
+            
+            return Response({
+                'membership_status': member.subscription_status,
+                'days_remaining': days_remaining if days_remaining is not None else 0,
+                'upcoming_reservations': upcoming_reservations,
+                'classes_attended': classes_attended,
+                'current_streak': current_streak,
+                'monthly_goal': monthly_goal,
+                'monthly_progress': monthly_progress,
+                'is_active': active_membership is not None,
+                'plan_name': active_membership.plan.name if active_membership else None
+            })
+            
+        except Member.DoesNotExist:
+            # No es member, retornar stats básicas para otros roles
+            return Response({
+                'membership_status': 'N/A',
+                'days_remaining': None,
+                'upcoming_reservations': 0,
+                'classes_attended': 0,
+                'current_streak': 0,
+                'monthly_goal': 0,
+                'monthly_progress': 0,
+                'is_active': False,
+                'plan_name': 'Admin/Staff'
+            })
 
 
