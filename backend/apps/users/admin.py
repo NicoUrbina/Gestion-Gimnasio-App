@@ -9,8 +9,29 @@ from .models import User, Role
 
 @admin.register(Role)
 class RoleAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description']
-    search_fields = ['name']
+    list_display = ['name', 'description', 'user_count', 'created_at']
+    search_fields = ['name', 'description']
+    readonly_fields = ['created_at', 'updated_at']
+    
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'description')
+        }),
+        ('Permisos', {
+            'fields': ('permissions',),
+            'classes': ('collapse',)
+        }),
+        ('Fechas', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def user_count(self, obj):
+        """Muestra el número de usuarios con este rol"""
+        count = obj.users.count()
+        return f'{count} usuario(s)'
+    user_count.short_description = 'Usuarios'
 
 
 @admin.register(User)
