@@ -32,8 +32,8 @@ export default function MemberDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Usar el endpoint mejorado de stats
-        const response = await api.get('/users/me/stats/');
+        // Endpoint correcto de stats del usuario actual
+        const response = await api.get('/users/stats/');
         setStats({
           membership_status: response.data.membership_status || 'inactive',
           days_remaining: response.data.days_remaining || 0,
