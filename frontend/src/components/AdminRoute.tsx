@@ -2,25 +2,25 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 
 /**
- * Componente para proteger rutas que solo pueden ser accedidas por administradores.
- * Redirige al dashboard si el usuario no tiene rol de admin.
+ * AdminRoute - Protects routes that require admin access
+ * 
+ * Redirects to:
+ * - /login if not authenticated
+ * - /dashboard if authenticated but not admin
  */
 export default function AdminRoute() {
   const { user, isAuthenticated } = useAuthStore();
 
-  // Si no está autenticado, redirigir al login
+  // Not logged in
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  // Verificar si el usuario es admin
-  const isAdmin = user?.role?.toLowerCase() === 'admin' || 
-                  user?.role?.toLowerCase() === 'administrador';
-
-  if (!isAdmin) {
-    // Redirigir al dashboard si no es admin
+  // Logged in but not admin
+  if (user?.role?.name !== 'admin') {
     return <Navigate to="/dashboard" replace />;
   }
 
+  // Admin user - allow access
   return <Outlet />;
 }
