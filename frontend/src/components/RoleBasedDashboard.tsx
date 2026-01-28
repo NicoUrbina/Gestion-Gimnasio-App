@@ -1,5 +1,5 @@
 import { useAuthStore } from '../stores/authStore';
-import AdminDashboard from '../pages/dashboards/AdminDashboard';
+import DashboardPage from '../pages/DashboardPage';  // Dashboard admin original
 import StaffDashboard from '../pages/dashboards/StaffDashboard';
 import TrainerDashboard from '../pages/dashboards/TrainerDashboard';
 import MemberDashboard from '../pages/dashboards/MemberDashboard';
@@ -11,15 +11,17 @@ import MemberDashboard from '../pages/dashboards/MemberDashboard';
 export default function RoleBasedDashboard() {
   const { user } = useAuthStore();
   
-  // Si no hay usuario autenticado, mostrar dashboard de member por defecto
+  // Si no hay usuario, mostrar dashboard de member por defecto
   if (!user || !user.role) {
     return <MemberDashboard />;
   }
 
-  // Renderizar dashboard según el rol
-  switch (user.role.toLowerCase()) {
+  // Renderizar dashboard según el rol del usuario
+  const roleName = user.role.name?.toLowerCase() || 'member';
+
+  switch (roleName) {
     case 'admin':
-      return <AdminDashboard />;
+      return <DashboardPage />;  // Dashboard admin original con gestión completa
     
     case 'staff':
       return <StaffDashboard />;
@@ -28,10 +30,7 @@ export default function RoleBasedDashboard() {
       return <TrainerDashboard />;
     
     case 'member':
-      return <MemberDashboard />;
-    
     default:
-      // Por defecto, mostrar dashboard de member
       return <MemberDashboard />;
   }
 }
