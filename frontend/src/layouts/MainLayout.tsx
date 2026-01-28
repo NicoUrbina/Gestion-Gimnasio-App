@@ -42,8 +42,11 @@ export default function MainLayout() {
   };
 
   // Filter navigation based on user role
+  // El backend retorna role_name como string directamente en el user
+  const userRole = user?.role_name || '';
+  
   const visibleNavigation = navigation.filter(item =>
-    item.allowedRoles.includes(user?.role?.name || '')
+    item.allowedRoles.includes(userRole)
   );
 
   return (

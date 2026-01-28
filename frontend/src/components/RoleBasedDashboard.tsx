@@ -12,12 +12,13 @@ export default function RoleBasedDashboard() {
   const { user } = useAuthStore();
   
   // Si no hay usuario, mostrar dashboard de member por defecto
-  if (!user || !user.role) {
+  if (!user || !user.role_name) {
     return <MemberDashboard />;
   }
 
   // Renderizar dashboard según el rol del usuario
-  const roleName = user.role.name?.toLowerCase() || 'member';
+  // El backend retorna role_name como string directamente
+  const roleName = user.role_name.toLowerCase();
 
   switch (roleName) {
     case 'admin':
