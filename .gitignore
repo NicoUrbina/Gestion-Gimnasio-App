@@ -155,3 +155,8 @@ staticfiles/
 # Batch files for setup
 *.bat
 backend/psycopg2_binary-*.whl
+
+# Temporary scripts
+backend/create_test_users.py
+backend/run_users_seeder.py
+backend/check_users.py
