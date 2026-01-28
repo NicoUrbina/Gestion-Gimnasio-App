@@ -5,9 +5,9 @@ import { useAuthStore } from '../stores/authStore';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login, isLoading, error, clearError } = useAuthStore();
+  const { login, isLoading, error, clearError, user } = useAuthStore();
   const logoSrc = `${import.meta.env.BASE_URL}Img/nexo-logo.png`;
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -17,14 +17,23 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     clearError();
-    
-    const success = await login({ 
-      email: formData.email, 
-      password: formData.password 
+
+    const success = await login({
+      email: formData.email,
+      password: formData.password
     });
-    
+
     if (success) {
-      navigate('/dashboard');
+      // Role-based redirect: cada tipo de usuario va a su página principal
+      const roleRedirects: Record<string, string> = {
+        'admin': '/dashboard',
+        'staff': '/members',
+        'trainer': '/classes',
+        'member': '/classes'
+      };
+
+      const redirectPath = roleRedirects[user?.role?.name || ''] || '/dashboard';
+      navigate(redirectPath);
     }
   };
 
