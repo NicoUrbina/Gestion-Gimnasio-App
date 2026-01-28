@@ -1,5 +1,5 @@
 import { useAuthStore } from '../stores/authStore';
-import SettingsPage from '../pages/settings/SettingsPage';  // Dashboard de configuración como admin
+import DashboardPage from '../pages/DashboardPage';
 import StaffDashboard from '../pages/dashboards/StaffDashboard';
 import TrainerDashboard from '../pages/dashboards/TrainerDashboard';
 import MemberDashboard from '../pages/dashboards/MemberDashboard';
@@ -21,7 +21,7 @@ export default function RoleBasedDashboard() {
 
   switch (roleName) {
     case 'admin':
-      return <SettingsPage />;  // Dashboard de configuración del sistema
+      return <DashboardPage />;
     
     case 'staff':
       return <StaffDashboard />;
