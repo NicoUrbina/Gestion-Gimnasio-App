@@ -18,15 +18,16 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
+
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Miembros', href: '/members', icon: Users },
-  { name: 'Membresías', href: '/memberships', icon: CreditCard },
-  { name: 'Pagos', href: '/payments', icon: DollarSign },
-  { name: 'Clases', href: '/classes', icon: Calendar },
-  { name: 'Entrenadores', href: '/staff', icon: Dumbbell },
-  { name: 'Progreso', href: '/progress', icon: TrendingUp },
-  { name: 'Configuración', href: '/settings', icon: Settings },
+  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, allowedRoles: ['admin', 'staff', 'trainer', 'member'] },
+  { name: 'Miembros', href: '/members', icon: Users, allowedRoles: ['admin', 'staff'] },
+  { name: 'Membresías', href: '/memberships', icon: CreditCard, allowedRoles: ['admin', 'staff'] },
+  { name: 'Pagos', href: '/payments', icon: DollarSign, allowedRoles: ['admin', 'staff'] },
+  { name: 'Clases', href: '/classes', icon: Calendar, allowedRoles: ['admin', 'staff', 'trainer', 'member'] },
+  { name: 'Entrenadores', href: '/staff', icon: Dumbbell, allowedRoles: ['admin', 'staff'] },
+  { name: 'Progreso', href: '/progress', icon: TrendingUp, allowedRoles: ['admin', 'trainer', 'member'] },
+  { name: 'Configuración', href: '/settings', icon: Settings, allowedRoles: ['admin'] },
 ];
 
 export default function MainLayout() {
@@ -39,6 +40,11 @@ export default function MainLayout() {
     logout();
     navigate('/login');
   };
+
+  // Filter navigation based on user role
+  const visibleNavigation = navigation.filter(item =>
+    item.allowedRoles.includes(user?.role?.name || '')
+  );
 
   return (
     <div className="min-h-screen bg-black">
@@ -86,7 +92,7 @@ export default function MainLayout() {
 
         {/* Navigation */}
         <nav className="px-3 py-4 space-y-2">
-          {navigation.map((item) => (
+          {visibleNavigation.map((item) => (
             <NavLink
               key={item.name}
               to={item.href}
@@ -109,7 +115,7 @@ export default function MainLayout() {
           {!sidebarCollapsed && user && (
             <div className="px-3 py-3 mb-2 rounded-lg bg-zinc-800/50">
               <p className="text-sm font-bold text-white truncate">{user.full_name}</p>
-              <p className="text-xs text-gray-500 uppercase truncate">{user.role || 'Usuario'}</p>
+              <p className="text-xs text-gray-500 uppercase truncate">{user.role?.name || 'Usuario'}</p>
             </div>
           )}
 
@@ -125,10 +131,9 @@ export default function MainLayout() {
       </aside>
 
       {/* Main content */}
-      <div 
-        className={`min-h-screen transition-all duration-300 ${
-          sidebarCollapsed ? "lg:pl-20" : "lg:pl-64"
-        }`}
+      <div
+        className={`min-h-screen transition-all duration-300 ${sidebarCollapsed ? "lg:pl-20" : "lg:pl-64"
+          }`}
       >
         {/* Top bar */}
         <header className="sticky top-0 z-30 bg-zinc-900/80 backdrop-blur-xl border-b border-zinc-800">
@@ -157,7 +162,7 @@ export default function MainLayout() {
                 </div>
                 <div className="hidden sm:block">
                   <p className="text-sm font-bold text-white">{user?.full_name || 'Admin Sistema'}</p>
-                  <p className="text-xs text-gray-400 uppercase">{user?.role || 'Admin'}</p>
+                  <p className="text-xs text-gray-400 uppercase">{user?.role?.name || 'Admin'}</p>
                 </div>
               </div>
             </div>
