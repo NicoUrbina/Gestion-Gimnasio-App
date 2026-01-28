@@ -5,6 +5,7 @@ from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.db.models import Q
 from .models import User, Role
 from .serializers import (
     UserSerializer, UserCreateSerializer, UserUpdateSerializer,
@@ -36,9 +37,24 @@ class UserViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         user = self.request.user
-        if user.is_superuser or (user.role and user.role.name == 'admin'):
-            return User.objects.all()
-        return User.objects.filter(id=user.id)
+        queryset = User.objects.all()
+        
+        # Permission-based filtering
+        if not (user.is_superuser or (user.role and user.role.name == 'admin')):
+            queryset = queryset.filter(id=user.id)
+        
+        # Multi-field search with Q objects
+        search = self.request.query_params.get('search', '').strip()
+        if search:
+            queryset = queryset.filter(
+                Q(email__icontains=search) |
+                Q(first_name__icontains=search) |
+                Q(last_name__icontains=search) |
+                Q(username__icontains=search)
+            )
+        
+        # Optimize query and order results
+        return queryset.select_related('role').order_by('-date_joined')
     
     @action(detail=False, methods=['get'])
     def me(self, request):
@@ -56,6 +72,37 @@ class UserViewSet(viewsets.ModelViewSet):
             request.user.save()
             return Response({'message': 'Contraseña actualizada correctamente'})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    @action(detail=True, methods=['post'])
+    def reset_password(self, request, pk=None):
+        """Resetear contraseña de un usuario (solo admin)"""
+        user = request.user
+        if not (user.is_superuser or (user.role and user.role.name == 'admin')):
+            return Response(
+                {'error': 'No tienes permisos para resetear contraseñas'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        target_user = self.get_object()
+        new_password = request.data.get('new_password')
+        
+        if not new_password:
+            return Response(
+                {'error': 'new_password es requerido'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if len(new_password) < 6:
+            return Response(
+                {'error': 'La contraseña debe tener al menos 6 caracteres'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        target_user.set_password(new_password)
+        target_user.save()
+        
+        return Response({'message': 'Contraseña reseteada correctamente'})
     
     
     @action(detail=False, methods=['get'])

@@ -33,14 +33,15 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, min_length=8)
+    password = serializers.CharField(write_only=True, min_length=6)
     password_confirm = serializers.CharField(write_only=True)
+    username = serializers.CharField(required=False, allow_blank=True)
     
     class Meta:
         model = User
         fields = [
             'email', 'username', 'password', 'password_confirm',
-            'first_name', 'last_name', 'phone', 'role'
+            'first_name', 'last_name', 'phone', 'role', 'is_active'
         ]
     
     def validate(self, data):
@@ -51,6 +52,11 @@ class UserCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop('password_confirm')
         password = validated_data.pop('password')
+        
+        # Auto-generate username from email if not provided
+        if not validated_data.get('username'):
+            validated_data['username'] = validated_data['email'].split('@')[0]
+        
         user = User(**validated_data)
         user.set_password(password)
         user.save()
@@ -60,7 +66,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'phone', 'photo']
+        fields = ['first_name', 'last_name', 'phone', 'photo', 'email', 'role', 'is_active']
 
 
 class ChangePasswordSerializer(serializers.Serializer):
