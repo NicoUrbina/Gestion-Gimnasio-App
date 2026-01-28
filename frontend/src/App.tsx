@@ -31,8 +31,22 @@ import MyPaymentsPage from "./pages/payments/MyPaymentsPage"
 import PaymentFormPage from "./pages/payments/PaymentFormPage"
 import PaymentDetailPage from "./pages/payments/PaymentDetailPage"
 
+// Settings
+import {
+  SettingsPage,
+  UsersSettingsPage,
+  UserFormPage,
+  RolesSettingsPage,
+  GymSettingsPage,
+  NotificationsSettingsPage,
+  PaymentsSettingsPage,
+  SecuritySettingsPage,
+  SystemSettingsPage,
+} from "./pages/settings"
+
 // Components
 import ProtectedRoute from "./components/ProtectedRoute"
+import AdminRoute from "./components/AdminRoute"
 
 function App() {
   const { checkAuth } = useAuthStore()
@@ -93,7 +107,20 @@ function App() {
             {/* Placeholder pages */}
             <Route path="/staff" element={<PlaceholderPage title="Entrenadores" />} />
             <Route path="/progress" element={<PlaceholderPage title="Progreso" />} />
-            <Route path="/settings" element={<PlaceholderPage title="Configuración" />} />
+
+            {/* Settings - Admin Only */}
+            <Route element={<AdminRoute />}>
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/settings/users" element={<UsersSettingsPage />} />
+              <Route path="/settings/users/new" element={<UserFormPage />} />
+              <Route path="/settings/users/:id/edit" element={<UserFormPage />} />
+              <Route path="/settings/roles" element={<RolesSettingsPage />} />
+              <Route path="/settings/gym" element={<GymSettingsPage />} />
+              <Route path="/settings/notifications" element={<NotificationsSettingsPage />} />
+              <Route path="/settings/payments" element={<PaymentsSettingsPage />} />
+              <Route path="/settings/security" element={<SecuritySettingsPage />} />
+              <Route path="/settings/system" element={<SystemSettingsPage />} />
+            </Route>
           </Route>
         </Route>
 
@@ -103,6 +130,7 @@ function App() {
     </BrowserRouter>
   )
 }
+
 
 // Placeholder para páginas en desarrollo
 function PlaceholderPage({ title }: { title: string }) {

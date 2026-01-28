@@ -1,14 +1,21 @@
 // Tipos para autenticación
+export interface Role {
+  id: number;
+  name: 'admin' | 'staff' | 'trainer' | 'member';
+  description: string;
+}
+
 export interface User {
   id: number;
   email: string;
   first_name: string;
   last_name: string;
   full_name: string;
-  role: string | null;
+  role: Role | null;
   phone?: string;
   photo?: string;
 }
+
 
 export interface LoginCredentials {
   email: string;
