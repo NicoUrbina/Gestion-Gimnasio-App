@@ -1,4 +1,4 @@
-import { TrendingUp, Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface Client {
