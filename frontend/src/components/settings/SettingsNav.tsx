@@ -8,6 +8,7 @@ import {
   Lock,
   Building,
   Wrench,
+  ScrollText,
 } from 'lucide-react';
 
 const settingsNavItems = [
@@ -19,6 +20,7 @@ const settingsNavItems = [
   { name: 'Pagos', href: '/settings/payments', icon: CreditCard },
   { name: 'Seguridad', href: '/settings/security', icon: Lock },
   { name: 'Sistema', href: '/settings/system', icon: Wrench },
+  { name: 'Auditoría', href: '/settings/audit', icon: ScrollText },
 ];
 
 export default function SettingsNav() {

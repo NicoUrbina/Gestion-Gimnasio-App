@@ -12,7 +12,7 @@ export default function AdminSection({ stats }: AdminSectionProps) {
     { label: 'Nuevo Miembro', href: '/members/new', icon: UserPlus, color: 'blue' as const },
     { label: 'Registrar Pago', href: '/payments/new', icon: CreditCard, color: 'green' as const },
     { label: 'Crear Clase', href: '/classes/new', icon: Calendar, color: 'orange' as const },
-    { label: 'Ver Reportes', href: '/reports', icon: FileText, color: 'purple' as const },
+    { label: 'Ver Auditoría', href: '/settings/audit', icon: FileText, color: 'purple' as const },
   ];
 
   return (

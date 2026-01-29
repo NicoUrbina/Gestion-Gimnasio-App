@@ -43,6 +43,7 @@ import {
   SecuritySettingsPage,
   SystemSettingsPage,
 } from "./pages/settings"
+import AuditLogsPage from "./components/settings/audit/AuditLogsPage"
 
 // Components
 import ProtectedRoute from "./components/ProtectedRoute"
@@ -129,6 +130,7 @@ function App() {
               <Route path="/settings/payments" element={<PaymentsSettingsPage />} />
               <Route path="/settings/security" element={<SecuritySettingsPage />} />
               <Route path="/settings/system" element={<SystemSettingsPage />} />
+              <Route path="/settings/audit" element={<AuditLogsPage />} />
             </Route>
           </Route>
         </Route>
