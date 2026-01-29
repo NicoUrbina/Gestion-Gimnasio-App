@@ -1,6 +1,6 @@
 from apps.memberships.models import MembershipPlan
 
-def run():
+def seed():
     plans = [
         {
             'name': 'Mensual Básico',
