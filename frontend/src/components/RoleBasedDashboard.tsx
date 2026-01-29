@@ -1,5 +1,5 @@
 import { useAuthStore } from '../stores/authStore';
-import DashboardPage from '../pages/DashboardPage';
+import EnhancedDashboardPage from '../pages/EnhancedDashboardPage';  // Dashboard con diseño moderno
 import StaffDashboard from '../pages/dashboards/StaffDashboard';
 import TrainerDashboard from '../pages/dashboards/TrainerDashboard';
 import MemberDashboard from '../pages/dashboards/MemberDashboard';
@@ -22,7 +22,7 @@ export default function RoleBasedDashboard() {
 
   switch (roleName) {
     case 'admin':
-      return <DashboardPage />;
+      return <EnhancedDashboardPage />;  // Dashboard moderno con diseño visual
     
     case 'staff':
       return <StaffDashboard />;
