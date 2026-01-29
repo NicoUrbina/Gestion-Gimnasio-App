@@ -59,24 +59,17 @@ class MemberCreateSerializer(serializers.ModelSerializer):
         ]
     
     def validate_email(self, value):
-        """Validar que el email no exista O que si existe, no tenga member profile"""
+        """Validar que el email no exista"""
         from apps.users.models import User
         
-        try:
-            user = User.objects.get(email=value)
-            # Si el usuario existe y ya tiene member profile, error
-            if hasattr(user, 'member_profile'):
-                raise serializers.ValidationError('Ya existe un miembro con este email.')
-            # Si existe pero no tiene member profile, lo podremos reutilizar (está OK)
-        except User.DoesNotExist:
-            # No existe, todo bien
-            pass
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError('Ya existe un usuario con este email.')
         
         return value
     
     def create(self, validated_data):
         from apps.users.models import User, Role
-        from django.db import transaction, IntegrityError
+        from django.db import transaction
         
         # Extraer datos del usuario
         email = validated_data.pop('email')
@@ -84,54 +77,31 @@ class MemberCreateSerializer(serializers.ModelSerializer):
         first_name = validated_data.pop('first_name')
         last_name = validated_data.pop('last_name')
         
-        try:
-            with transaction.atomic():
-                # Intentar obtener usuario existente sin member profile
-                user = None
-                try:
-                    user = User.objects.get(email=email)
-                    # Verificar que no tenga member profile
-                    if hasattr(user, 'member_profile'):
-                        raise serializers.ValidationError({
-                            'email': 'Ya existe un miembro con este email.'
-                        })
-                    # Usuario existe pero sin member profile, lo reutilizamos
-                    # Actualizar sus datos
-                    user.first_name = first_name
-                    user.last_name = last_name
-                    user.set_password(password)
-                    user.save()
-                except User.DoesNotExist:
-                    # No existe, crear nuevo usuario
-                    member_role, _ = Role.objects.get_or_create(
-                        name='member',
-                        defaults={'description': 'Miembro del gimnasio'}
-                    )
-                    
-                    user = User.objects.create_user(
-                        email=email,
-                        username=email,
-                        password=password,
-                        first_name=first_name,
-                        last_name=last_name,
-                        role=member_role
-                    )
-                
-                # Crear miembro
-                member = Member.objects.create(user=user, **validated_data)
-                return member
-        except IntegrityError as e:
-            # Si hay un error de integridad, dar mensaje claro
-            error_msg = str(e)
-            if 'user_id' in error_msg:
-                raise serializers.ValidationError({
-                    'non_field_errors': ['Este usuario ya tiene un perfil de miembro asociado.']
-                })
-            elif 'email' in error_msg:
-                raise serializers.ValidationError({
-                    'email': 'Ya existe un usuario con este email.'
-                })
-            else:
-                raise serializers.ValidationError({
-                    'non_field_errors': [f'Error de integridad: {error_msg}']
-                })
+        with transaction.atomic():
+            # Obtener o crear rol de miembro
+            member_role, _ = Role.objects.get_or_create(
+                name='member',
+                defaults={'description': 'Miembro del gimnasio'}
+            )
+            
+            # Crear usuario
+            # IMPORTANTE: El signal create_user_profile creará automáticamente el Member
+            user = User.objects.create_user(
+                email=email,
+                username=email,
+                password=password,
+                first_name=first_name,
+                last_name=last_name,
+                role=member_role
+            )
+            
+            # Obtener el member que fue creado por el signal
+            # El signal lo crea inmediatamente, así que debe existir
+            member = user.member_profile
+            
+            # Actualizar los datos adicionales del member
+            for field, value in validated_data.items():
+                setattr(member, field, value)
+            member.save()
+            
+            return member
