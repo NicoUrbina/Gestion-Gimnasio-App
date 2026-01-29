@@ -160,8 +160,8 @@ export default function PaymentFormPage() {
   };
 
   const filteredMembers = members.filter(m =>
-    m.user_name.toLowerCase().includes(memberSearch.toLowerCase()) ||
-    m.email.toLowerCase().includes(memberSearch.toLowerCase())
+    (m.user_name?.toLowerCase() || '').includes(memberSearch.toLowerCase()) ||
+    (m.email?.toLowerCase() || '').includes(memberSearch.toLowerCase())
   );
 
   return (
