@@ -193,7 +193,7 @@ export default function EnhancedDashboardPage() {
       {/* Action Shortcuts */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <button
-          onClick={() => navigate('/classes/calendar')}
+          onClick={() => navigate('/classes')}
           className="bg-white rounded-xl border-2 border-gray-100 p-5 hover:border-orange-500 hover:shadow-lg transition-all text-left"
         >
           <Calendar className="w-8 h-8 text-orange-500 mb-3" />
