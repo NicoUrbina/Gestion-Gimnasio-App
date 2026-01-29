@@ -8,11 +8,9 @@ import Spinner from '../components/dashboard/shared/Spinner';
 
 // Role-Specific Sections
 import AdminSection from '../components/dashboard/admin/AdminSection';
+import StaffSection from '../components/dashboard/staff/StaffSection';
+import TrainerSection from '../components/dashboard/trainer/TrainerSection';
 import MemberSection from '../components/dashboard/member/MemberSection';
-
-// TODO: Importar cuando estén creados
-// import StaffSection from '../components/dashboard/staff/StaffSection';
-// import TrainerSection from '../components/dashboard/trainer/TrainerSection';
 
 /**
  * Dashboard Principal Unificado
@@ -133,23 +131,9 @@ export default function DashboardPage() {
 
       {/* Renderizado condicional del contenido según rol */}
       {role === 'admin' && <AdminSection stats={stats} />}
+      {role === 'staff' && <StaffSection stats={stats} />}
+      {role === 'trainer' && <TrainerSection stats={stats} />}
       {role === 'member' && <MemberSection stats={stats} />}
-      
-      {/* TODO: Descomentar cuando estén implementados */}
-      {/* {role === 'staff' && <StaffSection stats={stats} />} */}
-      {/* {role === 'trainer' && <TrainerSection stats={stats} />} */}
-      
-      {/* Fallback para roles sin implementar aún */}
-      {(role === 'staff' || role === 'trainer') && (
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 text-center">
-          <p className="text-white font-bold mb-2">
-            Dashboard de {role === 'staff' ? 'Staff' : 'Entrenador'}
-          </p>
-          <p className="text-gray-400 text-sm">
-            Sección en desarrollo...
-          </p>
-        </div>
-      )}
     </div>
   );
 }
