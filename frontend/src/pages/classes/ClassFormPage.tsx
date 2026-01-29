@@ -12,7 +12,7 @@ export default function ClassFormPage() {
   const [loading, setLoading] = useState(isEditing);
   const [saving, setSaving] = useState(false);
   const [classTypes, setClassTypes] = useState<ClassType[]>([]);
-  
+
   const [formData, setFormData] = useState({
     class_type: '',
     title: '',
@@ -45,12 +45,12 @@ export default function ClassFormPage() {
     try {
       setLoading(true);
       const gymClass = await gymClassService.getById(parseInt(id!));
-      
+
       // Convertir datetime a formato input
       const startDate = new Date(gymClass.start_datetime);
       const endDate = new Date(gymClass.end_datetime);
       const duration = Math.floor((endDate.getTime() - startDate.getTime()) / 60000);
-      
+
       setFormData({
         class_type: gymClass.class_type.toString(),
         title: gymClass.title,
@@ -137,7 +137,7 @@ export default function ClassFormPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 className="w-8 h-8 text-purple-600 animate-spin" />
+        <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
       </div>
     );
   }
@@ -148,34 +148,34 @@ export default function ClassFormPage() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('/classes')}
-          className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-zinc-800/50 rounded-lg transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-slate-600" />
+          <ArrowLeft className="w-5 h-5 text-gray-400" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">
+          <h1 className="text-3xl font-black text-white uppercase tracking-tight">
             {isEditing ? 'Editar Clase' : 'Nueva Clase'}
           </h1>
-          <p className="text-slate-500 mt-1">
+          <p className="text-gray-400 mt-1">
             {isEditing ? 'Modifica los detalles de la clase' : 'Programa una nueva clase'}
           </p>
         </div>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-slate-200 p-6">
+      <form onSubmit={handleSubmit} className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Tipo de Clase */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              Tipo de Clase <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Tipo de Clase <span className="text-orange-500">*</span>
             </label>
             <select
               name="class_type"
               value={formData.class_type}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
             >
               <option value="">Seleccionar tipo</option>
               {classTypes.map(type => (
@@ -186,8 +186,8 @@ export default function ClassFormPage() {
 
           {/* Título */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              Título <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Título <span className="text-orange-500">*</span>
             </label>
             <input
               type="text"
@@ -196,14 +196,14 @@ export default function ClassFormPage() {
               onChange={handleChange}
               required
               placeholder="Ej: Yoga Matutino"
-              className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white placeholder-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
 
           {/* Fecha y Hora */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              Fecha y Hora <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Fecha y Hora <span className="text-orange-500">*</span>
             </label>
             <input
               type="datetime-local"
@@ -211,13 +211,13 @@ export default function ClassFormPage() {
               value={formData.start_datetime}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
 
           {/* Duración */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Duración (minutos)
             </label>
             <input
@@ -227,13 +227,13 @@ export default function ClassFormPage() {
               onChange={handleChange}
               min="15"
               step="5"
-              className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
 
           {/* Capacidad */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Capacidad Máxima
             </label>
             <input
@@ -242,13 +242,13 @@ export default function ClassFormPage() {
               value={formData.capacity}
               onChange={handleChange}
               min="1"
-              className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
 
           {/* Ubicación */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Ubicación
             </label>
             <input
@@ -257,13 +257,13 @@ export default function ClassFormPage() {
               value={formData.location}
               onChange={handleChange}
               placeholder="Ej: Sala 1, Área de pesas"
-              className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white placeholder-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
 
           {/* Descripción */}
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Descripción
             </label>
             <textarea
@@ -272,24 +272,24 @@ export default function ClassFormPage() {
               onChange={handleChange}
               rows={3}
               placeholder="Descripción de la clase..."
-              className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+              className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white placeholder-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
             />
           </div>
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-slate-200">
+        <div className="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-zinc-800">
           <button
             type="button"
             onClick={() => navigate('/classes')}
-            className="px-6 py-2.5 border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-all"
+            className="px-6 py-2.5 border border-zinc-700 text-gray-300 font-medium rounded-xl hover:bg-zinc-800 transition-all"
           >
             Cancelar
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-medium rounded-xl hover:from-purple-500 hover:to-cyan-500 shadow-lg shadow-purple-500/25 transition-all disabled:opacity-50"
+            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-xl hover:from-orange-600 hover:to-orange-700 shadow-lg shadow-orange-500/25 transition-all disabled:opacity-50 uppercase tracking-wide"
           >
             {saving ? (
               <>
