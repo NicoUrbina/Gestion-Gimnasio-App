@@ -26,12 +26,27 @@ class Payment(models.Model):
         ('refunded', 'Reembolsado'),
     ]
     
+    PAYMENT_TYPE_CHOICES = [
+        ('membership', 'Pago de Membresía'),
+        ('product', 'Compra de Producto'),
+        ('service', 'Servicio Adicional'),
+        ('other', 'Otro'),
+    ]
+    
+    payment_type = models.CharField(
+        max_length=20,
+        choices=PAYMENT_TYPE_CHOICES,
+        default='membership',
+        verbose_name='Tipo de pago',
+        help_text='Categoría del pago'
+    )
     member = models.ForeignKey(
         'members.Member', 
         on_delete=models.CASCADE, 
         related_name='payments',
         verbose_name='Miembro'
     )
+
     membership = models.ForeignKey(
         'memberships.Membership', 
         on_delete=models.SET_NULL, 
