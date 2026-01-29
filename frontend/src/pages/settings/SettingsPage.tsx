@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   Users,
   Shield,
@@ -9,10 +10,54 @@ import {
   Activity,
   CheckCircle,
   AlertTriangle,
+  Loader2,
 } from 'lucide-react';
 import SettingsCard from '../../components/settings/SettingsCard';
+import api from '../../services/api';
 
 export default function SettingsPage() {
+  const [stats, setStats] = useState({
+    totalMembers: 0,
+    activeMembers: 0,
+    pending: 0,
+    loading: true,
+  });
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      // Usar el endpoint de dashboard_stats que ya existe
+      const response = await api.get('/users/dashboard_stats/');
+
+      setStats({
+        totalMembers: response.data.total_members || 0,
+        activeMembers: response.data.active_members || 0,
+        pending: response.data.pending_payments || 0,
+        loading: false,
+      });
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+      // Si falla, intentar endpoint Users count
+      try {
+        const usersResponse = await api.get('/users/', { params: { limit: 1000 } });
+        const users = Array.isArray(usersResponse.data) ? usersResponse.data : usersResponse.data.results || [];
+
+        setStats({
+          totalMembers: users.length,
+          activeMembers: users.filter((u: any) => u.is_active).length,
+          pending: 0,
+          loading: false,
+        });
+      } catch (fallbackError) {
+        console.error('Fallback error:', fallbackError);
+        setStats({ totalMembers: 0, activeMembers: 0, pending: 0, loading: false });
+      }
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -44,8 +89,14 @@ export default function SettingsPage() {
               <Users className="w-5 h-5 text-blue-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">-</p>
-              <p className="text-sm text-gray-400">Usuarios totales</p>
+              {stats.loading ? (
+                <div className="flex items-center">
+                  <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />
+                </div>
+              ) : (
+                <p className="text-2xl font-bold text-white">{stats.totalMembers}</p>
+              )}
+              <p className="text-sm text-gray-400">Miembros totales</p>
             </div>
           </div>
         </div>
@@ -56,8 +107,14 @@ export default function SettingsPage() {
               <Activity className="w-5 h-5 text-green-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">-</p>
-              <p className="text-sm text-gray-400">Usuarios activos</p>
+              {stats.loading ? (
+                <div className="flex items-center">
+                  <Loader2 className="w-5 h-5 text-green-400 animate-spin" />
+                </div>
+              ) : (
+                <p className="text-2xl font-bold text-white">{stats.activeMembers}</p>
+              )}
+              <p className="text-sm text-gray-400">Miembros activos</p>
             </div>
           </div>
         </div>
@@ -68,8 +125,14 @@ export default function SettingsPage() {
               <AlertTriangle className="w-5 h-5 text-orange-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">0</p>
-              <p className="text-sm text-gray-400">Alertas pendientes</p>
+              {stats.loading ? (
+                <div className="flex items-center">
+                  <Loader2 className="w-5 h-5 text-orange-400 animate-spin" />
+                </div>
+              ) : (
+                <p className="text-2xl font-bold text-white">{stats.pending}</p>
+              )}
+              <p className="text-sm text-gray-400">Pagos pendientes</p>
             </div>
           </div>
         </div>
@@ -134,8 +197,8 @@ export default function SettingsPage() {
       {/* Info Footer */}
       <div className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl">
         <p className="text-sm text-gray-500">
-          <span className="text-orange-400 font-semibold">Nota:</span> Solo los administradores 
-          tienen acceso completo a la configuración del sistema. Algunos ajustes pueden requerir 
+          <span className="text-orange-400 font-semibold">Nota:</span> Solo los administradores
+          tienen acceso completo a la configuración del sistema. Algunos ajustes pueden requerir
           reiniciar la sesión para aplicarse correctamente.
         </p>
       </div>
