@@ -6,6 +6,7 @@ import {
   Snowflake,
   Play,
   AlertCircle,
+  CreditCard,
 } from 'lucide-react';
 import { membershipService } from '../../services/memberships';
 import MembershipStatusBadge from '../../components/memberships/MembershipStatusBadge';
@@ -74,19 +75,24 @@ export default function MembershipsListPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Membresías Activas</h1>
-          <p className="text-slate-500 mt-1">Gestiona las membresías de los miembros</p>
+          <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
+            <CreditCard className="w-7 h-7 text-orange-500" />
+            Membresías
+          </h1>
+          <p className="text-gray-400 text-sm mt-1">
+            {memberships.length} membresías registradas
+          </p>
         </div>
         <div className="flex gap-2">
           <button
             onClick={() => navigate('/memberships/plans')}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 bg-zinc-800 border border-zinc-700 text-gray-300 font-medium rounded-xl hover:bg-zinc-700 hover:text-white transition-all"
           >
             Ver Planes
           </button>
           <button
             onClick={() => navigate('/memberships/assign')}
-            className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-medium rounded-xl hover:from-purple-500 hover:to-cyan-500 shadow-lg shadow-purple-500/25 transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg shadow-orange-500/30"
           >
             <Plus className="w-5 h-5" />
             Asignar Membresía
@@ -95,58 +101,56 @@ export default function MembershipsListPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-4">
-        <div className="flex items-center gap-2">
-          <Filter className="w-5 h-5 text-slate-400" />
-          <select
-            value={statusFilter}
-            onChange={(e) => {
-              setStatusFilter(e.target.value as StatusFilter);
-              setPage(1);
-            }}
-            className="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-          >
-            <option value="all">Todos los estados</option>
-            <option value="active">Activas</option>
-            <option value="frozen">Congeladas</option>
-            <option value="expired">Vencidas</option>
-            <option value="cancelled">Canceladas</option>
-          </select>
-        </div>
+      <div className="flex items-center gap-2">
+        <Filter className="w-5 h-5 text-gray-400" />
+        <select
+          value={statusFilter}
+          onChange={(e) => {
+            setStatusFilter(e.target.value as StatusFilter);
+            setPage(1);
+          }}
+          className="px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-orange-500 transition-colors"
+        >
+          <option value="all">Todos los estados</option>
+          <option value="active">Activas</option>
+          <option value="frozen">Congeladas</option>
+          <option value="expired">Vencidas</option>
+          <option value="cancelled">Canceladas</option>
+        </select>
       </div>
 
       {/* Memberships Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
           </div>
         ) : memberships.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-64 text-slate-400">
+          <div className="flex flex-col items-center justify-center h-64 text-gray-400">
             <p className="text-lg font-medium">No se encontraron membresías</p>
             <p className="text-sm mt-1">Asigna una nueva membresía para comenzar</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-slate-50 border-b border-slate-200">
-                <tr>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              <thead>
+                <tr className="border-b border-zinc-800">
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Miembro
                   </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Plan
                   </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Fecha Inicio
                   </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Vencimiento
                   </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Días Restantes
                   </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Estado
                   </th>
                   <th className="text-right px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
@@ -154,42 +158,41 @@ export default function MembershipsListPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-800">
                 {memberships.map((membership) => (
                   <tr
                     key={membership.id}
-                    className="hover:bg-slate-50 transition-colors"
+                    className="hover:bg-zinc-800/50 transition-colors"
                   >
                     <td className="px-6 py-4">
-                      <div className="font-medium text-slate-900">
+                      <div className="font-semibold text-white">
                         {membership.member_name}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-sm text-slate-600">
+                      <span className="text-sm text-gray-400">
                         {membership.plan_name}
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-sm text-slate-600">
+                      <span className="text-sm text-gray-400">
                         {new Date(membership.start_date).toLocaleDateString('es-ES')}
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-sm text-slate-600">
+                      <span className="text-sm text-gray-400">
                         {new Date(membership.end_date).toLocaleDateString('es-ES')}
                       </span>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <span
-                          className={`text-sm font-medium ${
-                            membership.days_remaining <= 7
-                              ? 'text-red-600'
+                          className={`text-sm font-medium ${membership.days_remaining <= 7
+                              ? 'text-red-400'
                               : membership.days_remaining <= 15
-                              ? 'text-yellow-600'
-                              : 'text-slate-900'
-                          }`}
+                                ? 'text-yellow-400'
+                                : 'text-white'
+                            }`}
                         >
                           {membership.days_remaining} días
                         </span>
@@ -207,23 +210,23 @@ export default function MembershipsListPage() {
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         {membership.status === 'active' && (
-                         <button
+                          <button
                             onClick={() => handleFreeze(membership.id)}
                             disabled={freezing === membership.id}
-                            className="p-2 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50"
+                            className="p-2 text-blue-400 hover:text-blue-300 hover:bg-zinc-800 rounded-lg transition-colors disabled:opacity-50"
                             title="Congelar"
                           >
-                            <Snowflake className="w-4 h-4 text-blue-600" />
+                            <Snowflake className="w-4 h-4" />
                           </button>
                         )}
                         {membership.status === 'frozen' && (
                           <button
                             onClick={() => handleUnfreeze(membership.id)}
                             disabled={freezing === membership.id}
-                            className="p-2 hover:bg-emerald-50 rounded-lg transition-colors disabled:opacity-50"
+                            className="p-2 text-emerald-400 hover:text-emerald-300 hover:bg-zinc-800 rounded-lg transition-colors disabled:opacity-50"
                             title="Descongelar"
                           >
-                            <Play className="w-4 h-4 text-emerald-600" />
+                            <Play className="w-4 h-4" />
                           </button>
                         )}
                       </div>

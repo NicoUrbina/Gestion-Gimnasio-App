@@ -14,6 +14,7 @@ import {
   Snowflake,
   ChevronLeft,
   ChevronRight,
+  Users,
 } from 'lucide-react';
 import api from '../services/api';
 import type { Member } from '../types';
@@ -43,7 +44,7 @@ export default function MembersPage() {
       if (searchQuery) {
         params.search = searchQuery;
       }
-      
+
       const response = await api.get('/members/', { params });
       setMembers(response.data.results || response.data);
       // Si hay paginación
@@ -98,64 +99,66 @@ export default function MembersPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Miembros</h1>
-          <p className="text-slate-500 mt-1">Gestiona los miembros del gimnasio</p>
+          <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
+            <Users className="w-7 h-7 text-orange-500" />
+            Miembros
+          </h1>
+          <p className="text-gray-400 text-sm mt-1">
+            {members.length} miembros registrados
+          </p>
         </div>
         <button
           onClick={() => navigate('/members/new')}
-          className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-medium rounded-xl hover:from-purple-500 hover:to-cyan-500 shadow-lg shadow-purple-500/25 transition-all"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg shadow-orange-500/30"
         >
           <Plus className="w-5 h-5" />
           Nuevo Miembro
         </button>
       </div>
 
-      {/* Filters */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-4">
-        <div className="flex flex-col md:flex-row gap-4">
-          {/* Search */}
-          <form onSubmit={handleSearch} className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Buscar por nombre, email o teléfono..."
-                className="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-              />
-            </div>
-          </form>
+      {/* Search */}
+      <div className="relative max-w-md">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+        <input
+          type="text"
+          placeholder="Buscar por nombre, email o teléfono..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
+          autoComplete="off"
+          className="w-full pl-10 pr-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+        />
+      </div>
 
-          {/* Status Filter */}
-          <div className="flex items-center gap-2">
-            <Filter className="w-5 h-5 text-slate-400" />
-            <select
-              value={statusFilter}
-              onChange={(e) => {
-                setStatusFilter(e.target.value as SubscriptionStatus);
-                setPage(1);
-              }}
-              className="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-            >
-              <option value="all">Todos los estados</option>
-              <option value="active">Activos</option>
-              <option value="inactive">Inactivos</option>
-              <option value="expired">Vencidos</option>
-              <option value="frozen">Congelados</option>
-            </select>
-          </div>
+      {/* Filters */}
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <Filter className="w-5 h-5 text-gray-400" />
+          <select
+            value={statusFilter}
+            onChange={(e) => {
+              setStatusFilter(e.target.value as SubscriptionStatus);
+              setPage(1);
+            }}
+            className="px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-orange-500 transition-colors"
+          >
+            <option value="all">Todos los estados</option>
+            <option value="active">Activos</option>
+            <option value="inactive">Inactivos</option>
+            <option value="expired">Vencidos</option>
+            <option value="frozen">Congelados</option>
+          </select>
         </div>
       </div>
 
       {/* Members Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
           </div>
         ) : members.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-64 text-slate-400">
+          <div className="flex flex-col items-center justify-center h-64 text-gray-400">
             <p className="text-lg font-medium">No se encontraron miembros</p>
             <p className="text-sm mt-1">Intenta cambiar los filtros de búsqueda</p>
           </div>
@@ -164,59 +167,59 @@ export default function MembersPage() {
             {/* Desktop Table */}
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-slate-50 border-b border-slate-200">
-                  <tr>
-                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                <thead>
+                  <tr className="border-b border-zinc-800">
+                    <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                       Miembro
                     </th>
-                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                       Contacto
                     </th>
-                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                       Estado
                     </th>
-                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                       Inscripción
                     </th>
-                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                       Último Acceso
                     </th>
-                    <th className="text-right px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    <th className="text-right px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                       Acciones
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-zinc-800">
                   {members.map((member) => {
                     const status = getStatusConfig(member.subscription_status);
                     return (
                       <tr
                         key={member.id}
-                        className="hover:bg-slate-50 transition-colors cursor-pointer"
+                        className="hover:bg-zinc-800/50 transition-colors cursor-pointer"
                         onClick={() => navigate(`/members/${member.id}`)}
                       >
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                            <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-orange-500/20">
                               {member.user?.first_name?.charAt(0) || 'M'}
                             </div>
                             <div>
-                              <p className="font-medium text-slate-900">
+                              <p className="font-semibold text-white">
                                 {member.user?.first_name} {member.user?.last_name}
                               </p>
-                              <p className="text-sm text-slate-400">ID: {member.id}</p>
+                              <p className="text-sm text-gray-400">ID: {member.id}</p>
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4">
                           <div className="space-y-1">
-                            <div className="flex items-center gap-2 text-sm text-slate-600">
-                              <Mail className="w-4 h-4 text-slate-400" />
+                            <div className="flex items-center gap-2 text-sm text-gray-400">
+                              <Mail className="w-4 h-4" />
                               {member.user?.email}
                             </div>
                             {member.phone && (
-                              <div className="flex items-center gap-2 text-sm text-slate-600">
-                                <Phone className="w-4 h-4 text-slate-400" />
+                              <div className="flex items-center gap-2 text-sm text-gray-400">
+                                <Phone className="w-4 h-4" />
                                 {member.phone}
                               </div>
                             )}
@@ -231,15 +234,15 @@ export default function MembersPage() {
                           </span>
                         </td>
                         <td className="px-6 py-4">
-                          <div className="flex items-center gap-2 text-sm text-slate-600">
-                            <Calendar className="w-4 h-4 text-slate-400" />
+                          <div className="flex items-center gap-2 text-sm text-gray-400">
+                            <Calendar className="w-4 h-4" />
                             {member.joined_date
                               ? new Date(member.joined_date).toLocaleDateString('es-ES')
                               : '-'}
                           </div>
                         </td>
                         <td className="px-6 py-4">
-                          <span className="text-sm text-slate-600">
+                          <span className="text-sm text-gray-400">
                             {member.last_access
                               ? new Date(member.last_access).toLocaleDateString('es-ES')
                               : 'Nunca'}
@@ -251,9 +254,9 @@ export default function MembersPage() {
                               e.stopPropagation();
                               // TODO: Menu de acciones
                             }}
-                            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                            className="p-2 text-gray-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
                           >
-                            <MoreVertical className="w-5 h-5 text-slate-400" />
+                            <MoreVertical className="w-5 h-5" />
                           </button>
                         </td>
                       </tr>
@@ -264,25 +267,25 @@ export default function MembersPage() {
             </div>
 
             {/* Mobile Cards */}
-            <div className="md:hidden divide-y divide-slate-100">
+            <div className="md:hidden divide-y divide-zinc-800">
               {members.map((member) => {
                 const status = getStatusConfig(member.subscription_status);
                 return (
                   <div
                     key={member.id}
-                    className="p-4 hover:bg-slate-50 transition-colors"
+                    className="p-4 hover:bg-zinc-800/50 transition-colors"
                     onClick={() => navigate(`/members/${member.id}`)}
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-semibold">
+                        <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-orange-500/20">
                           {member.user?.first_name?.charAt(0) || 'M'}
                         </div>
                         <div>
-                          <p className="font-medium text-slate-900">
+                          <p className="font-semibold text-white">
                             {member.user?.first_name} {member.user?.last_name}
                           </p>
-                          <p className="text-sm text-slate-400">{member.user?.email}</p>
+                          <p className="text-sm text-gray-400">{member.user?.email}</p>
                         </div>
                       </div>
                       <span
@@ -301,24 +304,24 @@ export default function MembersPage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200 bg-slate-50">
-            <p className="text-sm text-slate-500">
+          <div className="flex items-center justify-between px-6 py-4 border-t border-zinc-800">
+            <p className="text-sm text-gray-400">
               Página {page} de {totalPages}
             </p>
             <div className="flex gap-2">
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-2 rounded-lg border border-slate-200 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="p-2 rounded-lg border border-zinc-700 text-gray-400 hover:bg-zinc-800 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-400 transition-colors"
               >
-                <ChevronLeft className="w-5 h-5 text-slate-600" />
+                <ChevronLeft className="w-5 h-5" />
               </button>
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="p-2 rounded-lg border border-slate-200 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="p-2 rounded-lg border border-zinc-700 text-gray-400 hover:bg-zinc-800 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-400 transition-colors"
               >
-                <ChevronRight className="w-5 h-5 text-slate-600" />
+                <ChevronRight className="w-5 h-5" />
               </button>
             </div>
           </div>

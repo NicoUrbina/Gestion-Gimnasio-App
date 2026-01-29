@@ -98,12 +98,17 @@ export default function PaymentsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Pagos</h1>
-          <p className="text-slate-500 mt-1">Gestión de pagos y transacciones</p>
+          <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
+            <DollarSign className="w-7 h-7 text-orange-500" />
+            Pagos
+          </h1>
+          <p className="text-gray-400 text-sm mt-1">
+            {payments.length} transacciones registradas
+          </p>
         </div>
         <button
           onClick={() => navigate('/payments/new')}
-          className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-medium rounded-xl hover:from-purple-500 hover:to-cyan-500 shadow-lg shadow-purple-500/25 transition-all"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg shadow-orange-500/30"
         >
           <Plus className="w-5 h-5" />
           Registrar Pago
@@ -111,31 +116,31 @@ export default function PaymentsPage() {
       </div>
 
       {/* Filters and Export */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-4">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-3">
             <div>
-              <label className="block text-xs text-slate-500 mb-1">Desde</label>
+              <label className="block text-xs text-gray-400 mb-1">Desde</label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white focus:outline-none focus:border-orange-500 transition-colors"
               />
             </div>
             <div>
-              <label className="block text-xs text-slate-500 mb-1">Hasta</label>
+              <label className="block text-xs text-gray-400 mb-1">Hasta</label>
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white focus:outline-none focus:border-orange-500 transition-colors"
               />
             </div>
           </div>
           <button
             onClick={handleExport}
-            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white font-medium rounded-xl hover:bg-green-700 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-700 transition-colors"
           >
             <Download className="w-4 h-4" />
             Exportar Excel
@@ -144,7 +149,7 @@ export default function PaymentsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-1">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-1">
         <div className="grid grid-cols-4 gap-2">
           {[
             { key: 'all', label: 'Todos' },
@@ -158,8 +163,8 @@ export default function PaymentsPage() {
               className={`
                 px-4 py-2.5 rounded-xl font-medium text-sm transition-all
                 ${activeTab === tab.key
-                  ? 'bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg shadow-purple-500/25'
-                  : 'text-slate-600 hover:bg-slate-50'
+                  ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/25'
+                  : 'text-gray-400 hover:bg-zinc-800 hover:text-white'
                 }
               `}
             >
@@ -170,45 +175,45 @@ export default function PaymentsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <Loader2 className="w-8 h-8 text-purple-600 animate-spin" />
+            <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
           </div>
         ) : filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-64 text-slate-400">
+          <div className="flex flex-col items-center justify-center h-64 text-gray-400">
             <DollarSign className="w-12 h-12 mb-3" />
             <p className="text-lg font-medium">No hay pagos</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-slate-50 border-b border-slate-200">
-                <tr>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Fecha</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Miembro</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Monto</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Método</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Estado</th>
+              <thead>
+                <tr className="border-b border-zinc-800">
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Fecha</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Miembro</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Monto</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Método</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Estado</th>
                   <th className="text-right px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-800">
                 {filtered.map(payment => (
-                  <tr key={payment.id} className="hover:bg-slate-50">
-                    <td className="px-6 py-4 text-sm text-slate-600">
+                  <tr key={payment.id} className="hover:bg-zinc-800/50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-gray-400">
                       {new Date(payment.payment_date).toLocaleDateString('es-ES')}
                     </td>
                     <td className="px-6 py-4">
-                      <div className="font-medium text-slate-900">{payment.member_name}</div>
+                      <div className="font-semibold text-white">{payment.member_name}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="font-semibold text-slate-900">
+                      <span className="font-semibold text-white">
                         ${parseFloat(payment.amount).toFixed(2)}
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-2 text-sm text-slate-600">
+                      <div className="flex items-center gap-2 text-sm text-gray-400">
                         <PaymentMethodIcon method={payment.payment_method} className="w-4 h-4" />
                         {payment.payment_method_display}
                       </div>
@@ -223,7 +228,7 @@ export default function PaymentsPage() {
                             <button
                               onClick={() => handleApprove(payment.id)}
                               disabled={acting === payment.id}
-                              className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors disabled:opacity-50"
+                              className="p-2 text-green-400 hover:text-green-300 hover:bg-zinc-800 rounded-lg transition-colors disabled:opacity-50"
                               title="Aprobar"
                             >
                               <CheckCircle className="w-5 h-5" />
@@ -231,7 +236,7 @@ export default function PaymentsPage() {
                             <button
                               onClick={() => handleReject(payment.id)}
                               disabled={acting === payment.id}
-                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                              className="p-2 text-red-400 hover:text-red-300 hover:bg-zinc-800 rounded-lg transition-colors disabled:opacity-50"
                               title="Rechazar"
                             >
                               <XCircle className="w-5 h-5" />
