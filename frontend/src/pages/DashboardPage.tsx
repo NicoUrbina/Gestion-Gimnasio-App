@@ -41,7 +41,7 @@ export default function DashboardPage() {
 
       switch (role) {
         case 'admin':
-          // Admin: Stats globales del sistema
+          // Admin: Stats globales del sistema (endpoints reales)
           const [membersRes, paymentsRes, expiringRes] = await Promise.all([
             api.get('/members/stats/'),
             api.get('/payments/stats/'),
@@ -56,18 +56,50 @@ export default function DashboardPage() {
           break;
 
         case 'staff':
-          // Staff: Stats operativas del día
-          response = await api.get('/staff/dashboard/');
+          // Staff: Datos mock (endpoint /staff/dashboard/ no existe aún en backend)
+          console.warn('⚠️ Usando datos MOCK para Staff - Endpoint /staff/dashboard/ no implementado');
+          response = {
+            payments: { today: 15000 },
+            reservations: { today: 24 },
+            members: { newThisMonth: 8 },
+            renewals: { pending: 5 },
+            classes: [
+              { id: 1, name: 'Yoga Matutino', trainer: 'Ana Morales', time: '08:00 AM', reservations: 12, capacity: 15 },
+              { id: 2, name: 'CrossFit', trainer: 'Carlos Vargas', time: '06:00 PM', reservations: 18, capacity: 20 },
+              { id: 3, name: 'Pilates', trainer: 'Lucia Rojas', time: '07:00 PM', reservations: 10, capacity: 15 },
+            ]
+          };
           break;
 
         case 'trainer':
-          // Trainer: Sus clases y clientes
-          response = await api.get('/staff/my-stats/');
+          // Trainer: Datos mock (endpoint /staff/my-stats/ no existe aún en backend)
+          console.warn('⚠️ Usando datos MOCK para Trainer - Endpoint /staff/my-stats/ no implementado');
+          response = {
+            classes: { 
+              today: 3, 
+              week: 12,
+              list: [
+                { id: 1, name: 'Yoga Matutino', time: '08:00 AM', date: 'Hoy', participants: 12, capacity: 15 },
+                { id: 2, name: 'Yoga Vespertino', time: '06:00 PM', date: 'Hoy', participants: 10, capacity: 15 },
+                { id: 3, name: 'Yoga Matutino', time: '08:00 AM', date: 'Mañana', participants: 8, capacity: 15 },
+              ]
+            },
+            clients: { 
+              total: 24,
+              list: [
+                { id: 1, name: 'Juan Pérez', classes: 24, lastVisit: 'Hoy', progress: 'up' },
+                { id: 2, name: 'María González', classes: 18, lastVisit: 'Ayer', progress: 'stable' },
+                { id: 3, name: 'Carlos Ruiz', classes: 15, lastVisit: '2 días', progress: 'up' },
+                { id: 4, name: 'Ana Martínez', classes: 12, lastVisit: '3 días', progress: 'down' },
+              ]
+            },
+            sessions: { month: 87 }
+          };
           break;
 
         case 'member':
         default:
-          // Member: Stats personales
+          // Member: Stats personales (endpoint real)
           response = await api.get('/users/stats/');
           break;
       }

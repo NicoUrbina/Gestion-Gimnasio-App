@@ -303,30 +303,65 @@ class UserViewSet(viewsets.ModelViewSet):
             monthly_goal = 12
             monthly_progress = classes_attended
             
+            # Obtener lista de próximas clases reservadas
+            upcoming_classes_list = []
+            upcoming_reservations_qs = Reservation.objects.filter(
+                member=member,
+                gym_class__start_datetime__gte=now,
+                status__in=['confirmed', 'waitlist']
+            ).select_related('gym_class__class_type', 'gym_class__instructor__user').order_by('gym_class__start_datetime')[:5]
+            
+            for reservation in upcoming_reservations_qs:
+                upcoming_classes_list.append({
+                    'id': reservation.id,
+                    'class_name': reservation.gym_class.class_type.name if reservation.gym_class.class_type else reservation.gym_class.title,
+                    'trainer_name': reservation.gym_class.instructor.user.get_full_name() if reservation.gym_class.instructor else 'Sin asignar',
+                    'date': reservation.gym_class.start_datetime.strftime('%d/%m/%Y'),
+                    'time': reservation.gym_class.start_datetime.strftime('%I:%M %p')
+                })
+            
             return Response({
-                'membership_status': member.subscription_status,
-                'days_remaining': days_remaining if days_remaining is not None else 0,
-                'upcoming_reservations': upcoming_reservations,
-                'classes_attended': classes_attended,
-                'current_streak': current_streak,
-                'monthly_goal': monthly_goal,
-                'monthly_progress': monthly_progress,
-                'is_active': active_membership is not None,
-                'plan_name': active_membership.plan.name if active_membership else None
+                'membership': {
+                    'days_remaining': days_remaining if days_remaining is not None else 0,
+                    'expiring_soon': days_remaining is not None and days_remaining <= 7,
+                },
+                'reservations': {
+                    'upcoming': upcoming_reservations,
+                    'list': upcoming_classes_list
+                },
+                'attendance': {
+                    'month': classes_attended
+                },
+                'streak': {
+                    'days': current_streak,
+                    'best': current_streak  # Simplificado por ahora
+                },
+                'goals': {
+                    'monthlyClasses': monthly_goal
+                }
             })
             
         except Member.DoesNotExist:
             # No es member, retornar stats básicas para otros roles
             return Response({
-                'membership_status': 'N/A',
-                'days_remaining': None,
-                'upcoming_reservations': 0,
-                'classes_attended': 0,
-                'current_streak': 0,
-                'monthly_goal': 0,
-                'monthly_progress': 0,
-                'is_active': False,
-                'plan_name': 'Admin/Staff'
+                'membership': {
+                    'days_remaining': 0,
+                    'expiring_soon': False
+                },
+                'reservations': {
+                    'upcoming': 0,
+                    'list': []
+                },
+                'attendance': {
+                    'month': 0
+                },
+                'streak': {
+                    'days': 0,
+                    'best': 0
+                },
+                'goals': {
+                    'monthlyClasses': 12
+                }
             })
 
 

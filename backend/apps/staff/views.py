@@ -42,6 +42,84 @@ class StaffViewSet(viewsets.ModelViewSet):
         
         return queryset
     
+    
+    @action(detail=False, methods=['get'])
+    def dashboard(self, request):
+        """
+        Estadísticas operativas del día para staff
+        GET /api/staff/dashboard/
+        
+        Retorna estadísticas del día para staff operativo:
+            - payments: Pagos de hoy
+            - reservations: Reservas de hoy
+            - members: Miembros nuevos del mes
+            - renewals: Renovaciones pendientes
+            - classes: Clases programadas hoy
+        """
+        from apps.payments.models import Payment
+        from apps.classes.models import Reservation, GymClass
+        from apps.members.models import Member
+        from apps.memberships.models import Membership
+        from django.db.models import Sum, Count
+        from datetime import timedelta
+        
+        now = timezone.now()
+        today = now.date()
+        
+        # Pagos de hoy
+        payments_today = Payment.objects.filter(
+            payment_date=today,
+            status='completed'
+        ).aggregate(total=Sum('amount'))['total'] or 0
+        
+        # Reservas de hoy
+        reservations_today = Reservation.objects.filter(
+            gym_class__start_datetime__date=today,
+            status='confirmed'
+        ).count()
+        
+        # Miembros nuevos del mes
+        month_start = now.replace(day=1, hour=0, minute=0, second=0)
+        members_new = Member.objects.filter(
+            joined_date__gte=month_start.date(),
+            joined_date__lte=today
+        ).count()
+        
+        # Renovaciones pendientes (membresías que vencen en los próximos 7 días)
+        renewals_pending = Membership.objects.filter(
+            end_date__lte=today + timedelta(days=7),
+            end_date__gte=today,
+            is_active=True
+        ).count()
+        
+        # Clases de hoy con información detallada
+        classes_today = GymClass.objects.filter(
+            start_datetime__date=today,
+            is_cancelled=False
+        ).select_related('instructor__user', 'class_type').annotate(
+            reservations_count=Count('reservations', filter=Q(reservations__status='confirmed'))
+        ).order_by('start_datetime')
+        
+        # Formatear clases
+        classes_data = []
+        for gym_class in classes_today:
+            classes_data.append({
+                'id': gym_class.id,
+                'name': gym_class.class_type.name if gym_class.class_type else gym_class.title,
+                'trainer': gym_class.instructor.user.get_full_name() if gym_class.instructor else 'Sin asignar',
+                'time': gym_class.start_datetime.strftime('%I:%M %p'),
+                'reservations': gym_class.reservations_count,
+                'capacity': gym_class.capacity
+            })
+        
+        return Response({
+            'payments': {'today': float(payments_today)},
+            'reservations': {'today': reservations_today},
+            'members': {'newThisMonth': members_new},
+            'renewals': {'pending': renewals_pending},
+            'classes': classes_data
+        })
+    
     @action(detail=False, methods=['get'])
     def my_stats(self, request):
         """
@@ -112,11 +190,107 @@ class StaffViewSet(viewsets.ModelViewSet):
             is_cancelled=False
         ).count()
         
+        # Obtener lista de próximas clases
+        upcoming_classes = GymClass.objects.filter(
+            instructor=staff_profile,
+            start_datetime__gte=now,
+            is_cancelled=False
+        ).select_related('class_type').annotate(
+            participants_count=Count('reservations', filter=Q(reservations__status='confirmed'))
+        ).order_by('start_datetime')[:5]
+        
+        # Formatear clases
+        classes_list = []
+        for gym_class in upcoming_classes:
+            # Determinar si es hoy o fecha relativa
+            class_date = gym_class.start_datetime.date()
+            if class_date == today:
+                date_str = 'Hoy'
+            elif class_date == today + timedelta(days=1):
+                date_str = 'Mañana'
+            else:
+                date_str = class_date.strftime('%d/%m')
+            
+            classes_list.append({
+                'id': gym_class.id,
+                'name': gym_class.class_type.name if gym_class.class_type else gym_class.title,
+                'time': gym_class.start_datetime.strftime('%I:%M %p'),
+                'date': date_str,
+                'participants': gym_class.participants_count,
+                'capacity': gym_class.capacity
+            })
+        
+        # Obtener lista de clientes top
+        # Clientes con más clases tomadas ordenados descendentemente
+        clients_list = []
+        member_ids = Reservation.objects.filter(
+            gym_class__instructor=staff_profile,
+            status__in=['confirmed', 'attended']
+        ).values_list('member_id', flat=True).distinct()
+        
+        from apps.members.models import Member
+        members = Member.objects.filter(
+            id__in=member_ids
+        ).select_related('user')[:5]
+        
+        for member in members:
+            # Total de clases este mes
+            classes_month = Reservation.objects.filter(
+                member=member,
+                gym_class__instructor=staff_profile,
+                status='attended',
+                gym_class__start_datetime__gte=month_start
+            ).count()
+            
+            # Última visita
+            last_reservation = Reservation.objects.filter(
+                member=member,
+                gym_class__instructor=staff_profile,
+                status='attended'
+            ).order_by('-gym_class__start_datetime').first()
+            
+            if last_reservation:
+                last_date = last_reservation.gym_class.start_datetime.date()
+                if last_date == today:
+                    last_visit = 'Hoy'
+                elif last_date == today - timedelta(days=1):
+                    last_visit = 'Ayer'
+                else:
+                    days_ago = (today - last_date).days
+                    last_visit = f'{days_ago} días'
+            else:
+                last_visit = 'Nunca'
+            
+            # Progreso (simplificado por ahora)
+            if classes_month >= 12:
+                progress = 'up'
+            elif classes_month >= 6:
+                progress = 'stable'
+            else:
+                progress = 'down'
+            
+            clients_list.append({
+                'id': member.id,
+                'name': member.user.get_full_name(),
+                'classes': classes_month,
+                'lastVisit': last_visit,
+                'progress': progress
+            })
+        
+        # Ordenar por clases este mes
+        clients_list.sort(key=lambda x: x['classes'], reverse=True)
+        
         return Response({
-            'my_classes_today': classes_today,
-            'my_classes_week': classes_week,
-            'assigned_clients': assigned_clients,
-            'total_sessions_month': total_sessions_month
+            'classes': {
+                'today': classes_today,
+                'week': classes_week,
+                'list': classes_list
+            },
+            'clients': {
+                'total': assigned_clients,
+                'list': clients_list
+            },
+            'sessions': {'month': total_sessions_month}
         })
     
     @action(detail=False, methods=['get'])
