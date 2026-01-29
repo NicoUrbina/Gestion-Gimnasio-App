@@ -56,6 +56,7 @@ LOCAL_APPS = [
     'apps.documents',
     'apps.analytics',
     'apps.common',
+    'apps.audit',  # Audit and logging
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -68,6 +69,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     # CSRF moved after Common to allow CORS preflight
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'apps.audit.middleware.AuditMiddleware',  # Audit logging middleware
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',  # CSRF at the end for API
