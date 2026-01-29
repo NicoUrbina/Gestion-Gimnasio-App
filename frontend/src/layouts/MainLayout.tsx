@@ -118,7 +118,7 @@ export default function MainLayout() {
           {!sidebarCollapsed && user && (
             <div className="px-3 py-3 mb-2 rounded-lg bg-zinc-800/50">
               <p className="text-sm font-bold text-white truncate">{user.full_name}</p>
-              <p className="text-xs text-gray-500 uppercase truncate">{user.role?.name || 'Usuario'}</p>
+              <p className="text-xs text-gray-500 uppercase truncate">{user.role_name || 'Usuario'}</p>
             </div>
           )}
 
@@ -165,7 +165,7 @@ export default function MainLayout() {
                 </div>
                 <div className="hidden sm:block">
                   <p className="text-sm font-bold text-white">{user?.full_name || 'Admin Sistema'}</p>
-                  <p className="text-xs text-gray-400 uppercase">{user?.role?.name || 'Admin'}</p>
+                  <p className="text-xs text-gray-400 uppercase">{user?.role_name || 'Admin'}</p>
                 </div>
               </div>
             </div>
