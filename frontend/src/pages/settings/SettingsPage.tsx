@@ -40,21 +40,7 @@ export default function SettingsPage() {
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
-      // Si falla, intentar endpoint Users count
-      try {
-        const usersResponse = await api.get('/users/', { params: { limit: 1000 } });
-        const users = Array.isArray(usersResponse.data) ? usersResponse.data : usersResponse.data.results || [];
-
-        setStats({
-          totalMembers: users.length,
-          activeMembers: users.filter((u: any) => u.is_active).length,
-          pending: 0,
-          loading: false,
-        });
-      } catch (fallbackError) {
-        console.error('Fallback error:', fallbackError);
-        setStats({ totalMembers: 0, activeMembers: 0, pending: 0, loading: false });
-      }
+      setStats({ totalMembers: 0, activeMembers: 0, pending: 0, loading: false });
     }
   };
 

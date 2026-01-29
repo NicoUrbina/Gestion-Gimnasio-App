@@ -57,6 +57,24 @@ class MembershipViewSet(viewsets.ModelViewSet):
         
         return super().create(request, *args, **kwargs)
     
+    @action(detail=False, methods=['get'])
+    def expiring(self, request):
+        """Membresías por vencer en los próximos 7 días"""
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        today = timezone.now().date()
+        seven_days_ahead = today + timedelta(days=7)
+        
+        expiring_memberships = Membership.objects.filter(
+            status='active',
+            end_date__gte=today,
+            end_date__lte=seven_days_ahead
+        ).select_related('member__user', 'plan')
+        
+        serializer = self.get_serializer(expiring_memberships, many=True)
+        return Response(serializer.data)
+    
     @action(detail=True, methods=['post'])
     def freeze(self, request, pk=None):
         """Congelar membresía con validación de límite"""
