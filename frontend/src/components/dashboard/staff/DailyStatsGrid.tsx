@@ -20,36 +20,42 @@ interface DailyStatsGridProps {
 }
 
 export default function DailyStatsGrid({ stats }: DailyStatsGridProps) {
+  // Safe defaults to prevent crashes when stats is null/undefined
+  const paymentsToday = stats?.payments?.today ?? 0;
+  const reservationsToday = stats?.reservations?.today ?? 0;
+  const newMembers = stats?.members?.newThisMonth ?? 0;
+  const pendingRenewals = stats?.renewals?.pending ?? 0;
+
   return (
     <StatsGrid columns={4}>
       <StatsCard
         title="Pagos Hoy"
-        value={`$${stats.payments.today.toLocaleString()}`}
+        value={`$${paymentsToday.toLocaleString()}`}
         icon={DollarSign}
         color="green"
       />
-      
+
       <StatsCard
         title="Reservas Hoy"
-        value={stats.reservations.today}
+        value={reservationsToday}
         subtitle="clases reservadas"
         icon={Calendar}
         color="blue"
       />
-      
+
       <StatsCard
         title="Miembros Nuevos (Mes)"
-        value={stats.members.newThisMonth}
+        value={newMembers}
         icon={UserPlus}
         color="purple"
       />
-      
+
       <StatsCard
         title="Renovaciones Pendientes"
-        value={stats.renewals.pending}
+        value={pendingRenewals}
         icon={AlertCircle}
         color="orange"
-        alert={stats.renewals.pending > 0}
+        alert={pendingRenewals > 0}
       />
     </StatsGrid>
   );

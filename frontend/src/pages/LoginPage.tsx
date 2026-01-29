@@ -5,7 +5,7 @@ import { useAuthStore } from '../stores/authStore';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login, isLoading, error, clearError, user } = useAuthStore();
+  const { login, isLoading, error, clearError } = useAuthStore();
   const logoSrc = `${import.meta.env.BASE_URL}Img/nexo-logo.png`;
 
   const [showPassword, setShowPassword] = useState(false);
@@ -24,16 +24,8 @@ const Login = () => {
     });
 
     if (success) {
-      // Role-based redirect: cada tipo de usuario va a su página principal
-      const roleRedirects: Record<string, string> = {
-        'admin': '/dashboard',
-        'staff': '/members',
-        'trainer': '/classes',
-        'member': '/classes'
-      };
-
-      const redirectPath = roleRedirects[user?.role?.name || ''] || '/dashboard';
-      navigate(redirectPath);
+      // Redirect all users to dashboard - dashboard will handle role-specific content
+      navigate('/dashboard');
     }
   };
 

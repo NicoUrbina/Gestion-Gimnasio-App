@@ -47,7 +47,7 @@ export default function DashboardPage() {
             api.get('/payments/stats/'),
             api.get('/memberships/expiring/').catch(() => ({ data: [] })),
           ]);
-          
+
           response = {
             members: membersRes.data,
             revenue: paymentsRes.data,
@@ -75,8 +75,8 @@ export default function DashboardPage() {
           // Trainer: Datos mock (endpoint /staff/my-stats/ no existe aún en backend)
           console.warn('⚠️ Usando datos MOCK para Trainer - Endpoint /staff/my-stats/ no implementado');
           response = {
-            classes: { 
-              today: 3, 
+            classes: {
+              today: 3,
               week: 12,
               list: [
                 { id: 1, name: 'Yoga Matutino', time: '08:00 AM', date: 'Hoy', participants: 12, capacity: 15 },
@@ -84,7 +84,7 @@ export default function DashboardPage() {
                 { id: 3, name: 'Yoga Matutino', time: '08:00 AM', date: 'Mañana', participants: 8, capacity: 15 },
               ]
             },
-            clients: { 
+            clients: {
               total: 24,
               list: [
                 { id: 1, name: 'Juan Pérez', classes: 24, lastVisit: 'Hoy', progress: 'up' },
@@ -108,7 +108,7 @@ export default function DashboardPage() {
     } catch (error: any) {
       console.error('Error loading dashboard data:', error);
       setError(error.response?.data?.message || 'Error al cargar datos del dashboard');
-      
+
       // Set default data para evitar crashes
       setStats({
         members: { total: 0, active: 0, inactive: 0, expired: 0 },
@@ -152,20 +152,20 @@ export default function DashboardPage() {
     <div className="space-y-6">
       {/* Header compartido con personalización por rol */}
       {user && (
-        <DashboardHeader 
+        <DashboardHeader
           user={{
             first_name: user.first_name,
             full_name: user.full_name,
-          }} 
-          role={role} 
+          }}
+          role={role}
         />
       )}
 
       {/* Renderizado condicional del contenido según rol */}
-      {role === 'admin' && <AdminSection stats={stats} />}
-      {role === 'staff' && <StaffSection stats={stats} />}
-      {role === 'trainer' && <TrainerSection stats={stats} />}
-      {role === 'member' && <MemberSection stats={stats} />}
+      {stats && role === 'admin' && <AdminSection stats={stats} />}
+      {stats && role === 'staff' && <StaffSection stats={stats} />}
+      {stats && role === 'trainer' && <TrainerSection stats={stats} />}
+      {stats && role === 'member' && <MemberSection stats={stats} />}
     </div>
   );
 }

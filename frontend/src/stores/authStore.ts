@@ -18,10 +18,10 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       isAuthenticated: false,
-      isLoading: false,
+      isLoading: false, // Start as false - will be set by checkAuth if needed
       error: null,
 
       login: async (credentials) => {
@@ -61,6 +61,7 @@ export const useAuthStore = create<AuthState>()(
         set({
           user: null,
           isAuthenticated: false,
+          isLoading: false,
           error: null,
         });
       },
@@ -68,8 +69,17 @@ export const useAuthStore = create<AuthState>()(
       checkAuth: async () => {
         const token = localStorage.getItem('access_token');
         if (!token) {
-          set({ isAuthenticated: false, user: null });
+          set({ isAuthenticated: false, user: null, isLoading: false });
           return;
+        }
+
+        // Get current state to check if already authenticated
+        const currentState = get();
+
+        // Only show loading if we're not already authenticated
+        // This allows background validation after login without showing spinner
+        if (!currentState.isAuthenticated) {
+          set({ isLoading: true });
         }
 
         try {
@@ -77,6 +87,7 @@ export const useAuthStore = create<AuthState>()(
           set({
             user: response.data,
             isAuthenticated: true,
+            isLoading: false,
           });
         } catch (error) {
           // Token inválido, limpiar
@@ -85,6 +96,7 @@ export const useAuthStore = create<AuthState>()(
           set({
             user: null,
             isAuthenticated: false,
+            isLoading: false,
           });
         }
       },

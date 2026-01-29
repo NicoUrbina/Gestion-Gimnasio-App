@@ -93,7 +93,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             'first_name': self.user.first_name,
             'last_name': self.user.last_name,
             'full_name': self.user.get_full_name(),
-            'role': self.user.role.name if self.user.role else None,
+            'role_name': self.user.role.name if self.user.role else None,  # Cambiado de 'role' a 'role_name'
         }
         
         return data

@@ -48,12 +48,21 @@ import {
 import ProtectedRoute from "./components/ProtectedRoute"
 import AdminRoute from "./components/AdminRoute"
 
+
 function App() {
   const { checkAuth } = useAuthStore()
 
   useEffect(() => {
-    checkAuth()
-  }, [checkAuth])
+    const token = localStorage.getItem('access_token');
+
+    if (token) {
+      // If we have a token, always validate it
+      checkAuth();
+    } else {
+      // No token, ensure loading is false so login page shows
+      useAuthStore.setState({ isLoading: false });
+    }
+  }, [])
 
   return (
     <BrowserRouter>
