@@ -8,7 +8,7 @@ import type { MembershipPlan, Member } from '../../types';
 
 export default function AssignMembershipPage() {
   const navigate = useNavigate();
-  
+
   const [members, setMembers] = useState<Member[]>([]);
   const [plans, setPlans] = useState<MembershipPlan[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,14 +60,14 @@ export default function AssignMembershipPage() {
     const startDate = new Date(formData.start_date);
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + plan.duration_days);
-    
+
     setCalculatedEndDate(endDate.toISOString().split('T')[0]);
     setSelectedPlan(plan);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.member || !formData.plan) {
       setError('Debes seleccionar un miembro y un plan');
       return;
@@ -96,7 +96,7 @@ export default function AssignMembershipPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 className="w-8 h-8 text-purple-600 animate-spin" />
+        <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
       </div>
     );
   }
@@ -107,32 +107,36 @@ export default function AssignMembershipPage() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('/memberships')}
-          className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-zinc-800/50 rounded-lg transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-slate-600" />
+          <ArrowLeft className="w-5 h-5 text-gray-400" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Asignar Membresía</h1>
-          <p className="text-slate-500 mt-1">Asigna un plan de membresía a un miembro</p>
+          <h1 className="text-3xl font-black text-white uppercase tracking-tight">
+            Asignar Membresía
+          </h1>
+          <p className="text-gray-400 mt-1">Asigna un plan de membresía a un miembro</p>
         </div>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-          <p className="text-red-700 text-sm">{error}</p>
+        <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4">
+          <p className="text-red-400 text-sm">{error}</p>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Seleccionar Miembro */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">1. Seleccionar Miembro</h2>
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+          <h2 className="text-lg font-bold text-white mb-4">
+            1. Seleccionar Miembro
+          </h2>
           <select
             required
             value={formData.member}
             onChange={(e) => setFormData(prev => ({ ...prev, member: e.target.value }))}
-            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
           >
             <option value="">-- Selecciona un miembro --</option>
             {members.map(member => (
@@ -144,8 +148,10 @@ export default function AssignMembershipPage() {
         </div>
 
         {/* Seleccionar Plan */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">2. Seleccionar Plan</h2>
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+          <h2 className="text-lg font-bold text-white mb-4">
+            2. Seleccionar Plan
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {plans.map(plan => (
               <PlanCard
@@ -159,12 +165,14 @@ export default function AssignMembershipPage() {
         </div>
 
         {/* Detalles */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">3. Detalles de la Membresía</h2>
-          
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+          <h2 className="text-lg font-bold text-white mb-4">
+            3. Detalles de la Membresía
+          </h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Fecha de Inicio *
               </label>
               <input
@@ -172,25 +180,25 @@ export default function AssignMembershipPage() {
                 required
                 value={formData.start_date}
                 onChange={(e) => setFormData(prev => ({ ...prev, start_date: e.target.value }))}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Fecha de Vencimiento
               </label>
               <input
                 type="text"
                 disabled
                 value={calculatedEndDate || 'Selecciona un plan'}
-                className="w-full px-4 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-sm text-slate-600"
+                className="w-full px-4 py-2.5 bg-zinc-800/50 border border-zinc-700 rounded-xl text-sm text-gray-400"
               />
             </div>
           </div>
 
           <div className="mt-6">
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Notas (Opcional)
             </label>
             <textarea
@@ -198,19 +206,31 @@ export default function AssignMembershipPage() {
               value={formData.notes}
               onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
               placeholder="Cualquier observación o detalle adicional..."
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+              className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
             />
           </div>
 
           {/* Resumen */}
           {selectedPlan && formData.member && (
-            <div className="mt-6 p-4 bg-purple-50 border border-purple-200 rounded-xl">
-              <h3 className="font-semibold text-purple-900 mb-2">Resumen</h3>
-              <div className="space-y-1 text-sm text-purple-800">
-                <p><span className="font-medium">Plan:</span> {selectedPlan.name}</p>
-                <p><span className="font-medium">Duración:</span> {selectedPlan.duration_days} días</p>
-                <p><span className="font-medium">Precio:</span> ${selectedPlan.price}</p>
-                <p><span className="font-medium">Vence:</span> {calculatedEndDate}</p>
+            <div className="mt-6 p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl">
+              <h3 className="font-bold text-orange-400 mb-3">📋 Resumen</h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Plan:</span>
+                  <span className="text-white font-medium">{selectedPlan.name}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Duración:</span>
+                  <span className="text-white font-medium">{selectedPlan.duration_days} días</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Precio:</span>
+                  <span className="text-orange-400 font-bold">${selectedPlan.price}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Vence:</span>
+                  <span className="text-white font-medium">{calculatedEndDate}</span>
+                </div>
               </div>
             </div>
           )}
@@ -221,14 +241,14 @@ export default function AssignMembershipPage() {
           <button
             type="button"
             onClick={() => navigate('/memberships')}
-            className="px-4 py-2.5 text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
+            className="px-6 py-2.5 text-gray-300 hover:bg-zinc-800 border border-zinc-700 rounded-xl transition-colors font-medium"
           >
             Cancelar
           </button>
           <button
             type="submit"
             disabled={saving || !formData.member || !formData.plan}
-            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-medium rounded-xl hover:from-purple-500 hover:to-cyan-500 shadow-lg shadow-purple-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-xl hover:from-orange-600 hover:to-orange-700 shadow-lg shadow-orange-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide"
           >
             {saving ? (
               <>
