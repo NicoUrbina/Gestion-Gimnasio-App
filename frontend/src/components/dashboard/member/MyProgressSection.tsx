@@ -1,4 +1,4 @@
-import { Activity, CheckCircle2, Flame } from 'lucide-react';
+import { CheckCircle2, Flame } from 'lucide-react';
 
 interface MyProgressSectionProps {
   stats: {

@@ -1,4 +1,4 @@
-import { Users, CheckCircle, XCircle, AlertTriangle, DollarSign, TrendingUp } from 'lucide-react';
+import { Users, CheckCircle, DollarSign, TrendingUp } from 'lucide-react';
 import StatsCard from '../shared/StatsCard';
 import StatsGrid from '../shared/StatsGrid';
 
