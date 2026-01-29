@@ -12,6 +12,7 @@ export interface User {
   last_name: string;
   full_name: string;
   role: Role | null;
+  role_name?: string;  // Campo adicional del backend (role.name serializado)
   phone?: string;
   photo?: string;
 }

@@ -1,5 +1,5 @@
 import { useAuthStore } from '../stores/authStore';
-import EnhancedDashboardPage from '../pages/EnhancedDashboardPage';  // Dashboard con diseño moderno
+import DashboardPage from '../pages/DashboardPage';  // Dashboard admin con stats del gimnasio
 import StaffDashboard from '../pages/dashboards/StaffDashboard';
 import TrainerDashboard from '../pages/dashboards/TrainerDashboard';
 import MemberDashboard from '../pages/dashboards/MemberDashboard';
@@ -10,7 +10,7 @@ import MemberDashboard from '../pages/dashboards/MemberDashboard';
  */
 export default function RoleBasedDashboard() {
   const { user } = useAuthStore();
-  
+
   // Si no hay usuario, mostrar dashboard de member por defecto
   if (!user || !user.role_name) {
     return <MemberDashboard />;
@@ -22,14 +22,14 @@ export default function RoleBasedDashboard() {
 
   switch (roleName) {
     case 'admin':
-      return <EnhancedDashboardPage />;  // Dashboard moderno con diseño visual
-    
+      return <DashboardPage />;  // Dashboard admin con estadísticas del gimnasio
+
     case 'staff':
       return <StaffDashboard />;
-    
+
     case 'trainer':
       return <TrainerDashboard />;
-    
+
     case 'member':
     default:
       return <MemberDashboard />;
