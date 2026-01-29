@@ -26,7 +26,8 @@ export default function RoleRoute({ allowedRoles, redirectTo = '/dashboard' }: R
     }
 
     // Logged in but role not allowed
-    if (!user?.role || !allowedRoles.includes(user.role.name)) {
+    // Backend sends role_name as a string field
+    if (!user?.role_name || !allowedRoles.includes(user.role_name as any)) {
         return <Navigate to={redirectTo} replace />;
     }
 
