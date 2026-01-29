@@ -117,8 +117,8 @@ export default function DashboardPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
-        <p className="text-slate-500 mt-1">Resumen general del gimnasio</p>
+        <h1 className="text-3xl font-black text-white uppercase tracking-tight">Dashboard</h1>
+        <p className="text-gray-400 mt-1">Resumen general del gimnasio</p>
       </div>
 
       {/* Stats Grid */}
@@ -126,7 +126,7 @@ export default function DashboardPage() {
         {statCards.map((stat, index) => (
           <div
             key={index}
-            className="bg-white rounded-2xl p-5 border border-slate-200 hover:shadow-lg transition-shadow"
+            className="bg-zinc-900 rounded-2xl p-5 border border-zinc-800 hover:shadow-lg hover:shadow-orange-500/10 transition-shadow"
           >
             <div className="flex items-start justify-between">
               <div className={`p-3 rounded-xl ${stat.bgColor}`}>
@@ -151,8 +151,8 @@ export default function DashboardPage() {
               )}
             </div>
             <div className="mt-4">
-              <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="text-2xl font-bold text-white">{stat.value}</p>
+              <p className="text-sm text-gray-400 mt-1">
                 {stat.subtitle || (stat.total ? `de ${stat.total} totales` : "")}
               </p>
             </div>
@@ -178,36 +178,36 @@ export default function DashboardPage() {
       {/* Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Membresías por vencer */}
-        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-          <div className="px-5 py-4 border-b border-slate-100">
+        <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
+          <div className="px-5 py-4 border-b border-zinc-800">
             <div className="flex items-center justify-between">
-              <h2 className="font-semibold text-slate-900">Membresías por Vencer</h2>
-              <span className="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full">
+              <h2 className="font-semibold text-white">Membresías por Vencer</h2>
+              <span className="px-2 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-medium rounded-full">
                 {expiring.length} miembros
               </span>
             </div>
           </div>
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-zinc-800">
             {expiring.length === 0 ? (
-              <div className="px-5 py-8 text-center text-slate-400">
+              <div className="px-5 py-8 text-center text-gray-400">
                 <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-emerald-400" />
                 <p>No hay membresías por vencer esta semana</p>
               </div>
             ) : (
               expiring.slice(0, 5).map((member) => (
-                <div key={member.member_id} className="px-5 py-3 flex items-center justify-between hover:bg-slate-50">
+                <div key={member.member_id} className="px-5 py-3 flex items-center justify-between hover:bg-zinc-800/50">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
                       {member.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="font-medium text-slate-900 text-sm">{member.name}</p>
-                      <p className="text-xs text-slate-400">{member.email}</p>
+                      <p className="font-medium text-white text-sm">{member.name}</p>
+                      <p className="text-xs text-gray-400">{member.email}</p>
                     </div>
                   </div>
                   <div className="text-right">
                     <p
-                      className={`text-sm font-medium ${member.days_remaining <= 2 ? "text-red-600" : "text-amber-600"}`}
+                      className={`text-sm font-medium ${member.days_remaining <= 2 ? "text-red-400" : "text-amber-400"}`}
                     >
                       {member.days_remaining} días
                     </p>
@@ -220,14 +220,14 @@ export default function DashboardPage() {
         </div>
 
         {/* Actividad Reciente */}
-        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-          <div className="px-5 py-4 border-b border-slate-100">
-            <h2 className="font-semibold text-slate-900">Actividad de Hoy</h2>
+        <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
+          <div className="px-5 py-4 border-b border-zinc-800">
+            <h2 className="font-semibold text-white">Actividad de Hoy</h2>
           </div>
           <div className="p-5">
-            <div className="flex items-center justify-center h-48 text-slate-400">
+            <div className="flex items-center justify-center h-48 text-gray-400">
               <div className="text-center">
-                <Activity className="w-12 h-12 mx-auto mb-3 text-slate-300" />
+                <Activity className="w-12 h-12 mx-auto mb-3 text-gray-500" />
                 <p className="text-sm">Gráfica de actividad próximamente</p>
               </div>
             </div>
