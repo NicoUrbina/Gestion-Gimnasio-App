@@ -259,7 +259,7 @@ export default function UsersSettingsPage() {
                     {/* Rol */}
                     <td className="px-6 py-4">
                       <span
-                        className={`inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-full border ${user.role_name ? roleColors[user.role_name] : 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+                        className={`inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-full border ${user.role_name ? roleColors[user.role_name] : 'bg-zinc-800/500/20 text-gray-400 border-gray-500/30'
                           }`}
                       >
                         {user.role_name ? (roleLabels[user.role_name] || user.role_name) : 'Sin rol'}

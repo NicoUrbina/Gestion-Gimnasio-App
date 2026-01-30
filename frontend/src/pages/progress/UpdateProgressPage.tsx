@@ -63,7 +63,7 @@ export default function UpdateProgressPage() {
     <div className="max-w-3xl mx-auto">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+        <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
           <TrendingUp className="w-7 h-7 text-orange-500" />
           Registrar Progreso
         </h1>
@@ -72,9 +72,9 @@ export default function UpdateProgressPage() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Date */}
-        <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
+        <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
           <div className="mb-4">
-            <label className="block text-sm font-bold text-slate-900 mb-2">
+            <label className="block text-sm font-bold text-white mb-2">
               Fecha de Registro
             </label>
             <input
@@ -82,15 +82,15 @@ export default function UpdateProgressPage() {
               value={formData.date}
               onChange={(e) => updateField('date', e.target.value)}
               max={new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+              className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               required
             />
           </div>
         </div>
 
         {/* Peso y Composición */}
-        <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
-          <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+        <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
+          <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
             <Scale className="w-5 h-5 text-orange-500" />
             Peso y Composición Corporal
           </h2>
@@ -108,7 +108,7 @@ export default function UpdateProgressPage() {
                 value={formData.weight}
                 onChange={(e) => updateField('weight', e.target.value)}
                 placeholder="75.5"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               />
             </div>
 
@@ -124,7 +124,7 @@ export default function UpdateProgressPage() {
                 value={formData.height}
                 onChange={(e) => updateField('height', e.target.value)}
                 placeholder="175"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               />
               <p className="text-xs text-gray-500 mt-1">Para calcular tu IMC</p>
             </div>
@@ -141,7 +141,7 @@ export default function UpdateProgressPage() {
                 value={formData.body_fat_percentage}
                 onChange={(e) => updateField('body_fat_percentage', e.target.value)}
                 placeholder="18.5"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               />
             </div>
 
@@ -157,15 +157,15 @@ export default function UpdateProgressPage() {
                 value={formData.muscle_mass}
                 onChange={(e) => updateField('muscle_mass', e.target.value)}
                 placeholder="60.5"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               />
             </div>
           </div>
         </div>
 
         {/* Medidas Corporales */}
-        <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
-          <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+        <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
+          <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
             <Ruler className="w-5 h-5 text-orange-500" />
             Medidas Corporales (cm)
           </h2>
@@ -183,7 +183,7 @@ export default function UpdateProgressPage() {
                 value={formData.chest}
                 onChange={(e) => updateField('chest', e.target.value)}
                 placeholder="95"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               />
             </div>
 
@@ -199,7 +199,7 @@ export default function UpdateProgressPage() {
                 value={formData.waist}
                 onChange={(e) => updateField('waist', e.target.value)}
                 placeholder="80"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               />
             </div>
 
@@ -215,15 +215,15 @@ export default function UpdateProgressPage() {
                 value={formData.hips}
                 onChange={(e) => updateField('hips', e.target.value)}
                 placeholder="95"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               />
             </div>
           </div>
         </div>
 
         {/* Notas */}
-        <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
-          <h2 className="text-lg font-bold text-slate-900 mb-4">
+        <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
+          <h2 className="text-lg font-bold text-white mb-4">
             Notas Personales
           </h2>
           <textarea
@@ -231,7 +231,7 @@ export default function UpdateProgressPage() {
             onChange={(e) => updateField('notes', e.target.value)}
             placeholder="Cómo te sientes, cambios que has notado, nivel de energía, etc."
             rows={4}
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500 resize-none"
+            className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500 resize-none"
           />
         </div>
 
@@ -251,7 +251,7 @@ export default function UpdateProgressPage() {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="flex-1 px-6 py-3 border-2 border-gray-200 rounded-xl font-bold text-slate-900 hover:bg-gray-50 transition-colors"
+            className="flex-1 px-6 py-3 border-2 border-zinc-700 rounded-xl font-bold text-white hover:bg-zinc-800/50 transition-colors"
           >
             Cancelar
           </button>

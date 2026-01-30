@@ -247,7 +247,7 @@ export default function EvolutionCharts() {
     <div className="max-w-6xl mx-auto space-y-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+        <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
           <BarChart3 className="w-7 h-7 text-orange-500" />
           Evolución de Progreso
         </h1>
@@ -255,10 +255,10 @@ export default function EvolutionCharts() {
       </div>
 
       {/* Controls */}
-      <div className="bg-white rounded-2xl border-2 border-gray-100 p-6 space-y-4">
+      <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6 space-y-4">
         {/* Metric Selector */}
         <div>
-          <label className="block text-sm font-bold text-slate-900 mb-3">Métrica a Visualizar</label>
+          <label className="block text-sm font-bold text-white mb-3">Métrica a Visualizar</label>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             {metricButtons.map((btn) => (
               <button
@@ -267,7 +267,7 @@ export default function EvolutionCharts() {
                 className={`px-4 py-3 rounded-xl font-bold transition-all ${
                   selectedMetric === btn.value
                     ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
-                    : 'bg-gray-100 text-slate-900 hover:bg-gray-200'
+                    : 'bg-gray-100 text-white hover:bg-gray-200'
                 }`}
               >
                 {btn.label}
@@ -278,7 +278,7 @@ export default function EvolutionCharts() {
 
         {/* Time Range Selector */}
         <div>
-          <label className="block text-sm font-bold text-slate-900 mb-3">Rango Temporal</label>
+          <label className="block text-sm font-bold text-white mb-3">Rango Temporal</label>
           <div className="grid grid-cols-4 gap-2">
             {rangeButtons.map((btn) => (
               <button
@@ -287,7 +287,7 @@ export default function EvolutionCharts() {
                 className={`px-4 py-3 rounded-xl font-bold transition-all ${
                   selectedRange === btn.value
                     ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30'
-                    : 'bg-gray-100 text-slate-900 hover:bg-gray-200'
+                    : 'bg-gray-100 text-white hover:bg-gray-200'
                 }`}
               >
                 {btn.label}

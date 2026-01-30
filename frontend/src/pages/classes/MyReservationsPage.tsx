@@ -70,12 +70,12 @@ export default function MyReservationsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Mis Reservas</h1>
+        <h1 className="text-2xl font-bold text-white">Mis Reservas</h1>
         <p className="text-slate-500 mt-1">Gestiona tus reservas de clases</p>
       </div>
 
       {/* Tabs */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-1">
+      <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-1">
         <div className="flex gap-2">
           <button
             onClick={() => setActiveTab('upcoming')}
@@ -83,7 +83,7 @@ export default function MyReservationsPage() {
               flex-1 px-4 py-2.5 rounded-xl font-medium text-sm transition-all
               ${activeTab === 'upcoming'
                 ? 'bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg shadow-purple-500/25'
-                : 'text-slate-600 hover:bg-slate-50'
+                : 'text-gray-400 hover:bg-zinc-800/30'
               }
             `}
           >
@@ -95,7 +95,7 @@ export default function MyReservationsPage() {
               flex-1 px-4 py-2.5 rounded-xl font-medium text-sm transition-all
               ${activeTab === 'waitlist'
                 ? 'bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg shadow-purple-500/25'
-                : 'text-slate-600 hover:bg-slate-50'
+                : 'text-gray-400 hover:bg-zinc-800/30'
               }
             `}
           >
@@ -107,7 +107,7 @@ export default function MyReservationsPage() {
               flex-1 px-4 py-2.5 rounded-xl font-medium text-sm transition-all
               ${activeTab === 'history'
                 ? 'bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg shadow-purple-500/25'
-                : 'text-slate-600 hover:bg-slate-50'
+                : 'text-gray-400 hover:bg-zinc-800/30'
               }
             `}
           >
@@ -117,7 +117,7 @@ export default function MyReservationsPage() {
       </div>
 
       {/* Reservations List */}
-      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center h-64">
             <Loader2 className="w-8 h-8 text-purple-600 animate-spin" />
@@ -137,11 +137,11 @@ export default function MyReservationsPage() {
             {filtered.map(reservation => (
               <div
                 key={reservation.id}
-                className="p-4 hover:bg-slate-50 transition-colors"
+                className="p-4 hover:bg-zinc-800/30 transition-colors"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h3 className="font-semibold text-slate-900 mb-1">
+                    <h3 className="font-semibold text-white mb-1">
                       {reservation.class_title}
                     </h3>
                     <div className="flex items-center gap-2 text-sm text-slate-500 mb-2">

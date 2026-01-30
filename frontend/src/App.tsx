@@ -9,7 +9,7 @@ import MainLayout from "./layouts/MainLayout"
 
 // Pages
 import LoginPage from "./pages/LoginPage"
-import RegisterPage from "./pages/auth/Register"
+import RegisterPage from "./pages/auth/RegisterPage"
 import DashboardPage from "./pages/DashboardPage"
 import MembersPage from "./pages/MembersPage"
 import MemberFormPage from "./pages/MemberFormPage"
@@ -38,6 +38,24 @@ import UpdateProgressPage from "./pages/progress/UpdateProgressPage"
 import EvolutionCharts from "./pages/progress/EvolutionCharts"
 import ProgressHistory from "./pages/progress/ProgressHistory"
 import ComparisonView from "./pages/progress/ComparisonView"
+
+// Workouts & Exercises
+import ExerciseLibraryPage from "./pages/workouts/ExerciseLibraryPage"
+import RoutineBuilderPage from "./pages/workouts/RoutineBuilderPage"
+import MyRoutinePage from "./pages/workouts/MyRoutinePage"
+
+// Evaluations & Goals
+import RequestEvaluationPage from "./pages/evaluations/RequestEvaluationPage"
+import EvaluationFormPage from "./pages/evaluations/EvaluationFormPage"
+import EvaluationHistoryPage from "./pages/evaluations/EvaluationHistoryPage"
+
+// Access Control
+import AccessLogsPage from "./pages/access/AccessLogsPage"
+import AbandonmentAlertsPage from "./pages/access/AbandonmentAlertsPage"
+
+// Equipment Management
+import EquipmentListPage from "./pages/equipment/EquipmentListPage"
+import EquipmentFormPage from "./pages/equipment/EquipmentFormPage"
 
 // Settings
 import {
@@ -140,6 +158,24 @@ function App() {
             {/* Placeholder pages */}
             <Route path="/staff" element={<PlaceholderPage title="Entrenadores" />} />
 
+            {/* Workouts & Exercises */}
+            <Route path="/workouts/exercises" element={<ExerciseLibraryPage />} />
+            <Route path="/workouts/routines" element={<RoutineBuilderPage />} />
+            <Route path="/workouts/my-routine" element={<MyRoutinePage />} />
+
+            {/* Evaluations & Goals */}
+            <Route path="/evaluations/request" element={<RequestEvaluationPage />} />
+            <Route path="/evaluations/new" element={<EvaluationFormPage />} />
+            <Route path="/evaluations/history" element={<EvaluationHistoryPage />} />
+
+            {/* Access Control */}
+            <Route path="/access/logs" element={<AccessLogsPage />} />
+            <Route path="/access/alerts" element={<AbandonmentAlertsPage />} />
+
+            {/* Equipment Management */}
+            <Route path="/equipment" element={<EquipmentListPage />} />
+            <Route path="/equipment/new" element={<EquipmentFormPage />} />
+            <Route path="/equipment/:id/edit" element={<EquipmentFormPage />} />
             {/* Progress */}
             <Route path="/progress" element={<ProgressDashboard />} />
             <Route path="/progress/update" element={<UpdateProgressPage />} />
@@ -161,13 +197,13 @@ function App() {
               <Route path="/settings/system" element={<SystemSettingsPage />} />
               <Route path="/settings/audit" element={<AuditLogsPage />} />
             </Route>
-          </Route>
-        </Route>
+          </Route >
+        </Route >
 
         {/* Default redirect */}
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
-    </BrowserRouter>
+        < Route path="*" element={< Navigate to="/dashboard" replace />} />
+      </Routes >
+    </BrowserRouter >
   )
 }
 

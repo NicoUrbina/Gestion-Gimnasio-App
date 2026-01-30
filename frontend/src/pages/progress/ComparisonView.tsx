@@ -61,17 +61,17 @@ export default function ComparisonView() {
     const isDecline = lowerIsBetter ? isPositive : isNegative;
 
     return (
-      <div className="grid grid-cols-3 gap-4 items-center py-4 border-b border-gray-200 last:border-0">
+      <div className="grid grid-cols-3 gap-4 items-center py-4 border-b border-zinc-700 last:border-0">
         {/* Label */}
         <div>
-          <p className="text-sm font-bold text-slate-900">{label}</p>
+          <p className="text-sm font-bold text-white">{label}</p>
         </div>
 
         {/* Values */}
         <div className="grid grid-cols-2 gap-4 text-center">
-          <div className="bg-gray-50 rounded-lg p-3">
+          <div className="bg-zinc-800/50 rounded-lg p-3">
             <p className="text-xs text-gray-500 mb-1">Antes</p>
-            <p className="text-xl font-bold text-slate-900">
+            <p className="text-xl font-bold text-white">
               {value1 ? `${value1}${unit}` : '-'}
             </p>
           </div>
@@ -86,7 +86,7 @@ export default function ComparisonView() {
         {/* Difference */}
         <div className="text-center">
           {hasDiff && diff !== 0 ? (
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-800/50">
               {isImprovement && (
                 <>
                   <TrendingUp className="w-5 h-5 text-emerald-500" />
@@ -136,7 +136,7 @@ export default function ComparisonView() {
         <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <GitCompare className="w-10 h-10 text-orange-500" />
         </div>
-        <h3 className="text-2xl font-bold text-slate-900 mb-3">
+        <h3 className="text-2xl font-bold text-white mb-3">
           Necesitas al menos 2 registros
         </h3>
         <p className="text-gray-500 mb-6">
@@ -150,7 +150,7 @@ export default function ComparisonView() {
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+        <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
           <GitCompare className="w-7 h-7 text-orange-500" />
           Comparar Progreso
         </h1>
@@ -158,17 +158,17 @@ export default function ComparisonView() {
       </div>
 
       {/* Selectors */}
-      <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
+      <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Start Date */}
           <div>
-            <label className="block text-sm font-bold text-slate-900 mb-2">
+            <label className="block text-sm font-bold text-white mb-2">
               Registro Inicial (Antes)
             </label>
             <select
               value={selectedLog1}
               onChange={(e) => setSelectedLog1(Number(e.target.value))}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500 font-medium"
+              className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500 font-medium"
             >
               <option value="">Selecciona un registro...</option>
               {logs.map((log) => (
@@ -186,7 +186,7 @@ export default function ComparisonView() {
 
           {/* End Date */}
           <div>
-            <label className="block text-sm font-bold text-slate-900 mb-2">
+            <label className="block text-sm font-bold text-white mb-2">
               Registro Final (Ahora)
             </label>
             <select
@@ -220,9 +220,9 @@ export default function ComparisonView() {
               </p>
             </div>
           ) : (
-            <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
+            <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
               <div className="mb-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-2">Resultados de la Comparación</h2>
+                <h2 className="text-lg font-bold text-white mb-2">Resultados de la Comparación</h2>
                 <p className="text-sm text-gray-500">
                   Período: {Math.floor((new Date(log2.date).getTime() - new Date(log1.date).getTime()) / (1000 * 60 * 60 * 24))} días
                 </p>
@@ -242,16 +242,16 @@ export default function ComparisonView() {
 
           {/* Notes Comparison */}
           {(log1.notes || log2.notes) && selectedLog1 !== selectedLog2 && (
-            <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
-              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-4">
+            <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
+              <h3 className="text-sm font-bold text-white uppercase tracking-wide mb-4">
                 Notas Personales
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-gray-50 rounded-lg p-4">
+                <div className="bg-zinc-800/50 rounded-lg p-4">
                   <p className="text-xs text-gray-500 font-bold mb-2">
                     {new Date(log1.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}
                   </p>
-                  <p className="text-sm text-slate-900">
+                  <p className="text-sm text-white">
                     {log1.notes || <span className="text-gray-400 italic">Sin notas</span>}
                   </p>
                 </div>

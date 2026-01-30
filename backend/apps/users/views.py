@@ -28,6 +28,14 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     permission_classes = [permissions.IsAuthenticated]
     
+    def get_permissions(self):
+        """
+        Allow public access for user creation (registration)
+        """
+        if self.action == 'create':
+            return [permissions.AllowAny()]
+        return super().get_permissions()
+    
     def get_serializer_class(self):
         if self.action == 'create':
             return UserCreateSerializer

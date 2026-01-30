@@ -57,6 +57,24 @@ class UserCreateSerializer(serializers.ModelSerializer):
         if not validated_data.get('username'):
             validated_data['username'] = validated_data['email'].split('@')[0]
         
+        # Auto-assign 'member' role if no role is provided
+        if 'role' not in validated_data or validated_data['role'] is None:
+            try:
+                member_role = Role.objects.get(name='member')
+                validated_data['role'] = member_role
+            except Role.DoesNotExist:
+                # If member role doesn't exist, create it
+                member_role = Role.objects.create(
+                    name='member',
+                    description='Miembro del gimnasio',
+                    permissions={
+                        'classes': ['read'],
+                        'workouts': ['read'],
+                        'progress': ['create', 'read', 'update'],
+                    }
+                )
+                validated_data['role'] = member_role
+        
         user = User(**validated_data)
         user.set_password(password)
         user.save()

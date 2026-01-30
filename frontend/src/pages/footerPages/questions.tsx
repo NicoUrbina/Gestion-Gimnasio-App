@@ -71,7 +71,7 @@ const faqCategories = [
 ];
 
 const FaqItem = ({ q, a, isOpen, onClick }: { q: string; a: string; isOpen: boolean; onClick: () => void }) => (
-    <div className="border-b border-gray-200">
+    <div className="border-b border-zinc-700">
         <button
             onClick={onClick}
             className="w-full flex justify-between items-center text-left py-5 px-6 focus:outline-none group"
@@ -112,7 +112,7 @@ export default function QuestionsPage() {
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <Search className="w-5 h-5 text-gray-400" />
                             </div>
-                            <input className="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500 sm:text-sm" placeholder="Busca una pregunta (ej. precios, horarios)" type="text" />
+                            <input className="block w-full pl-12 pr-4 py-4 border border-zinc-700 rounded-lg bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-orange-500 sm:text-sm" placeholder="Busca una pregunta (ej. precios, horarios)" type="text" />
                         </div>
                     </div>
 
@@ -125,7 +125,7 @@ export default function QuestionsPage() {
                                     </div>
                                     <h2 className="text-2xl font-bold text-gray-900">{category.title}</h2>
                                 </div>
-                                <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                                <div className="bg-white rounded-xl border border-zinc-700 overflow-hidden">
                                     {category.questions.map((faq, faqIndex) => {
                                         const id = `${catIndex}-${faqIndex}`;
                                         return (
@@ -149,7 +149,7 @@ export default function QuestionsPage() {
                             <p className="text-orange-100 mt-2">Nuestro equipo de soporte está disponible 24/7 para ayudarte.</p>
                         </div>
                         <div className="flex-shrink-0 flex items-center gap-4">
-                            <a className="inline-flex items-center justify-center px-6 py-3 border border-white text-base font-bold rounded-lg bg-white text-orange-600 hover:bg-orange-50 transition-colors" href="#">
+                            <a className="inline-flex items-center justify-center px-6 py-3 border border-white text-base font-bold rounded-lg bg-white text-orange-600 hover:bg-orange-500/10 transition-colors" href="#">
                                 <Mail className="w-5 h-5 mr-2" />
                                 CONTÁCTANOS
                             </a>

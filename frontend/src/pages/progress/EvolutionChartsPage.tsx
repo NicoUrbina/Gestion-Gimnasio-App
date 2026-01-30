@@ -69,16 +69,16 @@ export default function EvolutionChartsPage() {
     return (
       <div>
         <div className="mb-6">
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
             <TrendingUp className="w-7 h-7 text-orange-500" />
             Mi Evolución Física
           </h1>
           <p className="text-gray-500 mt-1">Visualiza tu progreso a lo largo del tiempo</p>
         </div>
 
-        <div className="bg-white rounded-2xl border-2 border-gray-100 p-12 text-center">
+        <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-12 text-center">
           <Activity className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-slate-900 mb-2">No hay datos de evolución</h3>
+          <h3 className="text-lg font-bold text-white mb-2">No hay datos de evolución</h3>
           <p className="text-gray-500 mb-6">Registra tus medidas para ver tu progreso</p>
           <button
             onClick={() => window.location.href = '/progress/log'}
@@ -227,7 +227,7 @@ export default function EvolutionChartsPage() {
     <div>
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+        <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
           <TrendingUp className="w-7 h-7 text-orange-500" />
           Mi Evolución Física
         </h1>
@@ -242,7 +242,7 @@ export default function EvolutionChartsPage() {
           <select
             value={selectedPeriod}
             onChange={(e) => setSelectedPeriod(Number(e.target.value))}
-            className="px-4 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500 font-medium"
+            className="px-4 py-2 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500 font-medium"
           >
             <option value={30}>Últimos 30 días</option>
             <option value={60}>Últimos 2 meses</option>
@@ -259,7 +259,7 @@ export default function EvolutionChartsPage() {
             className={`px-4 py-2 rounded-xl font-medium transition-all ${
               selectedMetric === 'weight'
                 ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
-                : 'bg-gray-100 text-slate-900 hover:bg-gray-200'
+                : 'bg-gray-100 text-white hover:bg-gray-200'
             }`}
           >
             Peso
@@ -269,7 +269,7 @@ export default function EvolutionChartsPage() {
             className={`px-4 py-2 rounded-xl font-medium transition-all ${
               selectedMetric === 'composition'
                 ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
-                : 'bg-gray-100 text-slate-900 hover:bg-gray-200'
+                : 'bg-gray-100 text-white hover:bg-gray-200'
             }`}
           >
             Composición
@@ -279,7 +279,7 @@ export default function EvolutionChartsPage() {
             className={`px-4 py-2 rounded-xl font-medium transition-all ${
               selectedMetric === 'measurements'
                 ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
-                : 'bg-gray-100 text-slate-900 hover:bg-gray-200'
+                : 'bg-gray-100 text-white hover:bg-gray-200'
             }`}
           >
             Medidas
@@ -289,14 +289,14 @@ export default function EvolutionChartsPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white rounded-xl border-2 border-gray-100 p-4">
+        <div className="bg-zinc-900 rounded-xl border-2 border-zinc-800 p-4">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/30">
               <Scale className="w-6 h-6 text-white" />
             </div>
             <div>
               <div className="text-xs text-gray-500 uppercase font-medium">Peso Actual</div>
-              <div className="font-black text-2xl text-slate-900">{latestWeight?.toFixed(1)} kg</div>
+              <div className="font-black text-2xl text-white">{latestWeight?.toFixed(1)} kg</div>
               <div className={`text-xs font-medium ${weightChange >= 0 ? 'text-red-600' : 'text-green-600'}`}>
                 {weightChange >= 0 ? '+' : ''}{weightChange.toFixed(1)} kg
               </div>
@@ -304,14 +304,14 @@ export default function EvolutionChartsPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl border-2 border-gray-100 p-4">
+        <div className="bg-zinc-900 rounded-xl border-2 border-zinc-800 p-4">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
               <Activity className="w-6 h-6 text-white" />
             </div>
             <div>
               <div className="text-xs text-gray-500 uppercase font-medium">IMC</div>
-              <div className="font-black text-2xl text-slate-900">{latestBMI?.toFixed(1)}</div>
+              <div className="font-black text-2xl text-white">{latestBMI?.toFixed(1)}</div>
               <div className="text-xs text-gray-500">
                 {latestBMI && latestBMI < 18.5 ? 'Bajo peso' :
                  latestBMI && latestBMI < 25 ? 'Normal' :
@@ -321,14 +321,14 @@ export default function EvolutionChartsPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl border-2 border-gray-100 p-4">
+        <div className="bg-zinc-900 rounded-xl border-2 border-zinc-800 p-4">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/30">
               <Ruler className="w-6 h-6 text-white" />
             </div>
             <div>
               <div className="text-xs text-gray-500 uppercase font-medium">% Grasa</div>
-              <div className="font-black text-2xl text-slate-900">
+              <div className="font-black text-2xl text-white">
                 {latestBodyFat ? `${latestBodyFat.toFixed(1)}%` : 'N/A'}
               </div>
               <div className="text-xs text-gray-500">Composición corporal</div>
@@ -338,7 +338,7 @@ export default function EvolutionChartsPage() {
       </div>
 
       {/* Chart */}
-      <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
+      <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
         <div style={{ height: '400px' }}>
           {selectedMetric === 'weight' && <Line data={weightChartData} options={chartOptions} />}
           {selectedMetric === 'composition' && <Line data={compositionChartData} options={chartOptions} />}
