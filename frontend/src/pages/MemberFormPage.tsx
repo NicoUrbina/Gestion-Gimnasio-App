@@ -187,12 +187,12 @@ export default function MemberFormPage() {
       <div className="flex items-center gap-4 mb-6">
         <button
           onClick={() => navigate("/members")}
-          className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-slate-600" />
+          <ArrowLeft className="w-5 h-5 text-gray-400" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">
+          <h1 className="text-2xl font-bold text-white">
             {isEditing ? "Editar Miembro" : "Nuevo Miembro"}
           </h1>
           <p className="text-slate-500 mt-1">
@@ -206,8 +206,8 @@ export default function MemberFormPage() {
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Información de Cuenta */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">
+        <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
+          <h2 className="text-lg font-semibold text-white mb-4">
             Información de Cuenta
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -223,7 +223,7 @@ export default function MemberFormPage() {
                 disabled={isEditing}
                 className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all ${
                   errors.email ? "border-red-500" : "border-slate-200"
-                } ${isEditing ? "bg-slate-50" : ""}`}
+                } ${isEditing ? "bg-zinc-800/30" : ""}`}
                 placeholder="correo@ejemplo.com"
               />
               {errors.email && (
@@ -255,8 +255,8 @@ export default function MemberFormPage() {
         </div>
 
         {/* Información Personal */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">
+        <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
+          <h2 className="text-lg font-semibold text-white mb-4">
             Información Personal
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -272,7 +272,7 @@ export default function MemberFormPage() {
                 disabled={isEditing}
                 className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all ${
                   errors.first_name ? "border-red-500" : "border-slate-200"
-                } ${isEditing ? "bg-slate-50" : ""}`}
+                } ${isEditing ? "bg-zinc-800/30" : ""}`}
                 placeholder="Nombre"
               />
               {errors.first_name && (
@@ -292,7 +292,7 @@ export default function MemberFormPage() {
                 disabled={isEditing}
                 className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all ${
                   errors.last_name ? "border-red-500" : "border-slate-200"
-                } ${isEditing ? "bg-slate-50" : ""}`}
+                } ${isEditing ? "bg-zinc-800/30" : ""}`}
                 placeholder="Apellido"
               />
               {errors.last_name && (
@@ -361,8 +361,8 @@ export default function MemberFormPage() {
         </div>
 
         {/* Contacto de Emergencia */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">
+        <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
+          <h2 className="text-lg font-semibold text-white mb-4">
             Contacto de Emergencia
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -397,8 +397,8 @@ export default function MemberFormPage() {
         </div>
 
         {/* Notas Médicas */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">
+        <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
+          <h2 className="text-lg font-semibold text-white mb-4">
             Notas Médicas
           </h2>
           <textarea
@@ -416,7 +416,7 @@ export default function MemberFormPage() {
           <button
             type="button"
             onClick={() => navigate("/members")}
-            className="px-6 py-2.5 border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors"
+            className="px-6 py-2.5 border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-zinc-800/30 transition-colors"
           >
             Cancelar
           </button>

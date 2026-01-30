@@ -95,7 +95,7 @@ export default function PublicRegistrationPage() {
                   type="text"
                   value={formData.first_name}
                   onChange={(e) => updateField('first_name', e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                  className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
                   required
                 />
               </div>
@@ -108,7 +108,7 @@ export default function PublicRegistrationPage() {
                   type="text"
                   value={formData.last_name}
                   onChange={(e) => updateField('last_name', e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                  className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
                   required
                 />
               </div>
@@ -123,7 +123,7 @@ export default function PublicRegistrationPage() {
                     type="email"
                     value={formData.email}
                     onChange={(e) => updateField('email', e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                    className="w-full pl-10 pr-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
                     required
                   />
                 </div>
@@ -139,7 +139,7 @@ export default function PublicRegistrationPage() {
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => updateField('phone', e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                    className="w-full pl-10 pr-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
                   />
                 </div>
               </div>
@@ -154,7 +154,7 @@ export default function PublicRegistrationPage() {
                     type="date"
                     value={formData.birth_date}
                     onChange={(e) => updateField('birth_date', e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                    className="w-full pl-10 pr-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
                   />
                 </div>
               </div>
@@ -176,7 +176,7 @@ export default function PublicRegistrationPage() {
                     type="password"
                     value={formData.password}
                     onChange={(e) => updateField('password', e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                    className="w-full pl-10 pr-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
                     minLength={8}
                     required
                   />
@@ -194,7 +194,7 @@ export default function PublicRegistrationPage() {
                     type="password"
                     value={formData.password_confirm}
                     onChange={(e) => updateField('password_confirm', e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                    className="w-full pl-10 pr-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
                     minLength={8}
                     required
                   />
@@ -216,7 +216,7 @@ export default function PublicRegistrationPage() {
                   type="text"
                   value={formData.emergency_contact}
                   onChange={(e) => updateField('emergency_contact', e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                  className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
                 />
               </div>
 
@@ -228,7 +228,7 @@ export default function PublicRegistrationPage() {
                   type="tel"
                   value={formData.emergency_phone}
                   onChange={(e) => updateField('emergency_phone', e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                  className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
                 />
               </div>
             </div>

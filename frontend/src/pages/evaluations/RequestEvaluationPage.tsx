@@ -37,7 +37,7 @@ export default function RequestEvaluationPage() {
     <div className="max-w-2xl mx-auto">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+        <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
           <ClipboardCheck className="w-7 h-7 text-orange-500" />
           Solicitar Evaluación Física
         </h1>
@@ -47,10 +47,10 @@ export default function RequestEvaluationPage() {
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="bg-white rounded-2xl border-2 border-gray-100 p-6">
+      <form onSubmit={handleSubmit} className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
         {/* Personal Goals */}
         <div className="mb-6">
-          <label className="block text-sm font-bold text-slate-900 mb-2">
+          <label className="block text-sm font-bold text-white mb-2">
             Objetivos Personales *
           </label>
           <textarea
@@ -58,7 +58,7 @@ export default function RequestEvaluationPage() {
             onChange={(e) => setFormData({ ...formData, personal_goals: e.target.value })}
             placeholder="Ej: Quiero perder peso, ganar masa muscular, mejorar resistencia cardiovascular..."
             rows={5}
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500 resize-none"
+            className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500 resize-none"
             required
           />
           <p className="text-xs text-gray-500 mt-1">
@@ -68,7 +68,7 @@ export default function RequestEvaluationPage() {
 
         {/* Medical Notes */}
         <div className="mb-6">
-          <label className="block text-sm font-bold text-slate-900 mb-2">
+          <label className="block text-sm font-bold text-white mb-2">
             Notas Médicas
           </label>
           <textarea
@@ -76,7 +76,7 @@ export default function RequestEvaluationPage() {
             onChange={(e) => setFormData({ ...formData, medical_notes: e.target.value })}
             placeholder="Ej: Lesión en rodilla derecha, problemas de espalda baja, alergias..."
             rows={4}
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500 resize-none"
+            className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500 resize-none"
           />
           <p className="text-xs text-gray-500 mt-1">
             Menciona cualquier condición médica, lesión o restricción
@@ -100,7 +100,7 @@ export default function RequestEvaluationPage() {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="flex-1 px-6 py-3 border-2 border-gray-200 rounded-xl font-bold text-slate-900 hover:bg-gray-50 transition-colors"
+            className="flex-1 px-6 py-3 border-2 border-zinc-700 rounded-xl font-bold text-white hover:bg-zinc-800/50 transition-colors"
           >
             Cancelar
           </button>

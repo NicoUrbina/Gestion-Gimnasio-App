@@ -58,8 +58,8 @@ export default function MemberDetailPage() {
         label: 'Activo',
       },
       inactive: {
-        color: 'text-slate-600',
-        bg: 'bg-slate-100',
+        color: 'text-gray-400',
+        bg: 'bg-zinc-800',
         icon: <XCircle className="w-5 h-5" />,
         label: 'Inactivo',
       },
@@ -105,19 +105,19 @@ export default function MemberDetailPage() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('/members')}
-          className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-slate-600" />
+          <ArrowLeft className="w-5 h-5 text-gray-400" />
         </button>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-slate-900">
+          <h1 className="text-2xl font-bold text-white">
             {member.user?.first_name} {member.user?.last_name}
           </h1>
           <p className="text-slate-500 mt-1">Detalles del miembro</p>
         </div>
         <button
           onClick={() => navigate(`/members/${id}/edit`)}
-          className="flex items-center gap-2 px-4 py-2.5 border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors"
+          className="flex items-center gap-2 px-4 py-2.5 border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-zinc-800/30 transition-colors"
         >
           <Edit className="w-5 h-5" />
           Editar
@@ -127,12 +127,12 @@ export default function MemberDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Card */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-2xl border border-slate-200 p-6">
+          <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
             <div className="flex flex-col items-center text-center">
               <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-3xl font-bold mb-4">
                 {member.user?.first_name?.charAt(0) || 'M'}
               </div>
-              <h2 className="text-xl font-semibold text-slate-900">
+              <h2 className="text-xl font-semibold text-white">
                 {member.user?.first_name} {member.user?.last_name}
               </h2>
               <span
@@ -146,24 +146,24 @@ export default function MemberDetailPage() {
             <div className="mt-6 space-y-4 border-t border-slate-100 pt-6">
               <div className="flex items-center gap-3 text-sm">
                 <Mail className="w-5 h-5 text-slate-400" />
-                <span className="text-slate-600">{member.user?.email}</span>
+                <span className="text-gray-400">{member.user?.email}</span>
               </div>
               {member.phone && (
                 <div className="flex items-center gap-3 text-sm">
                   <Phone className="w-5 h-5 text-slate-400" />
-                  <span className="text-slate-600">{member.phone}</span>
+                  <span className="text-gray-400">{member.phone}</span>
                 </div>
               )}
               {member.address && (
                 <div className="flex items-center gap-3 text-sm">
                   <MapPin className="w-5 h-5 text-slate-400" />
-                  <span className="text-slate-600">{member.address}</span>
+                  <span className="text-gray-400">{member.address}</span>
                 </div>
               )}
               {member.date_of_birth && (
                 <div className="flex items-center gap-3 text-sm">
                   <Calendar className="w-5 h-5 text-slate-400" />
-                  <span className="text-slate-600">
+                  <span className="text-gray-400">
                     {new Date(member.date_of_birth).toLocaleDateString('es-ES')}
                   </span>
                 </div>
@@ -171,7 +171,7 @@ export default function MemberDetailPage() {
               {member.gender && (
                 <div className="flex items-center gap-3 text-sm">
                   <User className="w-5 h-5 text-slate-400" />
-                  <span className="text-slate-600">
+                  <span className="text-gray-400">
                     {member.gender === 'M' ? 'Masculino' : member.gender === 'F' ? 'Femenino' : 'Otro'}
                   </span>
                 </div>
@@ -180,7 +180,7 @@ export default function MemberDetailPage() {
 
             <div className="mt-6 pt-6 border-t border-slate-100 grid grid-cols-2 gap-4 text-center">
               <div>
-                <p className="text-2xl font-bold text-slate-900">
+                <p className="text-2xl font-bold text-white">
                   {member.joined_date
                     ? new Date(member.joined_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'short' })
                     : '-'}
@@ -188,7 +188,7 @@ export default function MemberDetailPage() {
                 <p className="text-sm text-slate-500">Miembro desde</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-slate-900">
+                <p className="text-2xl font-bold text-white">
                   {member.days_inactive || 0}
                 </p>
                 <p className="text-sm text-slate-500">Días inactivo</p>
@@ -200,9 +200,9 @@ export default function MemberDetailPage() {
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Active Membership */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6">
+          <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-slate-400" />
                 Membresía Actual
               </h3>
@@ -218,7 +218,7 @@ export default function MemberDetailPage() {
               <div className="bg-gradient-to-r from-purple-50 to-cyan-50 rounded-xl p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-semibold text-slate-900">{activeMembership.plan_name}</p>
+                    <p className="font-semibold text-white">{activeMembership.plan_name}</p>
                     <p className="text-sm text-slate-500 mt-1">
                       Vence: {new Date(activeMembership.end_date).toLocaleDateString('es-ES')}
                     </p>
@@ -247,14 +247,14 @@ export default function MemberDetailPage() {
 
           {/* Emergency Contact */}
           {(member.emergency_contact_name || member.emergency_contact_phone) && (
-            <div className="bg-white rounded-2xl border border-slate-200 p-6">
-              <h3 className="text-lg font-semibold text-slate-900 mb-4">Contacto de Emergencia</h3>
+            <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Contacto de Emergencia</h3>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
                   <AlertCircle className="w-6 h-6 text-red-600" />
                 </div>
                 <div>
-                  <p className="font-medium text-slate-900">{member.emergency_contact_name || 'No especificado'}</p>
+                  <p className="font-medium text-white">{member.emergency_contact_name || 'No especificado'}</p>
                   <p className="text-sm text-slate-500">{member.emergency_contact_phone || 'Sin teléfono'}</p>
                 </div>
               </div>
@@ -263,19 +263,19 @@ export default function MemberDetailPage() {
 
           {/* Medical Notes */}
           {member.medical_notes && (
-            <div className="bg-white rounded-2xl border border-slate-200 p-6">
-              <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2 mb-4">
+            <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
+              <h3 className="text-lg font-semibold text-white flex items-center gap-2 mb-4">
                 <Activity className="w-5 h-5 text-slate-400" />
                 Notas Médicas
               </h3>
-              <p className="text-slate-600 whitespace-pre-wrap">{member.medical_notes}</p>
+              <p className="text-gray-400 whitespace-pre-wrap">{member.medical_notes}</p>
             </div>
           )}
 
           {/* Membership History */}
-          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+          <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
             <div className="px-6 py-4 border-b border-slate-100">
-              <h3 className="text-lg font-semibold text-slate-900">Historial de Membresías</h3>
+              <h3 className="text-lg font-semibold text-white">Historial de Membresías</h3>
             </div>
             {memberships.length === 0 ? (
               <div className="p-6 text-center text-slate-400">
@@ -284,9 +284,9 @@ export default function MemberDetailPage() {
             ) : (
               <div className="divide-y divide-slate-100">
                 {memberships.map((membership) => (
-                  <div key={membership.id} className="px-6 py-4 flex items-center justify-between hover:bg-slate-50">
+                  <div key={membership.id} className="px-6 py-4 flex items-center justify-between hover:bg-zinc-800/30">
                     <div>
-                      <p className="font-medium text-slate-900">{membership.plan_name}</p>
+                      <p className="font-medium text-white">{membership.plan_name}</p>
                       <p className="text-sm text-slate-500">
                         {new Date(membership.start_date).toLocaleDateString('es-ES')} -{' '}
                         {new Date(membership.end_date).toLocaleDateString('es-ES')}
@@ -297,7 +297,7 @@ export default function MemberDetailPage() {
                         membership.status === 'active'
                           ? 'bg-emerald-100 text-emerald-700'
                           : membership.status === 'expired'
-                          ? 'bg-slate-100 text-slate-600'
+                          ? 'bg-zinc-800 text-gray-400'
                           : 'bg-red-100 text-red-700'
                       }`}
                     >

@@ -101,12 +101,12 @@ export default function MembershipPlanFormPage() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('/memberships/plans')}
-          className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-slate-600" />
+          <ArrowLeft className="w-5 h-5 text-gray-400" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">
+          <h1 className="text-2xl font-bold text-white">
             {isEditMode ? 'Editar Plan' : 'Crear Nuevo Plan'}
           </h1>
           <p className="text-slate-500 mt-1">
@@ -123,7 +123,7 @@ export default function MembershipPlanFormPage() {
       )}
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-slate-200 p-6">
+      <form onSubmit={handleSubmit} className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
         <div className="space-y-6">
           {/* Información Básica */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -137,7 +137,7 @@ export default function MembershipPlanFormPage() {
                 value={formData.name}
                 onChange={(e) => handleChange('name', e.target.value)}
                 placeholder="Ej: Mensual Básico"
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-2.5 bg-zinc-800/30 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
               />
             </div>
 
@@ -155,7 +155,7 @@ export default function MembershipPlanFormPage() {
                   value={formData.price}
                   onChange={(e) => handleChange('price', e.target.value)}
                   placeholder="0.00"
-                  className="w-full pl-8 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  className="w-full pl-8 pr-4 py-2.5 bg-zinc-800/30 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 />
               </div>
             </div>
@@ -171,7 +171,7 @@ export default function MembershipPlanFormPage() {
               value={formData.description}
               onChange={(e) => handleChange('description', e.target.value)}
               placeholder="Describe los beneficios del plan..."
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
+              className="w-full px-4 py-2.5 bg-zinc-800/30 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
             />
           </div>
 
@@ -185,7 +185,7 @@ export default function MembershipPlanFormPage() {
                 required
                 value={formData.duration_days}
                 onChange={(e) => handleChange('duration_days', parseInt(e.target.value))}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-4 py-2.5 bg-zinc-800/30 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 <option value={30}>30 días (Mensual)</option>
                 <option value={90}>90 días (Trimestral)</option>
@@ -204,7 +204,7 @@ export default function MembershipPlanFormPage() {
                 value={formData.max_classes_per_month || ''}
                 onChange={(e) => handleChange('max_classes_per_month', e.target.value ? parseInt(e.target.value) : null)}
                 placeholder="Dejar vacío para ilimitadas"
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-2.5 bg-zinc-800/30 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
               />
             </div>
           </div>
@@ -221,7 +221,7 @@ export default function MembershipPlanFormPage() {
                 max="90"
                 value={formData.max_freeze_days}
                 onChange={(e) => handleChange('max_freeze_days', parseInt(e.target.value))}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-2.5 bg-zinc-800/30 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
               />
             </div>
           )}
@@ -236,7 +236,7 @@ export default function MembershipPlanFormPage() {
                 className="w-5 h-5 text-purple-600 border-slate-300 rounded focus:ring-purple-500"
               />
               <div>
-                <span className="text-sm font-medium text-slate-900">Incluye entrenador personal</span>
+                <span className="text-sm font-medium text-white">Incluye entrenador personal</span>
                 <p className="text-xs text-slate-500">Acceso a sesiones con entrenador</p>
               </div>
             </label>
@@ -249,7 +249,7 @@ export default function MembershipPlanFormPage() {
                 className="w-5 h-5 text-purple-600 border-slate-300 rounded focus:ring-purple-500"
               />
               <div>
-                <span className="text-sm font-medium text-slate-900">Permite congelamiento</span>
+                <span className="text-sm font-medium text-white">Permite congelamiento</span>
                 <p className="text-xs text-slate-500">Los miembros pueden pausar su membresía</p>
               </div>
             </label>
@@ -262,7 +262,7 @@ export default function MembershipPlanFormPage() {
                 className="w-5 h-5 text-purple-600 border-slate-300 rounded focus:ring-purple-500"
               />
               <div>
-                <span className="text-sm font-medium text-slate-900">Plan activo</span>
+                <span className="text-sm font-medium text-white">Plan activo</span>
                 <p className="text-xs text-slate-500">Disponible para nuevas suscripciones</p>
               </div>
             </label>
@@ -274,7 +274,7 @@ export default function MembershipPlanFormPage() {
           <button
             type="button"
             onClick={() => navigate('/memberships/plans')}
-            className="px-4 py-2.5 text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
+            className="px-4 py-2.5 text-slate-700 hover:bg-zinc-800 rounded-xl transition-colors"
           >
             Cancelar
           </button>

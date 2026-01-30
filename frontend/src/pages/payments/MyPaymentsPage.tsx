@@ -43,7 +43,7 @@ export default function MyPaymentsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Mis Pagos</h1>
+          <h1 className="text-2xl font-bold text-white">Mis Pagos</h1>
           <p className="text-slate-500 mt-1">Historial de tus pagos y transacciones</p>
         </div>
         <button
@@ -56,7 +56,7 @@ export default function MyPaymentsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-1">
+      <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-1">
         <div className="grid grid-cols-4 gap-2">
           {[
             { key: 'all', label: 'Todos' },
@@ -71,7 +71,7 @@ export default function MyPaymentsPage() {
                 px-4 py-2.5 rounded-xl font-medium text-sm transition-all
                 ${activeTab === tab.key
                   ? 'bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg shadow-purple-500/25'
-                  : 'text-slate-600 hover:bg-slate-50'
+                  : 'text-gray-400 hover:bg-zinc-800/30'
                 }
               `}
             >
@@ -82,7 +82,7 @@ export default function MyPaymentsPage() {
       </div>
 
       {/* Payments List */}
-      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center h-64">
             <Loader2 className="w-8 h-8 text-purple-600 animate-spin" />
@@ -104,17 +104,17 @@ export default function MyPaymentsPage() {
               <div
                 key={payment.id}
                 onClick={() => navigate(`/payments/${payment.id}`)}
-                className="p-4 hover:bg-slate-50 transition-colors cursor-pointer"
+                className="p-4 hover:bg-zinc-800/30 transition-colors cursor-pointer"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <PaymentMethodIcon method={payment.payment_method} />
-                      <h3 className="font-semibold text-slate-900">
+                      <h3 className="font-semibold text-white">
                         ${parseFloat(payment.amount).toFixed(2)}
                       </h3>
                     </div>
-                    <p className="text-sm text-slate-600 mb-2">
+                    <p className="text-sm text-gray-400 mb-2">
                       {payment.description || payment.payment_method_display}
                     </p>
                     <div className="flex items-center gap-3">

@@ -140,7 +140,7 @@ export default function RolesSettingsPage() {
           const config = roleConfig[role.name.toLowerCase()] || {
             icon: Users,
             color: 'text-gray-400',
-            bgColor: 'bg-gray-500/20',
+            bgColor: 'bg-zinc-800/500/20',
           };
           const Icon = config.icon;
           const permissions = defaultPermissions[role.name.toLowerCase()] || {};

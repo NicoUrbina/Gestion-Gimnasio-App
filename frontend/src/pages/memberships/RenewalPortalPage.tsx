@@ -103,15 +103,15 @@ export default function RenewalPortalPage() {
     return (
       <div>
         <div className="mb-6">
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
             <CreditCard className="w-7 h-7 text-orange-500" />
             Renovar Membresía
           </h1>
         </div>
 
-        <div className="bg-white rounded-2xl border-2 border-gray-100 p-12 text-center">
+        <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-12 text-center">
           <AlertCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-slate-900 mb-2">No tienes una membresía activa</h3>
+          <h3 className="text-lg font-bold text-white mb-2">No tienes una membresía activa</h3>
           <p className="text-gray-500">Contacta con recepción para adquirir una membresía</p>
         </div>
       </div>
@@ -127,7 +127,7 @@ export default function RenewalPortalPage() {
     <div className="max-w-4xl mx-auto">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+        <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
           <CreditCard className="w-7 h-7 text-orange-500" />
           Renovar Membresía
         </h1>
@@ -158,18 +158,18 @@ export default function RenewalPortalPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column - Current Membership Info */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
-            <h2 className="text-lg font-bold text-slate-900 mb-4">Membresía Actual</h2>
+          <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
+            <h2 className="text-lg font-bold text-white mb-4">Membresía Actual</h2>
             
             <div className="space-y-3">
               <div>
                 <div className="text-xs text-gray-500 uppercase font-medium">Plan</div>
-                <div className="font-bold text-slate-900">{membership.plan_name}</div>
+                <div className="font-bold text-white">{membership.plan_name}</div>
               </div>
 
               <div>
                 <div className="text-xs text-gray-500 uppercase font-medium">Vence</div>
-                <div className="font-bold text-slate-900">
+                <div className="font-bold text-white">
                   {new Date(membership.end_date).toLocaleDateString('es-ES', {
                     day: '2-digit',
                     month: 'long',
@@ -201,7 +201,7 @@ export default function RenewalPortalPage() {
 
               <div>
                 <div className="text-xs text-gray-500 uppercase font-medium">Precio Mensual</div>
-                <div className="font-bold text-slate-900">${membership.plan_price}</div>
+                <div className="font-bold text-white">${membership.plan_price}</div>
               </div>
             </div>
           </div>
@@ -210,8 +210,8 @@ export default function RenewalPortalPage() {
         {/* Right Column - Renewal Options */}
         <div className="lg:col-span-2 space-y-6">
           {/* Duration Selection */}
-          <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
-            <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+          <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
+            <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-orange-500" />
               Selecciona la Duración
             </h2>
@@ -226,11 +226,11 @@ export default function RenewalPortalPage() {
                     className={`p-4 rounded-xl border-2 transition-all ${
                       isSelected
                         ? 'border-orange-500 bg-orange-50'
-                        : 'border-gray-200 hover:border-orange-200'
+                        : 'border-zinc-700 hover:border-orange-200'
                     }`}
                   >
                     <div className="text-center">
-                      <div className="font-black text-2xl text-slate-900">{option.months}</div>
+                      <div className="font-black text-2xl text-white">{option.months}</div>
                       <div className="text-xs text-gray-500 uppercase">
                         {option.months === 1 ? 'Mes' : 'Meses'}
                       </div>
@@ -247,13 +247,13 @@ export default function RenewalPortalPage() {
           </div>
 
           {/* Payment Method */}
-          <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
-            <h2 className="text-lg font-bold text-slate-900 mb-4">Método de Pago</h2>
+          <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
+            <h2 className="text-lg font-bold text-white mb-4">Método de Pago</h2>
             
             <select
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500 font-medium"
+              className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500 font-medium"
             >
               <option value="efectivo">Efectivo</option>
               <option value="tarjeta">Tarjeta</option>

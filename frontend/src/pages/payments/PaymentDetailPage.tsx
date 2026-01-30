@@ -88,12 +88,12 @@ export default function PaymentDetailPage() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('/payments')}
-          className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-slate-600" />
+          <ArrowLeft className="w-5 h-5 text-gray-400" />
         </button>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-slate-900">Detalle de Pago</h1>
+          <h1 className="text-2xl font-bold text-white">Detalle de Pago</h1>
           <p className="text-slate-500 mt-1">ID: #{payment.id}</p>
         </div>
         <PaymentStatusBadge status={payment.status} />
@@ -122,33 +122,33 @@ export default function PaymentDetailPage() {
         {/* Main Info */}
         <div className="lg:col-span-2 space-y-6">
           {/* Payment Info */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6">
-            <h2 className="text-lg font-bold text-slate-900 mb-4">Información del Pago</h2>
+          <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
+            <h2 className="text-lg font-bold text-white mb-4">Información del Pago</h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm text-slate-500">Miembro</p>
                 <div className="flex items-center gap-2 mt-1">
                   <User className="w-4 h-4 text-slate-400" />
-                  <p className="font-medium text-slate-900">{payment.member_name}</p>
+                  <p className="font-medium text-white">{payment.member_name}</p>
                 </div>
               </div>
               <div>
                 <p className="text-sm text-slate-500">Método de Pago</p>
                 <div className="flex items-center gap-2 mt-1">
                   <PaymentMethodIcon method={payment.payment_method} className="w-4 h-4" />
-                  <p className="font-medium text-slate-900">{payment.payment_method_display}</p>
+                  <p className="font-medium text-white">{payment.payment_method_display}</p>
                 </div>
               </div>
               {payment.reference_number && (
                 <div>
                   <p className="text-sm text-slate-500">Nº Referencia</p>
-                  <p className="font-medium text-slate-900 mt-1">{payment.reference_number}</p>
+                  <p className="font-medium text-white mt-1">{payment.reference_number}</p>
                 </div>
               )}
               {payment.description && (
                 <div className={payment.reference_number ? '' : 'col-span-2'}>
                   <p className="text-sm text-slate-500">Descripción</p>
-                  <p className="font-medium text-slate-900 mt-1">{payment.description}</p>
+                  <p className="font-medium text-white mt-1">{payment.description}</p>
                 </div>
               )}
             </div>
@@ -162,8 +162,8 @@ export default function PaymentDetailPage() {
 
           {/* Receipt */}
           {payment.receipt_image && (
-            <div className="bg-white rounded-2xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-4">Comprobante</h2>
+            <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
+              <h2 className="text-lg font-bold text-white mb-4">Comprobante</h2>
               <img
                 src={payment.receipt_image}
                 alt="Comprobante"
@@ -188,8 +188,8 @@ export default function PaymentDetailPage() {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Timeline */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6">
-            <h2 className="text-lg font-bold text-slate-900 mb-4">Historial</h2>
+          <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
+            <h2 className="text-lg font-bold text-white mb-4">Historial</h2>
             <div className="space-y-4">
               <div className="flex gap-3">
                 <div className="flex flex-col items-center">
@@ -197,7 +197,7 @@ export default function PaymentDetailPage() {
                   <div className="w-px h-full bg-slate-200 my-1" />
                 </div>
                 <div className="flex-1 pb-4">
-                  <p className="font-medium text-slate-900 text-sm">Pago Registrado</p>
+                  <p className="font-medium text-white text-sm">Pago Registrado</p>
                   <p className="text-xs text-slate-500 mt-1">
                     {new Date(payment.created_at).toLocaleDateString('es-ES')}
                   </p>
@@ -211,7 +211,7 @@ export default function PaymentDetailPage() {
                       }`} />
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium text-slate-900 text-sm">
+                    <p className="font-medium text-white text-sm">
                       {payment.status === 'completed' ? 'Aprobado' : 'Rechazado'}
                     </p>
                     <p className="text-xs text-slate-500 mt-1">
@@ -225,8 +225,8 @@ export default function PaymentDetailPage() {
 
           {/* Actions */}
           {payment.status === 'pending' && (
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-3">
-              <h3 className="font-bold text-slate-900 mb-4">Acciones</h3>
+            <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6 space-y-3">
+              <h3 className="font-bold text-white mb-4">Acciones</h3>
               <button
                 onClick={handleApprove}
                 disabled={acting}
@@ -251,9 +251,9 @@ export default function PaymentDetailPage() {
       {/* Reject Modal */}
       {showRejectModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold text-slate-900 mb-4">Rechazar Pago</h3>
-            <p className="text-sm text-slate-600 mb-4">
+          <div className="bg-zinc-900 rounded-2xl p-6 max-w-md w-full">
+            <h3 className="text-lg font-bold text-white mb-4">Rechazar Pago</h3>
+            <p className="text-sm text-gray-400 mb-4">
               Ingresa el motivo del rechazo. El miembro verá este mensaje.
             </p>
             <textarea
@@ -269,7 +269,7 @@ export default function PaymentDetailPage() {
                   setShowRejectModal(false);
                   setRejectReason('');
                 }}
-                className="flex-1 px-4 py-2.5 border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-all"
+                className="flex-1 px-4 py-2.5 border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-zinc-800/30 transition-all"
               >
                 Cancelar
               </button>

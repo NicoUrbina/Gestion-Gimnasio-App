@@ -97,7 +97,7 @@ export default function ProgressDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
             <TrendingUp className="w-7 h-7 text-orange-500" />
             Mi Progreso
           </h1>

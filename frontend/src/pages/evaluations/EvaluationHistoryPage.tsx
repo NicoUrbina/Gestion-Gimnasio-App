@@ -57,7 +57,7 @@ export default function EvaluationHistoryPage() {
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
             <ClipboardCheck className="w-7 h-7 text-orange-500" />
             Mis Evaluaciones
           </h1>
@@ -73,9 +73,9 @@ export default function EvaluationHistoryPage() {
 
       {/* Evaluations List */}
       {evaluations.length === 0 ? (
-        <div className="bg-white rounded-2xl border-2 border-gray-100 p-12 text-center">
+        <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-12 text-center">
           <ClipboardCheck className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-slate-900 mb-2">No tienes evaluaciones</h3>
+          <h3 className="text-lg font-bold text-white mb-2">No tienes evaluaciones</h3>
           <p className="text-gray-500 mb-6">Solicita tu primera evaluación física</p>
           <button
             onClick={() => navigate('/evaluations/request')}
@@ -92,7 +92,7 @@ export default function EvaluationHistoryPage() {
             return (
               <div
                 key={evaluation.id}
-                className="bg-white rounded-2xl border-2 border-gray-100 p-5 hover:border-orange-200 hover:shadow-lg transition-all cursor-pointer"
+                className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-5 hover:border-orange-200 hover:shadow-lg transition-all cursor-pointer"
                 onClick={() => navigate(`/evaluations/${evaluation.id}`)}
               >
                 {/* Header */}
@@ -102,7 +102,7 @@ export default function EvaluationHistoryPage() {
                       <ClipboardCheck className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 text-lg">
+                      <h3 className="font-bold text-white text-lg">
                         Evaluación Física
                       </h3>
                       <div className="flex items-center gap-2 mt-1">
@@ -158,7 +158,7 @@ export default function EvaluationHistoryPage() {
 
                 {/* Goals */}
                 {evaluation.personal_goals && (
-                  <div className="bg-gray-50 rounded-lg p-3">
+                  <div className="bg-zinc-800/50 rounded-lg p-3">
                     <div className="text-xs text-gray-500 uppercase font-medium mb-1">Objetivos</div>
                     <p className="text-sm text-gray-700 line-clamp-2">
                       {evaluation.personal_goals}

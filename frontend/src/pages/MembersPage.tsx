@@ -73,8 +73,8 @@ export default function MembersPage() {
         label: 'Activo',
       },
       inactive: {
-        color: 'text-slate-600',
-        bg: 'bg-slate-100',
+        color: 'text-gray-400',
+        bg: 'bg-zinc-800',
         icon: <XCircle className="w-4 h-4" />,
         label: 'Inactivo',
       },
