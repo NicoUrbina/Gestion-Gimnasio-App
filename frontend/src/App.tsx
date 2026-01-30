@@ -31,6 +31,13 @@ import MyPaymentsPage from "./pages/payments/MyPaymentsPage"
 import PaymentFormPage from "./pages/payments/PaymentFormPage"
 import PaymentDetailPage from "./pages/payments/PaymentDetailPage"
 
+// Progress
+import ProgressDashboard from "./pages/progress/ProgressDashboard"
+import UpdateProgressPage from "./pages/progress/UpdateProgressPage"
+import EvolutionCharts from "./pages/progress/EvolutionCharts"
+import ProgressHistory from "./pages/progress/ProgressHistory"
+import ComparisonView from "./pages/progress/ComparisonView"
+
 // Settings
 import {
   SettingsPage,
@@ -116,7 +123,13 @@ function App() {
 
             {/* Placeholder pages */}
             <Route path="/staff" element={<PlaceholderPage title="Entrenadores" />} />
-            <Route path="/progress" element={<PlaceholderPage title="Progreso" />} />
+            
+            {/* Progress */}
+            <Route path="/progress" element={<ProgressDashboard />} />
+            <Route path="/progress/update" element={<UpdateProgressPage />} />
+            <Route path="/progress/evolution" element={<EvolutionCharts />} />
+            <Route path="/progress/history" element={<ProgressHistory />} />
+            <Route path="/progress/compare" element={<ComparisonView />} />
 
             {/* Settings - Admin Only */}
             <Route element={<AdminRoute />}>
