@@ -59,10 +59,14 @@ import AdminRoute from "./components/AdminRoute"
 import QuestionsPage from "./pages/footerPages/questions"
 import WorkWithUsPage from "./pages/footerPages/WorkWithUs"
 import PlantsPricesPage from "./pages/classes/pages Index/PlantsPrices"
+import InstructorsPage from "./pages/instructors/InstructorsPage"
+import TermsAndConditionsPage from "./pages/classes/pages Index/TermsAndConditions"
+import PrivacyPage from "./pages/classes/pages Index/privacy"
 import Step1SchedulePage from "./pages/classes/pages Index/Step1Schedule"
 import Step2SchedulePage from "./pages/classes/pages Index/Step2Schedule"
 import Step3SchedulePage from "./pages/classes/pages Index/Step3Schedule"
 import Step4SchedulePage from "./pages/classes/pages Index/Step4Schedule"
+import ScrollToTop from "./components/ScrollToTop"
 
 
 function App() {
@@ -82,6 +86,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Toaster
         position="top-right"
         toastOptions={{
@@ -100,7 +105,10 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/preguntas-frecuentes" element={<QuestionsPage />} />
         <Route path="/trabaja-con-nosotros" element={<WorkWithUsPage />} />
+        <Route path="/terminos" element={<TermsAndConditionsPage />} />
+        <Route path="/privacidad" element={<PrivacyPage />} />
         <Route path="/planes-y-precios" element={<PlantsPricesPage />} />
+        <Route path="/entrenadores" element={<InstructorsPage />} />
         <Route path="/step1-schedule" element={<Step1SchedulePage />} />
         <Route path="/step2-schedule" element={<Step2SchedulePage />} />
         <Route path="/step3-schedule" element={<Step3SchedulePage />} />

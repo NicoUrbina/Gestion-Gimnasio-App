@@ -44,14 +44,14 @@ export default function GymSettingsPage() {
     formState: { isSubmitting },
   } = useForm<GymFormData>({
     defaultValues: {
-      name: 'GymPro Fitness Center',
+      name: 'NEXO Gym Fitness Center',
       address: 'Av. Principal #123, Ciudad',
       phone: '+58 412 123 4567',
-      email: 'info@gympro.com',
-      website: 'www.gympro.com',
+      email: 'info@nexogym.com',
+      website: 'www.nexogym.com',
       description: 'El mejor gimnasio de la ciudad con equipos de última generación.',
-      instagram: '@gympro_fitness',
-      facebook: 'GymProFitness',
+      instagram: '@nexogym_fitness',
+      facebook: 'NexoGymFitness',
     },
   });
 

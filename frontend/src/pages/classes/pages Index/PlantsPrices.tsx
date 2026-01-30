@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import Navbar from '../../../components/Navbar'
 import Footer from '../../../components/footer';
+import PaymentModal from '../../../components/PaymentModal';
 
 interface PlanFeature {
     feature: string;
@@ -108,6 +110,18 @@ const renderFeatureValue = (value: string | boolean, isHighlighted: boolean = fa
 };
 
 export default function PlantsPrices() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedPlan, setSelectedPlan] = useState<{ title: string; priceLine: string } | null>(null);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    const handleSelectPlan = (title: string, priceLine: string) => {
+        setSelectedPlan({ title, priceLine });
+        setIsModalOpen(true);
+    };
+
     return (
         <div className="bg-white min-h-screen font-sans text-gray-900">
             <Navbar bgColor="bg-gray-900" />
@@ -138,7 +152,10 @@ export default function PlantsPrices() {
                                             <h3 className="text-xl font-bold text-gray-900 mb-1">Por Día</h3>
                                             <div className="text-3xl font-black text-orange-600 mb-1">3$ <span className="text-base font-normal text-gray-500">/día</span></div>
                                             <p className="text-xs text-gray-500 mb-4">Acceso básico</p>
-                                            <button className="w-full py-2 px-4 rounded-lg bg-transparent border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white font-bold text-sm transition-colors duration-200">
+                                            <button
+                                                onClick={() => handleSelectPlan("Por Día", "3$ /día")}
+                                                className="w-full py-2 px-4 rounded-lg bg-transparent border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white font-bold text-sm transition-colors duration-200"
+                                            >
                                                 Elegir
                                             </button>
                                         </th>
@@ -150,7 +167,10 @@ export default function PlantsPrices() {
                                             <h3 className="text-xl font-bold text-gray-900 mb-1">Por Mes</h3>
                                             <div className="text-3xl font-black text-orange-600 mb-1">25$ <span className="text-base font-normal text-gray-500">/mes</span></div>
                                             <p className="text-xs text-gray-500 mb-4">Para constantes</p>
-                                            <button className="w-full py-2 px-4 rounded-lg bg-orange-600 text-white font-bold text-sm hover:bg-orange-700 shadow-lg shadow-orange-600/20 transition-all duration-200 transform hover:-translate-y-0.5">
+                                            <button
+                                                onClick={() => handleSelectPlan("Por Mes", "25$ /mes")}
+                                                className="w-full py-2 px-4 rounded-lg bg-orange-600 text-white font-bold text-sm hover:bg-orange-700 shadow-lg shadow-orange-600/20 transition-all duration-200 transform hover:-translate-y-0.5"
+                                            >
                                                 Elegir
                                             </button>
                                         </th>
@@ -161,7 +181,10 @@ export default function PlantsPrices() {
                                             <h3 className="text-xl font-bold text-gray-900 mb-1">3 Meses</h3>
                                             <div className="text-3xl font-black text-orange-600 mb-1">50$ <span className="text-base font-normal text-gray-500">/3 meses</span></div>
                                             <p className="text-xs text-gray-500 mb-4">Mejor valor</p>
-                                            <button className="w-full py-2 px-4 rounded-lg bg-transparent border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white font-bold text-sm transition-colors duration-200">
+                                            <button
+                                                onClick={() => handleSelectPlan("3 Meses", "50$ / 3 meses")}
+                                                className="w-full py-2 px-4 rounded-lg bg-transparent border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white font-bold text-sm transition-colors duration-200"
+                                            >
                                                 Elegir
                                             </button>
                                         </th>
@@ -170,7 +193,10 @@ export default function PlantsPrices() {
                                             <h3 className="text-xl font-bold text-gray-900 mb-1">6 Meses</h3>
                                             <div className="text-3xl font-black text-orange-600 mb-1">90$ <span className="text-base font-normal text-gray-500">/6 meses</span></div>
                                             <p className="text-xs text-gray-500 mb-4">Compromiso medio</p>
-                                            <button className="w-full py-2 px-4 rounded-lg bg-transparent border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white font-bold text-sm transition-colors duration-200">
+                                            <button
+                                                onClick={() => handleSelectPlan("6 Meses", "90$ / 6 meses")}
+                                                className="w-full py-2 px-4 rounded-lg bg-transparent border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white font-bold text-sm transition-colors duration-200"
+                                            >
                                                 Elegir
                                             </button>
                                         </th>
@@ -181,7 +207,10 @@ export default function PlantsPrices() {
                                             <h3 className="text-xl font-bold text-gray-900 mb-1">Anual</h3>
                                             <div className="text-3xl font-black text-orange-600 mb-1">160$ <span className="text-base font-normal text-gray-500">/año</span></div>
                                             <p className="text-xs text-gray-500 mb-4">Máximo ahorro</p>
-                                            <button className="w-full py-2 px-4 rounded-lg bg-transparent border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white font-bold text-sm transition-colors duration-200">
+                                            <button
+                                                onClick={() => handleSelectPlan("Anual", "160$ / año")}
+                                                className="w-full py-2 px-4 rounded-lg bg-transparent border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white font-bold text-sm transition-colors duration-200"
+                                            >
                                                 Elegir
                                             </button>
                                         </th>
@@ -195,7 +224,7 @@ export default function PlantsPrices() {
                                     </tr>
                                     {planFeatures.slice(0, 4).map((feature, index) => (
                                         <tr key={index} className="hover:bg-gray-50 transition-colors">
-                                            <td className="sticky left-0 p-4 pl-6 bg-white text-gray-700 font-medium border-r border-gray-200 z-10">
+                                            <td className="sticky left-0 p-4 pl-6 bg-white text-gray-700 font-m grande en todas las barras de navegacionedium border-r border-gray-200 z-10">
                                                 {feature.feature}
                                             </td>
                                             <td className="p-4 text-center">{renderFeatureValue(feature.daily)}</td>
@@ -247,6 +276,12 @@ export default function PlantsPrices() {
             </main>
 
             <Footer />
+
+            <PaymentModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                plan={selectedPlan}
+            />
         </div>
     );
 }

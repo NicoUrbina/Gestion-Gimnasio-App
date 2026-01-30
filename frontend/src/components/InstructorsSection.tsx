@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 type Instructor = {
+  id: number
   name: string
   role: string
   bio: string
@@ -11,10 +13,12 @@ type Instructor = {
 export default function InstructorsSection() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const navigate = useNavigate()
 
   const instructors = useMemo<Instructor[]>(
     () => [
       {
+        id: 1,
         name: "Valentina Rivas",
         role: "Entrenadora Funcional",
         bio: "Te acompaña a mejorar fuerza, postura y resistencia con planes por objetivos.",
@@ -22,6 +26,7 @@ export default function InstructorsSection() {
         imagePath: `${import.meta.env.BASE_URL}Img/entrenadora.jpg`,
       },
       {
+        id: 2,
         name: "Matías Calderón",
         role: "Coach de Fuerza",
         bio: "Especialista en técnica y progresión para que entrenes seguro y constante.",
@@ -29,6 +34,7 @@ export default function InstructorsSection() {
         imagePath: `${import.meta.env.BASE_URL}Img/entrenador1.jpg`,
       },
       {
+        id: 3,
         name: "Diego Navarro",
         role: "Instructor de Combate",
         bio: "Enfoque en disciplina, cardio y coordinación con sesiones intensas y guiadas.",
@@ -86,18 +92,16 @@ export default function InstructorsSection() {
           {instructors.map((instructor, idx) => (
             <div
               key={instructor.name}
-              className={`rounded-3xl overflow-hidden border border-white/10 bg-white/8 backdrop-blur-xl shadow-[0_18px_45px_rgba(0,0,0,0.35)] transition-all duration-300 hover:shadow-[0_24px_70px_rgba(0,0,0,0.55)] ${
-                isVisible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-6"
-              }`}
+              className={`rounded-3xl overflow-hidden border border-white/10 bg-white/8 backdrop-blur-xl shadow-[0_18px_45px_rgba(0,0,0,0.35)] transition-all duration-300 hover:shadow-[0_24px_70px_rgba(0,0,0,0.55)] ${isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-6"
+                }`}
               style={{ transitionDelay: `${idx * 120}ms` }}
             >
               <div className="max-w-4xl mx-auto">
                 <div
-                  className={`flex flex-col lg:flex-row items-stretch ${
-                    idx % 2 === 1 ? "lg:flex-row-reverse" : ""
-                  }`}
+                  className={`flex flex-col lg:flex-row items-stretch ${idx % 2 === 1 ? "lg:flex-row-reverse" : ""
+                    }`}
                 >
                   <div className="p-5 sm:p-6 lg:w-3/5">
                     <div className="text-orange-500 text-xs font-black tracking-widest uppercase mb-3">
@@ -127,7 +131,10 @@ export default function InstructorsSection() {
                     </div>
 
                     <div className="mt-6">
-                      <button className="px-8 py-3 rounded-full bg-orange-500 text-black font-black text-sm uppercase tracking-wide shadow-lg shadow-orange-500/25 hover:bg-orange-600 transition-colors">
+                      <button
+                        onClick={() => navigate('/entrenadores', { state: { instructorId: instructor.id } })}
+                        className="px-8 py-3 rounded-full bg-orange-500 text-black font-black text-sm uppercase tracking-wide shadow-lg shadow-orange-500/25 hover:bg-orange-600 transition-colors"
+                      >
                         Agendar con {instructor.name.split(" ")[0]}
                       </button>
                     </div>

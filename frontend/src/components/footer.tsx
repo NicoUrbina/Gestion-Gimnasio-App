@@ -13,7 +13,7 @@ const Footer = () => {
                         {/* AQUÍ VA TU LOGO EXACTAMENTE COMO EN EL HEADER */}
                         <Link to="/" className="inline-block">
                             <img
-                                src="/public/img/nexo-logo.png"
+                                src="/Img/nexo-logo.png"
                                 alt="Nexo Gym Logo"
                                 className="h-25 object-contain"
                             />
@@ -37,8 +37,8 @@ const Footer = () => {
                         </h3>
                         <ul className="space-y-4 text-sm text-gray-400">
                             <FooterLink to="/">Inicio</FooterLink>
-                            <FooterLink to="/clases">Clases y Horarios</FooterLink>
-                            <FooterLink to="/planes">Planes y Precios</FooterLink>
+                            <FooterLink to="/#classes">Clases y Horarios</FooterLink>
+                            <FooterLink to="/planes-y-precios">Planes y Precios</FooterLink>
                             <FooterLink to="/entrenadores">Nuestros Entrenadores</FooterLink>
                         </ul>
                     </div>
@@ -49,10 +49,10 @@ const Footer = () => {
                             SOPORTE
                         </h3>
                         <ul className="space-y-4 text-sm text-gray-400">
-                            <FooterLink to="/faq">Preguntas Frecuentes</FooterLink>
+                            <FooterLink to="/preguntas-frecuentes">Preguntas Frecuentes</FooterLink>
                             <FooterLink to="/terminos">Términos y Condiciones</FooterLink>
                             <FooterLink to="/privacidad">Política de Privacidad</FooterLink>
-                            <FooterLink to="/contacto">Trabaja con nosotros</FooterLink>
+                            <FooterLink to="/trabaja-con-nosotros">Trabaja con nosotros</FooterLink>
                         </ul>
                     </div>
 
@@ -98,6 +98,17 @@ const FooterLink = ({ to, children }: { to: string; children: React.ReactNode })
         <Link
             to={to}
             className="hover:text-orange-500 hover:pl-2 transition-all duration-300 block"
+            onClick={() => {
+                if (to.includes('#')) {
+                    const id = to.split('#')[1];
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }}
         >
             {children}
         </Link>

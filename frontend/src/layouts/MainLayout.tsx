@@ -1,4 +1,4 @@
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { Outlet, NavLink, useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import {
   LayoutDashboard,
@@ -14,7 +14,6 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  Zap,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -42,138 +41,143 @@ export default function MainLayout() {
   };
 
   // Filter navigation based on user role
-  // El backend retorna role_name como string directamente en el user
   const userRole = user?.role_name || '';
-  
+
   const visibleNavigation = navigation.filter(item =>
     item.allowedRoles.includes(userRole)
   );
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-[#0a0a0b] font-sans selection:bg-orange-600/30">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-screen bg-zinc-900 border-r border-zinc-800 transform transition-all duration-300 ${sidebarCollapsed ? 'w-20' : 'w-64'
-          } ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-          }`}
+        className={`fixed top-0 left-0 z-[70] h-screen bg-[#0a0a0b] border-r border-white/5 transform transition-all duration-500 ease-in-out ${sidebarCollapsed ? 'w-24' : 'w-72'
+          } ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
-        {/* Logo */}
-        <div className="flex items-center justify-between px-4 py-5 border-b border-zinc-800">
+        {/* Logo Section */}
+        <div className="flex items-center justify-between px-6 py-8">
           {!sidebarCollapsed && (
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/30">
-                <Zap className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-xl font-black text-white uppercase tracking-tight">GymPro</span>
-            </div>
+            <Link to="/" className="flex items-center gap-3 animate-in fade-in duration-500 hover:opacity-80 transition-opacity">
+              <img src="/Img/nexo-logo.png" alt="NEXO" className="h-12 w-auto object-contain brightness-110" />
+            </Link>
           )}
 
-          {/* Collapse button - Desktop */}
-          <button
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="hidden lg:flex p-2 text-gray-400 hover:text-orange-500 hover:bg-zinc-800 rounded-lg transition-colors"
-          >
-            {sidebarCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
-          </button>
+          {sidebarCollapsed && (
+            <Link to="/" className="mx-auto hover:opacity-80 transition-opacity">
+              <img src="/Img/nexo-logo.png" alt="NEXO" className="h-8 w-auto object-contain" />
+            </Link>
+          )}
 
           {/* Close button - Mobile */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-2 text-gray-400 hover:text-white rounded-lg"
+            className="lg:hidden p-2 text-gray-400 hover:text-white rounded-xl bg-white/5"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Navigation */}
-        <nav className="px-3 py-4 space-y-2">
+        <nav className="px-4 py-6 space-y-1.5 overflow-y-auto h-[calc(100vh-200px)] custom-scrollbar">
           {visibleNavigation.map((item) => (
             <NavLink
               key={item.name}
               to={item.href}
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all group ${isActive
-                  ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
-                  : 'text-gray-400 hover:text-white hover:bg-zinc-800'
+                `flex items-center gap-4 px-4 py-3.5 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all group ${isActive
+                  ? 'bg-orange-600 text-white shadow-xl shadow-orange-600/20 active:scale-95'
+                  : 'text-gray-500 hover:text-white hover:bg-white/5'
                 }`
               }
             >
-              <item.icon className="w-5 h-5 flex-shrink-0" />
+              <item.icon className="w-5 h-5 flex-shrink-0 transition-transform group-hover:scale-110" />
               {!sidebarCollapsed && <span>{item.name}</span>}
             </NavLink>
           ))}
         </nav>
 
-        {/* User section at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-zinc-800">
+        {/* User context at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/5 bg-[#0a0a0b]">
           {!sidebarCollapsed && user && (
-            <div className="px-3 py-3 mb-2 rounded-lg bg-zinc-800/50">
-              <p className="text-sm font-bold text-white truncate">{user.full_name}</p>
-              <p className="text-xs text-gray-500 uppercase truncate">{user.role_name || 'Usuario'}</p>
+            <div className="px-4 py-4 mb-4 rounded-3xl bg-white/5 border border-white/5 animate-in slide-in-from-bottom-2 duration-500">
+              <p className="text-xs font-black text-white uppercase tracking-tighter truncate mb-0.5">{user.full_name}</p>
+              <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest truncate">{user.role_name || 'Nexo Member'}</p>
             </div>
           )}
 
           <button
             onClick={handleLogout}
-            className="flex items-center justify-center gap-3 w-full px-4 py-3 text-gray-400 hover:text-red-400 hover:bg-zinc-800 rounded-lg transition-all"
-            title="Cerrar sesión"
+            className={`flex items-center gap-4 w-full px-4 py-3.5 text-gray-500 hover:text-red-500 hover:bg-red-500/5 rounded-2xl transition-all group ${sidebarCollapsed ? 'justify-center' : ''
+              }`}
+            title="Sincronizar Salida"
           >
-            <LogOut className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="text-sm font-semibold">Cerrar sesión</span>}
+            <LogOut className="w-5 h-5 flex-shrink-0 transition-transform group-hover:rotate-12" />
+            {!sidebarCollapsed && <span className="text-[10px] font-black uppercase tracking-[0.2em]">Cerrar Sesión</span>}
           </button>
         </div>
       </aside>
 
-      {/* Main content */}
-      <div
-        className={`min-h-screen transition-all duration-300 ${sidebarCollapsed ? "lg:pl-20" : "lg:pl-64"
+      {/* Collapse button - Floating Desktop */}
+      <button
+        onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+        className={`hidden lg:flex fixed z-[80] bottom-10 p-3 bg-[#0a0a0b] border border-white/10 text-gray-500 hover:text-orange-500 rounded-full shadow-2xl transition-all hover:scale-110 active:scale-90 ${sidebarCollapsed ? 'left-[4.5rem]' : 'left-[16.5rem]'
           }`}
       >
-        {/* Top bar */}
-        <header className="sticky top-0 z-30 bg-zinc-900/80 backdrop-blur-xl border-b border-zinc-800">
-          <div className="flex items-center justify-between px-4 lg:px-6 py-4">
-            {/* Mobile menu button */}
+        {sidebarCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+      </button>
+
+      {/* Main content viewport */}
+      <div
+        className={`min-h-screen transition-all duration-500 ease-in-out ${sidebarCollapsed ? "lg:pl-24" : "lg:pl-72"
+          }`}
+      >
+        {/* Top bar refinement */}
+        <header className="sticky top-0 z-40 bg-[#0a0a0b]/60 backdrop-blur-2xl border-b border-white/5">
+          <div className="flex items-center justify-between px-6 lg:px-10 h-24">
+            {/* Mobile interaction */}
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 text-gray-400 hover:text-white hover:bg-zinc-800 rounded-lg"
+              className="lg:hidden p-3 text-gray-400 hover:text-white bg-white/5 rounded-xl transition-all"
             >
               <Menu className="w-6 h-6" />
             </button>
 
-            {/* Page title or search */}
-            <div className="flex-1 lg:mx-4">
-              <h2 className="text-lg font-bold text-white uppercase tracking-wide lg:hidden">
-                GymPro
-              </h2>
+            <Link to="/" className="lg:hidden flex-1 flex justify-center hover:opacity-80 transition-opacity">
+              <img src="/Img/nexo-logo.png" alt="NEXO" className="h-10 w-auto object-contain" />
+            </Link>
+
+            {/* View Context */}
+            <div className="hidden lg:flex items-center gap-4">
+              <div className="h-1 w-1 rounded-full bg-orange-600 animate-pulse"></div>
+              <span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">Operational Panel</span>
             </div>
 
-            {/* Right section */}
-            <div className="flex items-center gap-3">
-              {/* User info */}
-              <div className="flex items-center gap-3 px-3 py-2 bg-zinc-800 rounded-lg">
-                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-orange-500/30">
-                  {user?.first_name?.charAt(0) || 'U'}
+            {/* Actions & Profile */}
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 pl-4 border-l border-white/5">
+                <div className="hidden md:block text-right">
+                  <p className="text-[11px] font-black text-white uppercase tracking-tighter leading-none mb-1">{user?.full_name?.split(' ')[0] || 'Admin'}</p>
+                  <p className="text-[9px] text-orange-600 font-black uppercase tracking-[0.2em]">Active Session</p>
                 </div>
-                <div className="hidden sm:block">
-                  <p className="text-sm font-bold text-white">{user?.full_name || 'Admin Sistema'}</p>
-                  <p className="text-xs text-gray-400 uppercase">{user?.role_name || 'Admin'}</p>
+                <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-white font-black text-lg shadow-xl group cursor-pointer hover:border-orange-600/50 transition-all">
+                  {user?.full_name?.charAt(0) || 'N'}
                 </div>
               </div>
             </div>
           </div>
         </header>
 
-        {/* Page content */}
-        <main className="p-6 lg:p-8">
+        {/* Dynamic Page Layer */}
+        <main className="p-6 lg:p-10 animate-in fade-in duration-700">
           <div className="max-w-7xl mx-auto">
             <Outlet />
           </div>

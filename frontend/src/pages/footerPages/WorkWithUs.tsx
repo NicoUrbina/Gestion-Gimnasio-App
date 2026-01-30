@@ -1,5 +1,5 @@
 import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
+import Footer from '../../components/footer';
 
 interface JobPosition {
     id: number;
@@ -10,6 +10,12 @@ interface JobPosition {
     typeColor: string;
     responsibilities: string[];
     requirements: string[];
+}
+
+interface Benefit {
+    icon: string;
+    title: string;
+    description: string;
 }
 
 const jobPositions: JobPosition[] = [
@@ -85,12 +91,6 @@ const benefits: Benefit[] = [
         description: "Turnos adaptables para conciliar tu vida personal, estudios y tiempo libre."
     }
 ];
-
-interface Benefit {
-    icon: string;
-    title: string;
-    description: string;
-}
 
 const getTypeColorClasses = (color: string) => {
     switch (color) {
@@ -281,7 +281,7 @@ const WorkWithUs = () => {
                                                             <button className="w-64 mx-auto bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 shadow-lg shadow-orange-600/20 flex items-center justify-center gap-2">
                                                                 <span>Aplicar al Puesto</span>
                                                                 <img
-                                                                    src={`${import.meta.env.BASE_URL}Img/FlechaTrabajaNosotros.png`}
+                                                                    src={`${import.meta.env.BASE_URL}img/FlechaTrabajaNosotros.png`}
                                                                     alt="Flecha"
                                                                     className="w-4 h-4 object-contain"
                                                                 />

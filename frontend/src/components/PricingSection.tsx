@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import PaymentModal from "./PaymentModal"
 
 type PricingPlan = {
   badge: string
@@ -20,6 +21,8 @@ interface PricingSectionProps {
 export default function PricingSection({ fontClassName }: PricingSectionProps) {
   const sectionRef = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null)
   const navigate = useNavigate()
 
   const plans = useMemo<PricingPlan[]>(
@@ -85,6 +88,11 @@ export default function PricingSection({ fontClassName }: PricingSectionProps) {
       observer.disconnect()
     }
   }, [])
+
+  const handlePlanSelection = (plan: PricingPlan) => {
+    setSelectedPlan(plan)
+    setIsModalOpen(true)
+  }
 
   return (
     <section
@@ -153,7 +161,10 @@ export default function PricingSection({ fontClassName }: PricingSectionProps) {
                   ))}
                 </ul>
 
-                <button className="w-full px-5 py-3 rounded-full bg-orange-500 text-black font-bold text-sm uppercase tracking-wide shadow-lg shadow-orange-500/25 hover:bg-orange-600 transition-colors">
+                <button
+                  onClick={() => handlePlanSelection(plan)}
+                  className="w-full px-5 py-3 rounded-full bg-orange-500 text-black font-bold text-sm uppercase tracking-wide shadow-lg shadow-orange-500/25 hover:bg-orange-600 transition-colors"
+                >
                   {plan.ctaLabel}
                 </button>
                 <button
@@ -167,6 +178,12 @@ export default function PricingSection({ fontClassName }: PricingSectionProps) {
           ))}
         </div>
       </div>
+
+      <PaymentModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        plan={selectedPlan}
+      />
     </section>
   )
 }

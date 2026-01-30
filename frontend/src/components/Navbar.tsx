@@ -23,20 +23,20 @@ export default function Navbar({
 
   const navigationItems = [
     { label: "HOME", href: "/#home" },
-    { label: "MEMBRESÍAS", href: "/#memberships" },
-    { label: "AGENDA Y CLASES", href: "/#classes" },
-    { label: "INSTRUCTORES", href: "/#instructors" },
+    { label: "MEMBRESÍAS", href: "/planes-y-precios" },
+    { label: "AGENDA Y CLASES", href: "/step1-schedule" },
+    { label: "INSTRUCTORES", href: "/entrenadores" },
     { label: "CONTACTO", href: "/#contact" },
   ]
-  const logoSrc = `${import.meta.env.BASE_URL}public/img/nexo-logo.png`
+  const logoSrc = `/Img/nexo-logo.png`
 
   return (
     <nav className={`fixed top-4 left-4 right-4 z-50 ${bgColor} backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg shadow-black/30`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
         <div className="flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center gap-3 shrink-0 group">
-            <div className="w-16 h-16 rounded-lg flex items-center justify-center">
-              <img src={logoSrc} alt="Gym Logo" className="w-15 h-15 object-contain" />
+          <Link to="/" className="flex items-center shrink-0 group">
+            <div className="h-12 rounded-lg flex items-center justify-center overflow-hidden">
+              <img src={logoSrc} alt="Gym Logo" className="h-full object-contain" />
             </div>
           </Link>
 
