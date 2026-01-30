@@ -53,7 +53,7 @@ const Footer = () => {
                             <FooterLink to="/preguntas-frecuentes">Preguntas Frecuentes</FooterLink>
                             <FooterLink to="/terminos">Términos y Condiciones</FooterLink>
                             <FooterLink to="/privacidad">Política de Privacidad</FooterLink>
-                            <FooterLink to="/contacto">Trabaja con nosotros</FooterLink>
+                            <FooterLink to="/trabaja-con-nosotros">Trabaja con nosotros</FooterLink>
                         </ul>
                     </div>
 

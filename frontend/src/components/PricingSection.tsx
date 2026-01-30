@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 type PricingPlan = {
   badge: string
@@ -19,6 +20,7 @@ interface PricingSectionProps {
 export default function PricingSection({ fontClassName }: PricingSectionProps) {
   const sectionRef = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const navigate = useNavigate()
 
   const plans = useMemo<PricingPlan[]>(
     () => [
@@ -109,13 +111,11 @@ export default function PricingSection({ fontClassName }: PricingSectionProps) {
           {plans.map((plan, idx) => (
             <div
               key={plan.title}
-              className={`group relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_18px_45px_rgba(0,0,0,0.35)] overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_24px_70px_rgba(0,0,0,0.55)] ${
-                plan.highlighted ? "ring-1 ring-orange-500/40" : ""
-              } ${
-                isVisible
+              className={`group relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_18px_45px_rgba(0,0,0,0.35)] overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_24px_70px_rgba(0,0,0,0.55)] ${plan.highlighted ? "ring-1 ring-orange-500/40" : ""
+                } ${isVisible
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-6"
-              }`}
+                }`}
               style={{ transitionDelay: `${idx * 120}ms` }}
             >
               <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -156,7 +156,10 @@ export default function PricingSection({ fontClassName }: PricingSectionProps) {
                 <button className="w-full px-5 py-3 rounded-full bg-orange-500 text-black font-bold text-sm uppercase tracking-wide shadow-lg shadow-orange-500/25 hover:bg-orange-600 transition-colors">
                   {plan.ctaLabel}
                 </button>
-                <button className="mt-3 w-full px-5 py-3 rounded-full border border-white/15 bg-black/20 text-white font-semibold text-sm hover:bg-white/5 transition-colors">
+                <button
+                  onClick={() => navigate('/planes-y-precios')}
+                  className="mt-3 w-full px-5 py-3 rounded-full border border-white/15 bg-black/20 text-white font-semibold text-sm hover:bg-white/5 transition-colors"
+                >
                   {plan.secondaryLabel}
                 </button>
               </div>

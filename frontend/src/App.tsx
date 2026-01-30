@@ -56,6 +56,8 @@ import AuditLogsPage from "./components/settings/audit/AuditLogsPage"
 import ProtectedRoute from "./components/ProtectedRoute"
 import AdminRoute from "./components/AdminRoute"
 import QuestionsPage from "./pages/footerPages/questions"
+import WorkWithUsPage from "./pages/footerPages/WorkWithUs"
+import PlantsPricesPage from "./pages/classes/pages Index/PlantsPrices"
 
 
 function App() {
@@ -91,6 +93,8 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/preguntas-frecuentes" element={<QuestionsPage />} />
+        <Route path="/trabaja-con-nosotros" element={<WorkWithUsPage />} />
+        <Route path="/planes-y-precios" element={<PlantsPricesPage />} />
 
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
@@ -125,7 +129,7 @@ function App() {
 
             {/* Placeholder pages */}
             <Route path="/staff" element={<PlaceholderPage title="Entrenadores" />} />
-            
+
             {/* Progress */}
             <Route path="/progress" element={<ProgressDashboard />} />
             <Route path="/progress/update" element={<UpdateProgressPage />} />
