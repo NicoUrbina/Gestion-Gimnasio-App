@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Plus, Search, CreditCard, Clock, Users, MessageSquare, Mail } from 'lucide-react';
-import Footer from '../../components/footer';
+import Footer from '../../components/Footer';
 import Navbar from '../../components/Navbar';
 
 const faqCategories = [

@@ -9,6 +9,7 @@ import MainLayout from "./layouts/MainLayout"
 
 // Pages
 import LoginPage from "./pages/LoginPage"
+import RegisterPage from "./pages/auth/Register"
 import DashboardPage from "./pages/DashboardPage"
 import MembersPage from "./pages/MembersPage"
 import MemberFormPage from "./pages/MemberFormPage"
@@ -58,6 +59,10 @@ import AdminRoute from "./components/AdminRoute"
 import QuestionsPage from "./pages/footerPages/questions"
 import WorkWithUsPage from "./pages/footerPages/WorkWithUs"
 import PlantsPricesPage from "./pages/classes/pages Index/PlantsPrices"
+import Step1SchedulePage from "./pages/classes/pages Index/Step1Schedule"
+import Step2SchedulePage from "./pages/classes/pages Index/Step2Schedule"
+import Step3SchedulePage from "./pages/classes/pages Index/Step3Schedule"
+import Step4SchedulePage from "./pages/classes/pages Index/Step4Schedule"
 
 
 function App() {
@@ -92,9 +97,14 @@ function App() {
         {/* Public routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="/preguntas-frecuentes" element={<QuestionsPage />} />
         <Route path="/trabaja-con-nosotros" element={<WorkWithUsPage />} />
         <Route path="/planes-y-precios" element={<PlantsPricesPage />} />
+        <Route path="/step1-schedule" element={<Step1SchedulePage />} />
+        <Route path="/step2-schedule" element={<Step2SchedulePage />} />
+        <Route path="/step3-schedule" element={<Step3SchedulePage />} />
+        <Route path="/step4-schedule" element={<Step4SchedulePage />} />
 
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>

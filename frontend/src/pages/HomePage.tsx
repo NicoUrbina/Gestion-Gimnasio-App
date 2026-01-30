@@ -16,8 +16,7 @@ export default function HomePage() {
   }
 
   const handleSignupClick = () => {
-    // You can create a signup page later
-    navigate("/login")
+    navigate("/register")
   }
 
   const handleLogoutClick = () => {

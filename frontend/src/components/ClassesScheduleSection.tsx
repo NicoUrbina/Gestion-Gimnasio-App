@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 type ScheduleClass = {
   time: string
@@ -14,6 +15,7 @@ type DaySchedule = {
 export default function ClassesScheduleSection() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const navigate = useNavigate()
 
   const schedule = useMemo<DaySchedule[]>(
     () => [
@@ -115,11 +117,10 @@ export default function ClassesScheduleSection() {
           {schedule.map((day, idx) => (
             <div
               key={day.day}
-              className={`rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_18px_45px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(0,0,0,0.55)] ${
-                isVisible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-6"
-              }`}
+              className={`rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_18px_45px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(0,0,0,0.55)] ${isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-6"
+                }`}
               style={{ transitionDelay: `${idx * 90}ms` }}
             >
               <div className="bg-orange-500 text-black text-xs font-black tracking-widest uppercase text-center py-3">
@@ -149,7 +150,10 @@ export default function ClassesScheduleSection() {
         </div>
 
         <div className="flex justify-center mt-12">
-          <button className="px-10 py-4 rounded-full bg-orange-500 text-black font-black text-sm uppercase tracking-wide shadow-lg shadow-orange-500/25 hover:bg-orange-600 transition-colors">
+          <button
+            onClick={() => navigate('/step1-schedule')}
+            className="px-10 py-4 rounded-full bg-orange-500 text-black font-black text-sm uppercase tracking-wide shadow-lg shadow-orange-500/25 hover:bg-orange-600 transition-colors"
+          >
             Agendar una cita
           </button>
         </div>
