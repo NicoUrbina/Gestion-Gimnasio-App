@@ -1,4 +1,4 @@
-[mport { Check, Dumbbell, Snowflake, Calendar, Trash2 } from 'lucide-react';
+import { Check, Dumbbell, Snowflake, Calendar, Trash2 } from 'lucide-react';
 import type { MembershipPlan } from '../../types';
 
 interface PlanCardProps {
