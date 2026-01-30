@@ -11,6 +11,7 @@ interface AuthState {
 
   // Actions
   login: (credentials: LoginCredentials) => Promise<boolean>;
+  register: (userData: { name: string; email: string; password: string }) => Promise<boolean>;
   logout: () => void;
   checkAuth: () => Promise<void>;
   clearError: () => void;
@@ -45,6 +46,37 @@ export const useAuthStore = create<AuthState>()(
           return true;
         } catch (error: any) {
           const message = error.response?.data?.detail || 'Error al iniciar sesión';
+          set({
+            user: null,
+            isAuthenticated: false,
+            isLoading: false,
+            error: message,
+          });
+          return false;
+        }
+      },
+
+      register: async (userData) => {
+        set({ isLoading: true, error: null });
+
+        try {
+          const response = await api.post<LoginResponse>('/auth/register/', userData);
+          const { access, refresh, user } = response.data;
+
+          // Guardar tokens
+          localStorage.setItem('access_token', access);
+          localStorage.setItem('refresh_token', refresh);
+
+          set({
+            user,
+            isAuthenticated: true,
+            isLoading: false,
+            error: null,
+          });
+
+          return true;
+        } catch (error: any) {
+          const message = error.response?.data?.detail || 'Error al registrar usuario';
           set({
             user: null,
             isAuthenticated: false,

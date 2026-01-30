@@ -75,6 +75,12 @@ import AuditLogsPage from "./components/settings/audit/AuditLogsPage"
 import ProtectedRoute from "./components/ProtectedRoute"
 import AdminRoute from "./components/AdminRoute"
 import QuestionsPage from "./pages/footerPages/questions"
+import WorkWithUsPage from "./pages/footerPages/WorkWithUs"
+import PlantsPricesPage from "./pages/classes/pages Index/PlantsPrices"
+import Step1SchedulePage from "./pages/classes/pages Index/Step1Schedule"
+import Step2SchedulePage from "./pages/classes/pages Index/Step2Schedule"
+import Step3SchedulePage from "./pages/classes/pages Index/Step3Schedule"
+import Step4SchedulePage from "./pages/classes/pages Index/Step4Schedule"
 
 
 function App() {
@@ -111,6 +117,12 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/preguntas-frecuentes" element={<QuestionsPage />} />
+        <Route path="/trabaja-con-nosotros" element={<WorkWithUsPage />} />
+        <Route path="/planes-y-precios" element={<PlantsPricesPage />} />
+        <Route path="/step1-schedule" element={<Step1SchedulePage />} />
+        <Route path="/step2-schedule" element={<Step2SchedulePage />} />
+        <Route path="/step3-schedule" element={<Step3SchedulePage />} />
+        <Route path="/step4-schedule" element={<Step4SchedulePage />} />
 
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
@@ -164,7 +176,6 @@ function App() {
             <Route path="/equipment" element={<EquipmentListPage />} />
             <Route path="/equipment/new" element={<EquipmentFormPage />} />
             <Route path="/equipment/:id/edit" element={<EquipmentFormPage />} />
-
             {/* Progress */}
             <Route path="/progress" element={<ProgressDashboard />} />
             <Route path="/progress/update" element={<UpdateProgressPage />} />
@@ -186,13 +197,13 @@ function App() {
               <Route path="/settings/system" element={<SystemSettingsPage />} />
               <Route path="/settings/audit" element={<AuditLogsPage />} />
             </Route>
-          </Route>
-        </Route>
+          </Route >
+        </Route >
 
         {/* Default redirect */}
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
-    </BrowserRouter>
+        < Route path="*" element={< Navigate to="/dashboard" replace />} />
+      </Routes >
+    </BrowserRouter >
   )
 }
 

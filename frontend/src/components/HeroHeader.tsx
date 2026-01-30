@@ -26,7 +26,7 @@ export default function HeroHeader({
     { label: "CONTACTO", href: "#contact" },
   ]
   const heroVideoSrc = `${import.meta.env.BASE_URL}gym-hero.mp4`
-  const logoSrc = `${import.meta.env.BASE_URL}Img/nexo-logo.png`
+  const logoSrc = `${import.meta.env.BASE_URL}img/nexo-logo.png`
 
   return (
     <>
