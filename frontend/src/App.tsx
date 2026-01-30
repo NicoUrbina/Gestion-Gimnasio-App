@@ -48,6 +48,7 @@ import AuditLogsPage from "./components/settings/audit/AuditLogsPage"
 // Components
 import ProtectedRoute from "./components/ProtectedRoute"
 import AdminRoute from "./components/AdminRoute"
+import QuestionsPage from "./pages/footerPages/questions"
 
 
 function App() {
@@ -82,6 +83,7 @@ function App() {
         {/* Public routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/preguntas-frecuentes" element={<QuestionsPage />} />
 
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>

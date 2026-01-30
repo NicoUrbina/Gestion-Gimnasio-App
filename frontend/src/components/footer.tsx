@@ -50,7 +50,7 @@ const Footer = () => {
                             SOPORTE
                         </h3>
                         <ul className="space-y-4 text-sm text-gray-400">
-                            <FooterLink to="/faq">Preguntas Frecuentes</FooterLink>
+                            <FooterLink to="/preguntas-frecuentes">Preguntas Frecuentes</FooterLink>
                             <FooterLink to="/terminos">Términos y Condiciones</FooterLink>
                             <FooterLink to="/privacidad">Política de Privacidad</FooterLink>
                             <FooterLink to="/contacto">Trabaja con nosotros</FooterLink>
