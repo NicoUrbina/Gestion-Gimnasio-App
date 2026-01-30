@@ -66,7 +66,7 @@ export default function EvaluationFormPage() {
     <div className="max-w-4xl mx-auto">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+        <h1 className="text-2xl font-black text-white uppercase tracking-tight">
           Completar Evaluación Física
         </h1>
         <p className="text-gray-500 mt-1">{assessment.member_name}</p>
@@ -74,8 +74,8 @@ export default function EvaluationFormPage() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Medidas Corporales */}
-        <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
-          <h2 className="text-lg font-bold text-slate-900 mb-4">Medidas Corporales</h2>
+        <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
+          <h2 className="text-lg font-bold text-white mb-4">Medidas Corporales</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Peso (kg)</label>
@@ -84,7 +84,7 @@ export default function EvaluationFormPage() {
                 step="0.1"
                 value={assessment.weight || ''}
                 onChange={(e) => updateField('weight', e.target.value)}
-                className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500"
+                className="w-full px-3 py-2 border-2 border-zinc-700 rounded-lg focus:outline-none focus:border-orange-500"
               />
             </div>
             <div>
@@ -94,7 +94,7 @@ export default function EvaluationFormPage() {
                 step="0.1"
                 value={assessment.height || ''}
                 onChange={(e) => updateField('height', e.target.value)}
-                className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500"
+                className="w-full px-3 py-2 border-2 border-zinc-700 rounded-lg focus:outline-none focus:border-orange-500"
               />
             </div>
             <div>
@@ -104,7 +104,7 @@ export default function EvaluationFormPage() {
                 step="0.1"
                 value={assessment.body_fat_percentage || ''}
                 onChange={(e) => updateField('body_fat_percentage', e.target.value)}
-                className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500"
+                className="w-full px-3 py-2 border-2 border-zinc-700 rounded-lg focus:outline-none focus:border-orange-500"
               />
             </div>
             <div>
@@ -114,41 +114,41 @@ export default function EvaluationFormPage() {
                 step="0.1"
                 value={assessment.muscle_mass || ''}
                 onChange={(e) => updateField('muscle_mass', e.target.value)}
-                className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500"
+                className="w-full px-3 py-2 border-2 border-zinc-700 rounded-lg focus:outline-none focus:border-orange-500"
               />
             </div>
           </div>
         </div>
 
         {/* Circunferencias */}
-        <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
-          <h2 className="text-lg font-bold text-slate-900 mb-4">Circunferencias (cm)</h2>
+        <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
+          <h2 className="text-lg font-bold text-white mb-4">Circunferencias (cm)</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Pecho</label>
-              <input type="number" step="0.1" value={assessment.chest || ''} onChange={(e) => updateField('chest', e.target.value)} className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500" />
+              <input type="number" step="0.1" value={assessment.chest || ''} onChange={(e) => updateField('chest', e.target.value)} className="w-full px-3 py-2 border-2 border-zinc-700 rounded-lg focus:outline-none focus:border-orange-500" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Cintura</label>
-              <input type="number" step="0.1" value={assessment.waist || ''} onChange={(e) => updateField('waist', e.target.value)} className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500" />
+              <input type="number" step="0.1" value={assessment.waist || ''} onChange={(e) => updateField('waist', e.target.value)} className="w-full px-3 py-2 border-2 border-zinc-700 rounded-lg focus:outline-none focus:border-orange-500" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Cadera</label>
-              <input type="number" step="0.1" value={assessment.hips || ''} onChange={(e) => updateField('hips', e.target.value)} className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500" />
+              <input type="number" step="0.1" value={assessment.hips || ''} onChange={(e) => updateField('hips', e.target.value)} className="w-full px-3 py-2 border-2 border-zinc-700 rounded-lg focus:outline-none focus:border-orange-500" />
             </div>
           </div>
         </div>
 
         {/* Nivel de Fitness */}
-        <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
-          <h2 className="text-lg font-bold text-slate-900 mb-4">Evaluación de Fitness</h2>
+        <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
+          <h2 className="text-lg font-bold text-white mb-4">Evaluación de Fitness</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Nivel General</label>
               <select
                 value={assessment.fitness_level || ''}
                 onChange={(e) => updateField('fitness_level', e.target.value)}
-                className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500"
+                className="w-full px-3 py-2 border-2 border-zinc-700 rounded-lg focus:outline-none focus:border-orange-500"
               >
                 <option value="">Seleccionar...</option>
                 <option value="beginner">Principiante</option>
@@ -165,7 +165,7 @@ export default function EvaluationFormPage() {
                 max="10"
                 value={assessment.cardio_level || ''}
                 onChange={(e) => updateField('cardio_level', e.target.value)}
-                className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500"
+                className="w-full px-3 py-2 border-2 border-zinc-700 rounded-lg focus:outline-none focus:border-orange-500"
               />
             </div>
             <div>
@@ -176,7 +176,7 @@ export default function EvaluationFormPage() {
                 max="10"
                 value={assessment.strength_level || ''}
                 onChange={(e) => updateField('strength_level', e.target.value)}
-                className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500"
+                className="w-full px-3 py-2 border-2 border-zinc-700 rounded-lg focus:outline-none focus:border-orange-500"
               />
             </div>
             <div>
@@ -187,15 +187,15 @@ export default function EvaluationFormPage() {
                 max="10"
                 value={assessment.flexibility_level || ''}
                 onChange={(e) => updateField('flexibility_level', e.target.value)}
-                className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500"
+                className="w-full px-3 py-2 border-2 border-zinc-700 rounded-lg focus:outline-none focus:border-orange-500"
               />
             </div>
           </div>
         </div>
 
         {/* Observaciones */}
-        <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
-          <h2 className="text-lg font-bold text-slate-900 mb-4">Notas del Entrenador</h2>
+        <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
+          <h2 className="text-lg font-bold text-white mb-4">Notas del Entrenador</h2>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Observaciones</label>
@@ -203,7 +203,7 @@ export default function EvaluationFormPage() {
                 value={assessment.observations || ''}
                 onChange={(e) => updateField('observations', e.target.value)}
                 rows={3}
-                className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500 resize-none"
+                className="w-full px-3 py-2 border-2 border-zinc-700 rounded-lg focus:outline-none focus:border-orange-500 resize-none"
               />
             </div>
             <div>
@@ -212,7 +212,7 @@ export default function EvaluationFormPage() {
                 value={assessment.recommendations || ''}
                 onChange={(e) => updateField('recommendations', e.target.value)}
                 rows={3}
-                className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500 resize-none"
+                className="w-full px-3 py-2 border-2 border-zinc-700 rounded-lg focus:outline-none focus:border-orange-500 resize-none"
               />
             </div>
           </div>
@@ -223,7 +223,7 @@ export default function EvaluationFormPage() {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="flex-1 px-6 py-3 border-2 border-gray-200 rounded-xl font-bold text-slate-900 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+            className="flex-1 px-6 py-3 border-2 border-zinc-700 rounded-xl font-bold text-white hover:bg-zinc-800/50 transition-colors flex items-center justify-center gap-2"
           >
             <X className="w-5 h-5" />
             Cancelar

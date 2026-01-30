@@ -196,7 +196,7 @@ export default function RoutineBuilderPage() {
     <div>
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+        <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
           <Dumbbell className="w-7 h-7 text-orange-500" />
           Crear Rutina Personalizada
         </h1>
@@ -207,8 +207,8 @@ export default function RoutineBuilderPage() {
         {/* Left Column - Routine Info */}
         <div className="lg:col-span-1 space-y-6">
           {/* Basic Info */}
-          <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
-            <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+          <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
+            <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
               <Target className="w-5 h-5 text-orange-500" />
               Información General
             </h2>
@@ -216,13 +216,13 @@ export default function RoutineBuilderPage() {
             <div className="space-y-4">
               {/* Member */}
               <div>
-                <label className="block text-sm font-bold text-slate-900 mb-2">
+                <label className="block text-sm font-bold text-white mb-2">
                   Miembro *
                 </label>
                 <select
                   value={selectedMember || ''}
                   onChange={(e) => setSelectedMember(Number(e.target.value))}
-                  className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                  className="w-full px-3 py-2 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
                   required
                 >
                   <option value="">Seleccionar miembro...</option>
@@ -236,7 +236,7 @@ export default function RoutineBuilderPage() {
 
               {/* Name */}
               <div>
-                <label className="block text-sm font-bold text-slate-900 mb-2">
+                <label className="block text-sm font-bold text-white mb-2">
                   Nombre de la Rutina *
                 </label>
                 <input
@@ -244,14 +244,14 @@ export default function RoutineBuilderPage() {
                   value={routineName}
                   onChange={(e) => setRoutineName(e.target.value)}
                   placeholder="Ej: Rutina Principiante Full Body"
-                  className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                  className="w-full px-3 py-2 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
                   required
                 />
               </div>
 
               {/* Description */}
               <div>
-                <label className="block text-sm font-bold text-slate-900 mb-2">
+                <label className="block text-sm font-bold text-white mb-2">
                   Descripción
                 </label>
                 <textarea
@@ -259,13 +259,13 @@ export default function RoutineBuilderPage() {
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Descripción breve de la rutina..."
                   rows={3}
-                  className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500 resize-none"
+                  className="w-full px-3 py-2 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500 resize-none"
                 />
               </div>
 
               {/* Goal */}
               <div>
-                <label className="block text-sm font-bold text-slate-900 mb-2">
+                <label className="block text-sm font-bold text-white mb-2">
                   Objetivo *
                 </label>
                 <textarea
@@ -273,14 +273,14 @@ export default function RoutineBuilderPage() {
                   onChange={(e) => setGoal(e.target.value)}
                   placeholder="Ej: Desarrollar fuerza y resistencia muscular..."
                   rows={3}
-                  className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500 resize-none"
+                  className="w-full px-3 py-2 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500 resize-none"
                   required
                 />
               </div>
 
               {/* Duration */}
               <div>
-                <label className="block text-sm font-bold text-slate-900 mb-2">
+                <label className="block text-sm font-bold text-white mb-2">
                   Duración (semanas) *
                 </label>
                 <input
@@ -289,7 +289,7 @@ export default function RoutineBuilderPage() {
                   max="52"
                   value={durationWeeks}
                   onChange={(e) => setDurationWeeks(Number(e.target.value))}
-                  className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                  className="w-full px-3 py-2 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
                   required
                 />
               </div>
@@ -317,7 +317,7 @@ export default function RoutineBuilderPage() {
         {/* Right Column - Exercise Builder */}
         <div className="lg:col-span-2 space-y-6">
           {/* Day Selector */}
-          <div className="bg-white rounded-2xl border-2 border-gray-100 p-4">
+          <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-4">
             <div className="flex items-center gap-2 overflow-x-auto">
               {WEEKDAYS.map(({ value, label }) => {
                 const dayExercises = routineExercises[value];
@@ -330,7 +330,7 @@ export default function RoutineBuilderPage() {
                     onClick={() => setSelectedDay(value)}
                     className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${isSelected
                         ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
-                        : 'bg-gray-100 text-slate-900 hover:bg-gray-200'
+                        : 'bg-gray-100 text-white hover:bg-gray-200'
                       }`}
                   >
                     {label}
@@ -346,9 +346,9 @@ export default function RoutineBuilderPage() {
           </div>
 
           {/* Exercises for Selected Day */}
-          <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
+          <div className="bg-zinc-900 rounded-2xl border-2 border-zinc-800 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-slate-900">
+              <h2 className="text-lg font-bold text-white">
                 Ejercicios - {WEEKDAYS.find(d => d.value === selectedDay)?.label}
               </h2>
               <button
@@ -372,7 +372,7 @@ export default function RoutineBuilderPage() {
                 {routineExercises[selectedDay].map((ex, index) => (
                   <div
                     key={index}
-                    className="bg-gray-50 rounded-xl p-4 border-2 border-gray-200"
+                    className="bg-zinc-800/50 rounded-xl p-4 border-2 border-zinc-700"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-start gap-3">
@@ -380,7 +380,7 @@ export default function RoutineBuilderPage() {
                           {index + 1}
                         </div>
                         <div>
-                          <h4 className="font-bold text-slate-900">{getExerciseName(ex.exercise)}</h4>
+                          <h4 className="font-bold text-white">{getExerciseName(ex.exercise)}</h4>
                         </div>
                       </div>
                       <button
@@ -457,7 +457,7 @@ export default function RoutineBuilderPage() {
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="flex-1 px-6 py-3 border-2 border-gray-200 rounded-xl font-bold text-slate-900 hover:bg-gray-50 transition-colors"
+              className="flex-1 px-6 py-3 border-2 border-zinc-700 rounded-xl font-bold text-white hover:bg-zinc-800/50 transition-colors"
             >
               Cancelar
             </button>
@@ -477,10 +477,10 @@ export default function RoutineBuilderPage() {
       {/* Exercise Selector Modal */}
       {showExerciseSelector && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[80vh] overflow-hidden">
+          <div className="bg-zinc-900 rounded-2xl max-w-4xl w-full max-h-[80vh] overflow-hidden">
             {/* Modal Header */}
             <div className="p-6 border-b-2 border-gray-100">
-              <h3 className="text-xl font-bold text-slate-900">Seleccionar Ejercicio</h3>
+              <h3 className="text-xl font-bold text-white">Seleccionar Ejercicio</h3>
 
               {/* Filters */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
@@ -489,12 +489,12 @@ export default function RoutineBuilderPage() {
                   placeholder="Buscar ejercicio..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="px-3 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                  className="px-3 py-2 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
                 />
                 <select
                   value={filterMuscleGroup || ''}
                   onChange={(e) => setFilterMuscleGroup(e.target.value ? Number(e.target.value) : null)}
-                  className="px-3 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
+                  className="px-3 py-2 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
                 >
                   <option value="">Todos los grupos</option>
                   {muscleGroups.map(mg => (
@@ -512,9 +512,9 @@ export default function RoutineBuilderPage() {
                     key={exercise.id}
                     type="button"
                     onClick={() => addExerciseToDay(exercise)}
-                    className="bg-gray-50 hover:bg-orange-50 border-2 border-gray-200 hover:border-orange-500 rounded-xl p-4 text-left transition-all"
+                    className="bg-zinc-800/50 hover:bg-orange-500/10 border-2 border-zinc-700 hover:border-orange-500 rounded-xl p-4 text-left transition-all"
                   >
-                    <h4 className="font-bold text-slate-900 mb-1">{exercise.name}</h4>
+                    <h4 className="font-bold text-white mb-1">{exercise.name}</h4>
                     <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-lg font-medium">
                       {exercise.muscle_group_name}
                     </span>
@@ -532,7 +532,7 @@ export default function RoutineBuilderPage() {
                   setSearchTerm('');
                   setFilterMuscleGroup(null);
                 }}
-                className="w-full px-6 py-3 border-2 border-gray-200 rounded-xl font-bold text-slate-900 hover:bg-gray-50 transition-colors"
+                className="w-full px-6 py-3 border-2 border-zinc-700 rounded-xl font-bold text-white hover:bg-zinc-800/50 transition-colors"
               >
                 Cerrar
               </button>

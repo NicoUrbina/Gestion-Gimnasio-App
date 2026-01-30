@@ -59,14 +59,14 @@ export default function AccessLogsPage() {
         <div className="space-y-6">
             {/* Header */}
             <div>
-                <h1 className="text-3xl font-black text-slate-900 uppercase tracking-tight">
+                <h1 className="text-3xl font-black text-white uppercase tracking-tight">
                     Registros de Acceso
                 </h1>
-                <p className="text-slate-600 mt-1">Control de entradas y salidas del gimnasio</p>
+                <p className="text-gray-400 mt-1">Control de entradas y salidas del gimnasio</p>
             </div>
 
             {/* Filters */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-zinc-900 rounded-xl border border-zinc-800 p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {/* Search */}
                     <div className="relative">
@@ -76,7 +76,7 @@ export default function AccessLogsPage() {
                             placeholder="Buscar por miembro..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                            className="w-full pl-10 pr-4 py-3 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                         />
                     </div>
 
@@ -86,7 +86,7 @@ export default function AccessLogsPage() {
                         <select
                             value={selectedType}
                             onChange={(e) => setSelectedType(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none bg-white"
+                            className="w-full pl-10 pr-4 py-3 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none bg-white"
                         >
                             <option value="">Todos los tipos</option>
                             <option value="entry">Entradas</option>
@@ -101,28 +101,28 @@ export default function AccessLogsPage() {
                             type="date"
                             value={selectedDate}
                             onChange={(e) => setSelectedDate(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                            className="w-full pl-10 pr-4 py-3 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                         />
                     </div>
                 </div>
             </div>
 
             {/* Logs Table */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="bg-zinc-900 rounded-xl border border-zinc-800 overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full">
-                        <thead className="bg-slate-50 border-b border-slate-200">
+                        <thead className="bg-zinc-800/30 border-b border-slate-200">
                             <tr>
-                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                <th className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">
                                     Tipo
                                 </th>
-                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                <th className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">
                                     Miembro
                                 </th>
-                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                <th className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">
                                     Fecha y Hora
                                 </th>
-                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                <th className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">
                                     Notas
                                 </th>
                             </tr>
@@ -136,7 +136,7 @@ export default function AccessLogsPage() {
                                 </tr>
                             ) : (
                                 filteredLogs.map((log) => (
-                                    <tr key={log.id} className="hover:bg-slate-50 transition">
+                                    <tr key={log.id} className="hover:bg-zinc-800/30 transition">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-2">
                                                 {log.access_type === 'entry' ? (
@@ -153,12 +153,12 @@ export default function AccessLogsPage() {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <span className="font-medium text-slate-900">{log.member_name || `Miembro #${log.member}`}</span>
+                                            <span className="font-medium text-white">{log.member_name || `Miembro #${log.member}`}</span>
                                         </td>
-                                        <td className="px-6 py-4 text-slate-600">
+                                        <td className="px-6 py-4 text-gray-400">
                                             {format(new Date(log.timestamp), "dd 'de' MMMM, yyyy 'a las' HH:mm", { locale: es })}
                                         </td>
-                                        <td className="px-6 py-4 text-slate-600">
+                                        <td className="px-6 py-4 text-gray-400">
                                             {log.notes || '-'}
                                         </td>
                                     </tr>

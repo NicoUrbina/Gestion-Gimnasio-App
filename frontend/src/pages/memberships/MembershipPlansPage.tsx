@@ -72,7 +72,7 @@ export default function MembershipPlansPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Planes de Membresía</h1>
+          <h1 className="text-2xl font-bold text-white">Planes de Membresía</h1>
           <p className="text-slate-500 mt-1">Gestiona los planes disponibles para tus miembros</p>
         </div>
         <button

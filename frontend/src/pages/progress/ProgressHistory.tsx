@@ -61,7 +61,7 @@ export default function ProgressHistory() {
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+        <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
           <History className="w-7 h-7 text-orange-500" />
           Historial de Progreso
         </h1>
@@ -76,7 +76,7 @@ export default function ProgressHistory() {
           <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <History className="w-10 h-10 text-gray-400" />
           </div>
-          <h3 className="text-xl font-bold text-slate-900 mb-2">
+          <h3 className="text-xl font-bold text-white mb-2">
             No hay registros aún
           </h3>
           <p className="text-gray-500 mb-6">
@@ -101,7 +101,7 @@ export default function ProgressHistory() {
             <div
               key={log.id}
               className={`bg-white rounded-2xl border-2 transition-all ${
-                isLatest ? 'border-orange-200' : 'border-gray-100'
+                isLatest ? 'border-orange-500/50' : 'border-gray-100'
               } overflow-hidden`}
             >
               {/* Header */}
@@ -112,7 +112,7 @@ export default function ProgressHistory() {
                       <Calendar className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900">
+                      <h3 className="font-bold text-white">
                         {new Date(log.date).toLocaleDateString('es-ES', {
                           weekday: 'long',
                           year: 'numeric',
@@ -154,27 +154,27 @@ export default function ProgressHistory() {
                 {/* Quick Stats */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {log.weight && (
-                    <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="bg-zinc-800/50 rounded-lg p-3">
                       <p className="text-xs text-gray-500 mb-1">Peso</p>
-                      <p className="text-lg font-bold text-slate-900">{log.weight} kg</p>
+                      <p className="text-lg font-bold text-white">{log.weight} kg</p>
                     </div>
                   )}
                   {log.bmi && (
-                    <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="bg-zinc-800/50 rounded-lg p-3">
                       <p className="text-xs text-gray-500 mb-1">IMC</p>
-                      <p className="text-lg font-bold text-slate-900">{log.bmi.toFixed(1)}</p>
+                      <p className="text-lg font-bold text-white">{log.bmi.toFixed(1)}</p>
                     </div>
                   )}
                   {log.body_fat_percentage && (
-                    <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="bg-zinc-800/50 rounded-lg p-3">
                       <p className="text-xs text-gray-500 mb-1">Grasa</p>
-                      <p className="text-lg font-bold text-slate-900">{log.body_fat_percentage}%</p>
+                      <p className="text-lg font-bold text-white">{log.body_fat_percentage}%</p>
                     </div>
                   )}
                   {log.muscle_mass && (
-                    <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="bg-zinc-800/50 rounded-lg p-3">
                       <p className="text-xs text-gray-500 mb-1">Músculo</p>
-                      <p className="text-lg font-bold text-slate-900">{log.muscle_mass} kg</p>
+                      <p className="text-lg font-bold text-white">{log.muscle_mass} kg</p>
                     </div>
                   )}
                 </div>
@@ -183,7 +183,7 @@ export default function ProgressHistory() {
               {/* Expanded Details */}
               {isExpanded && (
                 <div className="px-6 pb-6 border-t border-gray-100 pt-6">
-                  <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-4">
+                  <h4 className="text-sm font-bold text-white uppercase tracking-wide mb-4">
                     Detalles Completos
                   </h4>
                   
@@ -191,25 +191,25 @@ export default function ProgressHistory() {
                     {log.height && (
                       <div>
                         <p className="text-xs text-gray-500 mb-1">Altura</p>
-                        <p className="text-sm font-bold text-slate-900">{log.height} cm</p>
+                        <p className="text-sm font-bold text-white">{log.height} cm</p>
                       </div>
                     )}
                     {log.chest && (
                       <div>
                         <p className="text-xs text-gray-500 mb-1">Pecho</p>
-                        <p className="text-sm font-bold text-slate-900">{log.chest} cm</p>
+                        <p className="text-sm font-bold text-white">{log.chest} cm</p>
                       </div>
                     )}
                     {log.waist && (
                       <div>
                         <p className="text-xs text-gray-500 mb-1">Cintura</p>
-                        <p className="text-sm font-bold text-slate-900">{log.waist} cm</p>
+                        <p className="text-sm font-bold text-white">{log.waist} cm</p>
                       </div>
                     )}
                     {log.hips && (
                       <div>
                         <p className="text-xs text-gray-500 mb-1">Cadera</p>
-                        <p className="text-sm font-bold text-slate-900">{log.hips} cm</p>
+                        <p className="text-sm font-bold text-white">{log.hips} cm</p>
                       </div>
                     )}
                   </div>

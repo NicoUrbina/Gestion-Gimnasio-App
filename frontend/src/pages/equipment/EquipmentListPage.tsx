@@ -79,8 +79,8 @@ export default function EquipmentListPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-black text-slate-900 uppercase tracking-tight">Equipamiento</h1>
-                    <p className="text-slate-600 mt-1">Gestión de equipos del gimnasio</p>
+                    <h1 className="text-3xl font-black text-white uppercase tracking-tight">Equipamiento</h1>
+                    <p className="text-gray-400 mt-1">Gestión de equipos del gimnasio</p>
                 </div>
                 <Link
                     to="/equipment/new"
@@ -91,7 +91,7 @@ export default function EquipmentListPage() {
                 </Link>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-zinc-900 rounded-xl border border-zinc-800 p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
@@ -100,7 +100,7 @@ export default function EquipmentListPage() {
                             placeholder="Buscar equipos..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                            className="w-full pl-10 pr-4 py-3 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                         />
                     </div>
                     <div className="relative">
@@ -108,7 +108,7 @@ export default function EquipmentListPage() {
                         <select
                             value={selectedStatus}
                             onChange={(e) => setSelectedStatus(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none bg-white"
+                            className="w-full pl-10 pr-4 py-3 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none bg-white"
                         >
                             <option value="">Todos los estados</option>
                             <option value="available">Disponible</option>
@@ -122,33 +122,33 @@ export default function EquipmentListPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredEquipment.length === 0 ? (
-                    <div className="col-span-full bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
+                    <div className="col-span-full bg-zinc-900 rounded-xl border border-zinc-800 p-12 text-center">
                         <Dumbbell className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                        <h3 className="text-xl font-bold text-slate-900 mb-2">No se encontraron equipos</h3>
-                        <p className="text-slate-600">Intenta ajustar los filtros</p>
+                        <h3 className="text-xl font-bold text-white mb-2">No se encontraron equipos</h3>
+                        <p className="text-gray-400">Intenta ajustar los filtros</p>
                     </div>
                 ) : (
                     filteredEquipment.map((item) => (
-                        <div key={item.id} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-lg transition">
+                        <div key={item.id} className="bg-zinc-900 rounded-xl border border-zinc-800 p-6 hover:shadow-lg transition">
                             <div className="flex items-start justify-between mb-4">
-                                <h3 className="text-lg font-bold text-slate-900">{item.name}</h3>
+                                <h3 className="text-lg font-bold text-white">{item.name}</h3>
                                 {getStatusBadge(item.status)}
                             </div>
                             <div className="space-y-2 text-sm">
                                 {item.brand && (
-                                    <p className="text-slate-600">
+                                    <p className="text-gray-400">
                                         <span className="font-semibold">Marca:</span> {item.brand}
                                     </p>
                                 )}
                                 {item.location && (
-                                    <p className="text-slate-600">
+                                    <p className="text-gray-400">
                                         <span className="font-semibold">Ubicación:</span> {item.location}
                                     </p>
                                 )}
                             </div>
                             <Link
                                 to={`/equipment/${item.id}/edit`}
-                                className="block mt-4 w-full text-center px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-900 font-semibold rounded-lg transition"
+                                className="block mt-4 w-full text-center px-4 py-2 bg-zinc-800 hover:bg-slate-200 text-white font-semibold rounded-lg transition"
                             >
                                 Ver Detalles
                             </Link>
