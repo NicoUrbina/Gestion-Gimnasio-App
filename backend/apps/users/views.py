@@ -70,6 +70,19 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
     
+    @action(detail=False, methods=['get'])
+    def debug_member(self, request):
+        """Debug: verificar información del member profile"""
+        user = request.user
+        data = {
+            'user_id': user.id,
+            'email': user.email,
+            'role': user.role.name if user.role else None,
+            'has_member_profile': hasattr(user, 'member_profile'),
+            'member_id': user.member_profile.id if hasattr(user, 'member_profile') else None,
+        }
+        return Response(data)
+    
     
     @action(detail=False, methods=['post'])
     def change_password(self, request):
