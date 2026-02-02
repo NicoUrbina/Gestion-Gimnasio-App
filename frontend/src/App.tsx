@@ -25,6 +25,7 @@ import MembershipsListPage from "./pages/memberships/MembershipsListPage"
 import ClassesCalendarPage from "./pages/classes/ClassesCalendarPage"
 import MyReservationsPage from "./pages/classes/MyReservationsPage"
 import ClassFormPage from "./pages/classes/ClassFormPage"
+import ClassDetailPage from "./pages/classes/ClassDetailPage"
 
 // Payments
 import PaymentsPage from "./pages/payments/PaymentsPage"
@@ -153,7 +154,11 @@ function App() {
             {/* Classes */}
             <Route path="/classes" element={<ClassesCalendarPage />} />
             <Route path="/classes/new" element={<ClassFormPage />} />
+            <Route path="/classes" element={<ClassesCalendarPage />} />
+            <Route path="/classes/new" element={<ClassFormPage />} />
+            <Route path="/classes/:id" element={<ClassDetailPage />} />
             <Route path="/classes/:id/edit" element={<ClassFormPage />} />
+            <Route path="/classes/my-reservations" element={<MyReservationsPage />} />
             <Route path="/classes/my-reservations" element={<MyReservationsPage />} />
 
             {/* Payments */}

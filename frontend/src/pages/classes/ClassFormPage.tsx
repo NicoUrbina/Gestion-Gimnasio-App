@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
 import { gymClassService, classTypeService } from '../../services/classes';
-import type { ClassType, GymClass } from '../../types';
+import { staffService } from '../../services/staff';
+import type { ClassType, GymClass, Staff } from '../../types';
 
 export default function ClassFormPage() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ export default function ClassFormPage() {
   const [loading, setLoading] = useState(isEditing);
   const [saving, setSaving] = useState(false);
   const [classTypes, setClassTypes] = useState<ClassType[]>([]);
+  const [instructors, setInstructors] = useState<Staff[]>([]);
 
   const [formData, setFormData] = useState({
     class_type: '',
@@ -26,6 +28,7 @@ export default function ClassFormPage() {
 
   useEffect(() => {
     fetchClassTypes();
+    fetchInstructors();
     if (isEditing) {
       fetchClass();
     }
@@ -38,6 +41,16 @@ export default function ClassFormPage() {
     } catch (error) {
       console.error('Error fetching class types:', error);
       setClassTypes([]);
+    }
+  };
+
+  const fetchInstructors = async () => {
+    try {
+      const data = await staffService.getAll({ is_instructor: true });
+      setInstructors(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Error fetching instructors:', error);
+      setInstructors([]);
     }
   };
 
@@ -259,6 +272,26 @@ export default function ClassFormPage() {
               placeholder="Ej: Sala 1, Área de pesas"
               className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white placeholder-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
+          </div>
+
+          {/* Instructor */}
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Entrenador / Instructor
+            </label>
+            <select
+              name="instructor"
+              value={formData.instructor}
+              onChange={handleChange}
+              className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
+            >
+              <option value="">Sin asignar / Seleccionar...</option>
+              {instructors.map(staff => (
+                <option key={staff.id} value={staff.id}>
+                  {staff.full_name || staff.user?.full_name || `${staff.user?.first_name || ''} ${staff.user?.last_name || ''}`.trim() || `Entrenador #${staff.id}`}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Descripción */}

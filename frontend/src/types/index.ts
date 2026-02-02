@@ -53,6 +53,21 @@ export interface Member {
   days_inactive: number | null;
 }
 
+// Tipos para Staff
+export interface Staff {
+  id: number;
+  user?: User;
+  full_name?: string;
+  staff_type: 'trainer' | 'receptionist' | 'admin' | 'maintenance';
+  staff_type_display: string;
+  specializations: string[];
+  bio?: string;
+  certifications?: string[];
+  hire_date?: string;
+  is_instructor: boolean;
+  is_active: boolean;
+}
+
 // Tipos para membresías
 export interface MembershipPlan {
   id: number;
@@ -217,10 +232,12 @@ export interface GymClass {
 export interface Reservation {
   id: number;
   member: number;
+  member_name?: string; // Added for staff view
   gym_class: number;
   class_title: string;
   reserved_at: string;
   status: 'confirmed' | 'waitlist' | 'cancelled' | 'attended' | 'no_show';
+  status_display?: string; // Added for staff view
   waitlist_position: number | null;
   attended_at: string | null;
   cancelled_at: string | null;

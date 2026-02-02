@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../stores/authStore';
 import {
   Plus,
   ChevronLeft,
@@ -23,7 +24,10 @@ export default function ClassesCalendarPage() {
   const [loading, setLoading] = useState(true);
   const [currentWeekStart, setCurrentWeekStart] = useState(getWeekStart(new Date()));
   const [selectedType, setSelectedType] = useState<string>('all');
+  const { user } = useAuthStore();
   const [activeMembership, setActiveMembership] = useState<any>(null);
+
+  const isAdminOrStaff = user?.role_name === 'admin' || user?.role_name === 'staff';
 
   useEffect(() => {
     fetchData();
@@ -75,8 +79,8 @@ export default function ClassesCalendarPage() {
   };
 
   const handleReserve = async (gymClass: GymClass) => {
-    // Validate active membership before reserving
-    if (!activeMembership) {
+    // Validate active membership before reserving (skip for admins/staff)
+    if (!activeMembership && !isAdminOrStaff) {
       alert('⚠️ No tienes una membresía activa.\n\nContacta con el gimnasio para activar tu membresía antes de reservar clases.');
       return;
     }
@@ -168,45 +172,47 @@ export default function ClassesCalendarPage() {
         </button>
       </div>
 
-      {/* Membership Status Alert */}
-      {!activeMembership ? (
-        <div className="bg-amber-900/20 border border-amber-500/30 rounded-xl p-4">
-          <div className="flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="font-semibold text-amber-300">No tienes membresía activa</p>
-              <p className="text-sm text-amber-400/80 mt-1">
-                Necesitas una membresía activa para reservar clases. Contacta con el gimnasio.
-              </p>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="bg-green-900/20 border border-green-500/30 rounded-xl p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <CheckCircle className="w-5 h-5 text-green-400" />
+      {/* Membership Status Alert - Only show for members */}
+      {!isAdminOrStaff && (
+        !activeMembership ? (
+          <div className="bg-amber-900/20 border border-amber-500/30 rounded-xl p-4">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="font-semibold text-green-300">Membresía Activa: {activeMembership.plan_name}</p>
-                <p className="text-sm text-green-400/80">
-                  Válida hasta: {new Date(activeMembership.end_date).toLocaleDateString('es-ES')}
+                <p className="font-semibold text-amber-300">No tienes membresía activa</p>
+                <p className="text-sm text-amber-400/80 mt-1">
+                  Necesitas una membresía activa para reservar clases. Contacta con el gimnasio.
                 </p>
               </div>
             </div>
-            {activeMembership.max_classes_per_month && (
-              <div className="text-right">
-                <p className="text-sm text-green-400/80">Clases este mes</p>
-                <p className="text-lg font-bold text-green-300">
-                  {myReservations.filter((r: any) => {
-                    const resDate = new Date(r.reserved_at);
-                    const now = new Date();
-                    return resDate.getMonth() === now.getMonth() && r.status === 'confirmed';
-                  }).length} / {activeMembership.max_classes_per_month}
-                </p>
-              </div>
-            )}
           </div>
-        </div>
+        ) : (
+          <div className="bg-green-900/20 border border-green-500/30 rounded-xl p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                <div>
+                  <p className="font-semibold text-green-300">Membresía Activa: {activeMembership.plan_name}</p>
+                  <p className="text-sm text-green-400/80">
+                    Válida hasta: {new Date(activeMembership.end_date).toLocaleDateString('es-ES')}
+                  </p>
+                </div>
+              </div>
+              {activeMembership.max_classes_per_month && (
+                <div className="text-right">
+                  <p className="text-sm text-green-400/80">Clases este mes</p>
+                  <p className="text-lg font-bold text-green-300">
+                    {myReservations.filter((r: any) => {
+                      const resDate = new Date(r.reserved_at);
+                      const now = new Date();
+                      return resDate.getMonth() === now.getMonth() && r.status === 'confirmed';
+                    }).length} / {activeMembership.max_classes_per_month}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )
       )}
 
       {/* Filters and Week Navigation */}
