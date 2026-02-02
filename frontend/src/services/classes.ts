@@ -69,7 +69,7 @@ export const gymClassService = {
    * Actualizar una clase (solo staff)
    */
   async update(id: number, data: Partial<GymClass>): Promise<GymClass> {
-    const response = await api.patch(`/classes/${id}/`, data);
+    const response = await api.put(`/classes/${id}/`, data);
     return response.data;
   },
 
@@ -106,10 +106,10 @@ export const reservationService = {
   /**
    * Crear una nueva reserva
    */
-  async create(gymClassId: number, memberId: number): Promise<Reservation> {
+  async create(gymClassId: number): Promise<Reservation> {
     const response = await api.post('/classes/reservations/', {
       gym_class: gymClassId,
-      member: memberId,
+      // No enviamos member - el backend lo asigna automáticamente desde el usuario autenticado
     });
     return response.data;
   },
