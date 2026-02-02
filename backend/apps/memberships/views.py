@@ -16,6 +16,44 @@ class MembershipPlanViewSet(viewsets.ModelViewSet):
     serializer_class = MembershipPlanSerializer
     permission_classes = [permissions.IsAuthenticated]
     
+    def get_permissions(self):
+        """
+        Allow any authenticated user to view plans,
+        but only admin/staff can create, update, or delete
+        """
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            # Usar permission personalizado para roles
+            from apps.common.permissions import is_admin, can_manage_members
+            return [permissions.IsAuthenticated()]
+        return [permissions.IsAuthenticated()]
+    
+    def perform_create(self, serializer):
+        """Only allow admin/staff to create plans"""
+        from apps.common.permissions import is_admin, can_manage_members
+        user = self.request.user
+        if not (is_admin(user) or can_manage_members(user)):
+            from rest_framework.exceptions import PermissionDenied
+            raise PermissionDenied('Solo administradores y staff pueden crear planes de membresía')
+        serializer.save()
+    
+    def perform_update(self, serializer):
+        """Only allow admin/staff to update plans"""
+        from apps.common.permissions import is_admin, can_manage_members
+        user = self.request.user
+        if not (is_admin(user) or can_manage_members(user)):
+            from rest_framework.exceptions import PermissionDenied
+            raise PermissionDenied('Solo administradores y staff pueden actualizar planes de membresía')
+        serializer.save()
+    
+    def perform_destroy(self, instance):
+        """Only allow admin to delete plans"""
+        from apps.common.permissions import is_admin
+        user = self.request.user
+        if not is_admin(user):
+            from rest_framework.exceptions import PermissionDenied
+            raise PermissionDenied('Solo administradores pueden eliminar planes de membresía')
+        instance.delete()
+    
     def get_queryset(self):
         if self.action == 'list':
             # Solo mostrar planes activos a usuarios normales

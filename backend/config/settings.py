@@ -67,12 +67,12 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # CSRF moved after Common to allow CORS preflight
+    # CSRF disabled for JWT-based API
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'apps.audit.middleware.AuditMiddleware',  # Audit logging middleware
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',  # CSRF at the end for API
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -176,7 +176,9 @@ SIMPLE_JWT = {
 
 
 #CORS
-CORS_ALLOW_ALL_ORIGINS = False  # Production-ready: only allow specific origins
+# IMPORTANT: Temporarily allow all origins for development
+# TODO: Change to False and use CORS_ALLOWED_ORIGINS in production
+CORS_ALLOW_ALL_ORIGINS = True  # Temporarily True for debugging
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS',
     default='http://localhost:5173,http://127.0.0.1:5173',
@@ -184,7 +186,9 @@ CORS_ALLOWED_ORIGINS = config(
 )
 CORS_ALLOW_CREDENTIALS = True
 
-# Explicitly allow all HTTP methods including PATCH for editing
+# Use default methods from django-cors-headers (includes all standard HTTP methods)
+# DELETE, GET, OPTIONS, PATCH, POST, PUT are all included by default
+# Only specify if you need to restrict or add custom methods
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
@@ -206,6 +210,9 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
+# Preflight request caching
+CORS_PREFLIGHT_MAX_AGE = 86400  # 24 hours
 
 
 # Email Configuration

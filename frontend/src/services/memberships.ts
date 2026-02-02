@@ -37,7 +37,7 @@ export const membershipPlanService = {
    * Actualizar un plan existente (solo admin)
    */
   async update(id: number, data: Partial<MembershipPlan>): Promise<MembershipPlan> {
-    const response = await api.patch(`/memberships/plans/${id}/`, data);
+    const response = await api.put(`/memberships/plans/${id}/`, data);
     return response.data;
   },
 
@@ -63,7 +63,7 @@ export const membershipService = {
     const params = new URLSearchParams();
     if (filters?.status) params.append('status', filters.status);
     if (filters?.member) params.append('member', filters.member.toString());
-    
+
     const response = await api.get(`/memberships/?${params.toString()}`);
     // Handle DRF pagination
     if (response.data.results) {
@@ -79,7 +79,7 @@ export const membershipService = {
     // Obtener el usuario actual y luego sus membresías
     const userResponse = await api.get('/users/me/');
     const memberId = userResponse.data.member_profile;
-    
+
     const response = await api.get(`/memberships/?member=${memberId}`);
     // Handle DRF pagination
     if (response.data.results) {
