@@ -15,12 +15,15 @@ class RoleSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     role_name = serializers.CharField(source='role.name', read_only=True)
     full_name = serializers.SerializerMethodField()
+    has_member_profile = serializers.SerializerMethodField()
+    member_id = serializers.SerializerMethodField()
     
     class Meta:
         model = User
         fields = [
             'id', 'email', 'username', 'first_name', 'last_name',
             'full_name', 'phone', 'photo', 'role', 'role_name',
+            'has_member_profile', 'member_id',
             'is_active', 'date_joined', 'last_login'
         ]
         read_only_fields = ['date_joined', 'last_login']
@@ -30,6 +33,14 @@ class UserSerializer(serializers.ModelSerializer):
     
     def get_full_name(self, obj):
         return obj.get_full_name()
+    
+    def get_has_member_profile(self, obj):
+        return hasattr(obj, 'member_profile')
+    
+    def get_member_id(self, obj):
+        if hasattr(obj, 'member_profile'):
+            return obj.member_profile.id
+        return None
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -78,6 +89,12 @@ class UserCreateSerializer(serializers.ModelSerializer):
         user = User(**validated_data)
         user.set_password(password)
         user.save()
+        
+        # Crear perfil de miembro automáticamente si el rol es 'member'
+        if user.role and user.role.name == 'member':
+            from apps.members.models import Member
+            Member.objects.create(user=user)
+        
         return user
 
 
