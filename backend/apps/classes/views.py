@@ -9,7 +9,7 @@ from django.utils import timezone
 from .models import ClassType, GymClass, Reservation, Routine, RoutineAssignment
 from .serializers import (
     ClassTypeSerializer, GymClassSerializer, GymClassListSerializer,
-    ReservationSerializer, RoutineSerializer, RoutineAssignmentSerializer
+    ReservationSerializer, ReservationCreateSerializer, RoutineSerializer, RoutineAssignmentSerializer
 )
 
 
@@ -32,6 +32,12 @@ class GymClassViewSet(viewsets.ModelViewSet):
     ordering_fields = ['start_datetime']
     ordering = ['start_datetime']
     
+    def list(self, request, *args, **kwargs):
+        # Desactivar paginación si se filtra por fechas (para el calendario)
+        if request.query_params.get('date_from') and request.query_params.get('date_to'):
+            self.pagination_class = None
+        return super().list(request, *args, **kwargs)
+
     def get_serializer_class(self):
         if self.action == 'list':
             return GymClassListSerializer
@@ -44,14 +50,22 @@ class GymClassViewSet(viewsets.ModelViewSet):
         date_from = self.request.query_params.get('date_from')
         date_to = self.request.query_params.get('date_to')
         
-        if date_from:
+        if date_from and date_to:
+            # Si se especifican ambas fechas, usarlas exactamente
+            queryset = queryset.filter(
+                start_datetime__date__gte=date_from,
+                start_datetime__date__lte=date_to
+            )
+        elif date_from:
+            # Solo fecha de inicio
             queryset = queryset.filter(start_datetime__date__gte=date_from)
-        if date_to:
+        elif date_to:
+            # Solo fecha de fin
             queryset = queryset.filter(start_datetime__date__lte=date_to)
-        
-        # Por defecto solo futuras
-        if not date_from and self.action == 'list':
-            queryset = queryset.filter(start_datetime__gte=timezone.now())
+        else:
+            # Sin filtros de fecha: mostrar solo futuras por defecto
+            if self.action == 'list':
+                queryset = queryset.filter(start_datetime__gte=timezone.now())
         
         return queryset
     
@@ -92,6 +106,69 @@ class ReservationViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(member__user=user)
         
         return queryset
+    
+    def get_serializer_class(self):
+        """Usar serializer específico para creación"""
+        if self.action == 'create':
+            # Para miembros regulares, usar el serializer simplificado
+            user = self.request.user
+            if not (user.is_staff or (hasattr(user, 'role') and user.role and user.role.name in ['admin', 'staff', 'trainer'])):
+                from .serializers import ReservationCreateSerializer
+                return ReservationCreateSerializer
+        
+        return ReservationSerializer
+    
+    def create(self, request, *args, **kwargs):
+        """Override create para agregar logging"""
+        print(f"=== CREATE RESERVATION DEBUG ===")
+        print(f"User: {request.user}")
+        print(f"User ID: {request.user.id}")
+        print(f"Has member_profile: {hasattr(request.user, 'member_profile')}")
+        if hasattr(request.user, 'member_profile'):
+            print(f"Member ID: {request.user.member_profile.id}")
+        print(f"Request data: {request.data}")
+        print(f"Serializer class: {self.get_serializer_class().__name__}")
+        
+        return super().create(request, *args, **kwargs)
+    
+    def get_serializer(self, *args, **kwargs):
+        """Override para configurar serializer según contexto"""
+        return super().get_serializer(*args, **kwargs)
+    
+    def perform_create(self, serializer):
+        # Force the member to be the profile of the logged-in user
+        # unless it's a staff member creating a reservation for someone else
+        user = self.request.user
+        
+        # Para usuarios no-staff, siempre usar su propio member_profile
+        if not (user.is_staff or (hasattr(user, 'role') and user.role and user.role.name in ['admin', 'staff', 'trainer'])):
+            if hasattr(user, 'member_profile'):
+                # Verificar si ya tiene una reserva para esta clase
+                gym_class = serializer.validated_data['gym_class']
+                existing_reservation = Reservation.objects.filter(
+                    gym_class=gym_class,
+                    member=user.member_profile,
+                    status__in=['confirmed', 'waitlist']
+                ).first()
+                
+                if existing_reservation:
+                    from rest_framework.exceptions import ValidationError
+                    if existing_reservation.status == 'confirmed':
+                        raise ValidationError({'detail': 'Ya tienes una reserva confirmada para esta clase'})
+                    elif existing_reservation.status == 'waitlist':
+                        raise ValidationError({'detail': 'Ya estás en la lista de espera para esta clase'})
+                
+                serializer.save(member=user.member_profile)
+            else:
+                # Si el usuario no tiene member_profile, es un error
+                from rest_framework.exceptions import ValidationError
+                raise ValidationError({'detail': 'Usuario no tiene perfil de miembro asociado'})
+        else:
+            # Staff/Admin pueden especificar member en el body, o usar su propio perfil si no se especifica
+            if 'member' not in serializer.validated_data and hasattr(user, 'member_profile'):
+                serializer.save(member=user.member_profile)
+            else:
+                serializer.save()
     
     @action(detail=True, methods=['post'])
     def cancel(self, request, pk=None):

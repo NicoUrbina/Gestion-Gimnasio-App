@@ -52,6 +52,28 @@ class GymClassListSerializer(serializers.ModelSerializer):
         ]
 
 
+class ReservationCreateSerializer(serializers.ModelSerializer):
+    """Serializer específico para crear reservas (member es opcional)"""
+    
+    class Meta:
+        model = Reservation
+        fields = ['gym_class']  # Solo gym_class es requerido
+    
+    def create(self, validated_data):
+        gym_class = validated_data['gym_class']
+        
+        # Verificar si la clase está llena
+        if gym_class.is_full:
+            # Agregar a lista de espera
+            waitlist_count = gym_class.reservations.filter(status='waitlist').count()
+            validated_data['status'] = 'waitlist'
+            validated_data['waitlist_position'] = waitlist_count + 1
+        else:
+            validated_data['status'] = 'confirmed'
+        
+        return super().create(validated_data)
+
+
 class ReservationSerializer(serializers.ModelSerializer):
     member_name = serializers.CharField(source='member.user.get_full_name', read_only=True)
     class_title = serializers.CharField(source='gym_class.title', read_only=True)
@@ -66,6 +88,34 @@ class ReservationSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at'
         ]
         read_only_fields = ['reserved_at', 'cancelled_at', 'attended_at', 'waitlist_position', 'created_at', 'updated_at']
+        extra_kwargs = {
+            'member': {'required': False, 'allow_null': True}
+        }
+    
+    def validate(self, attrs):
+        gym_class = attrs.get('gym_class')
+        member = attrs.get('member')
+        
+        # Solo validar duplicados si member está presente
+        # (cuando no está presente, se asigna en perform_create)
+        if gym_class and member:
+            existing_reservation = Reservation.objects.filter(
+                gym_class=gym_class,
+                member=member,
+                status__in=['confirmed', 'waitlist']
+            ).first()
+            
+            if existing_reservation:
+                if existing_reservation.status == 'confirmed':
+                    raise serializers.ValidationError({
+                        'detail': 'Ya tienes una reserva confirmada para esta clase'
+                    })
+                elif existing_reservation.status == 'waitlist':
+                    raise serializers.ValidationError({
+                        'detail': 'Ya estás en la lista de espera para esta clase'
+                    })
+        
+        return attrs
     
     def create(self, validated_data):
         gym_class = validated_data['gym_class']
