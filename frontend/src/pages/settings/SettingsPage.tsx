@@ -11,6 +11,7 @@ import {
   CheckCircle,
   AlertTriangle,
   Loader2,
+  Dumbbell,
 } from 'lucide-react';
 import SettingsCard from '../../components/settings/SettingsCard';
 import api from '../../services/api';
@@ -54,17 +55,6 @@ export default function SettingsPage() {
         <p className="text-gray-400 mt-1">
           Administra la configuración del sistema, usuarios y preferencias
         </p>
-      </div>
-
-      {/* Status Banner */}
-      <div className="p-4 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-xl flex items-center gap-4">
-        <div className="p-2 bg-green-500/20 rounded-lg">
-          <CheckCircle className="w-6 h-6 text-green-400" />
-        </div>
-        <div>
-          <p className="text-green-400 font-semibold">Sistema funcionando correctamente</p>
-          <p className="text-green-400/70 text-sm">Todos los servicios están operativos</p>
-        </div>
       </div>
 
       {/* Quick Stats */}
@@ -133,6 +123,13 @@ export default function SettingsPage() {
             description="Gestiona usuarios del sistema, asigna roles y permisos"
             icon={Users}
             href="/settings/users"
+          />
+
+          <SettingsCard
+            title="Entrenadores"
+            description="Gestiona el staff de entrenadores, horarios y asignaciones"
+            icon={Dumbbell}
+            href="/trainers"
           />
 
           <SettingsCard

@@ -70,6 +70,8 @@ import {
   SecuritySettingsPage,
   SystemSettingsPage,
 } from "./pages/settings"
+import TrainersPage from "./pages/trainers/TrainersPage"
+import TrainerFormPage from "./pages/trainers/TrainerFormPage"
 import AuditLogsPage from "./components/settings/audit/AuditLogsPage"
 
 // Components
@@ -195,6 +197,11 @@ function App() {
             <Route path="/progress/evolution" element={<EvolutionCharts />} />
             <Route path="/progress/history" element={<ProgressHistory />} />
             <Route path="/progress/compare" element={<ComparisonView />} />
+
+            {/* Trainers - Admin/Staff Only */}
+            <Route path="/trainers" element={<TrainersPage />} />
+            <Route path="/trainers/new" element={<TrainerFormPage />} />
+            <Route path="/trainers/:id/edit" element={<TrainerFormPage />} />
 
             {/* Settings - Admin Only */}
             <Route element={<AdminRoute />}>
