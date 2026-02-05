@@ -121,6 +121,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
         
+        # Validar que el usuario esté activo
+        if not self.user.is_active:
+            raise serializers.ValidationError({
+                'detail': 'Esta cuenta ha sido desactivada. Contacta al administrador.'
+            })
+        
         # Agregar datos del usuario
         data['user'] = {
             'id': self.user.id,
