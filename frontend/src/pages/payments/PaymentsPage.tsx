@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Loader2, DollarSign, CheckCircle, XCircle, Download, Eye, Image } from 'lucide-react';
+import { DollarSign, Plus, Download, CheckCircle, XCircle, Eye, Image, Search, X } from 'lucide-react';
 import { paymentService } from '../../services/payments';
 import api from '../../services/api';
 import PaymentStatusBadge from '../../components/payments/PaymentStatusBadge';
@@ -18,6 +18,7 @@ export default function PaymentsPage() {
   const [acting, setActing] = useState<number | null>(null);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchPayments();
@@ -80,8 +81,21 @@ export default function PaymentsPage() {
   };
 
   const filterPayments = () => {
-    if (activeTab === 'all') return payments;
-    return payments.filter(p => p.status === activeTab);
+    let result = payments;
+    
+    // Filtrar por estado
+    if (activeTab !== 'all') {
+      result = result.filter(p => p.status === activeTab);
+    }
+    
+    // Filtrar por término de búsqueda
+    if (searchTerm.trim()) {
+      result = result.filter(p => 
+        p.member_name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    return result;
   };
 
   const filtered = filterPayments();
@@ -139,7 +153,32 @@ export default function PaymentsPage() {
 
       {/* Filters and Export */}
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="flex flex-col gap-4">
+          {/* Search */}
+          <div className="flex items-center gap-2">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Buscar por nombre de miembro..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-10 py-2.5 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+              />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                  title="Limpiar búsqueda"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          </div>
+          
+          {/* Date filters and export */}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-3">
             <div>
               <label className="block text-xs text-gray-400 mb-1">Desde</label>
@@ -158,6 +197,7 @@ export default function PaymentsPage() {
                 onChange={(e) => setEndDate(e.target.value)}
                 className="px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white focus:outline-none focus:border-orange-500 transition-colors"
               />
+            </div>
             </div>
           </div>
           <button
