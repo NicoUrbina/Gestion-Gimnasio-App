@@ -41,6 +41,12 @@ class PaymentCreateSerializer(serializers.ModelSerializer):
                 'membership': 'Debe seleccionar una membresía para pagos de tipo membresía'
             })
         
+        # Limpiar campos opcionales vacíos para evitar errores de validación
+        optional_fields = ['reference_number', 'description', 'notes']
+        for field in optional_fields:
+            if field in data and data[field] == '':
+                data[field] = ''  # Asegurar que sea string vacío, no None
+        
         return data
     
     def create(self, validated_data):
