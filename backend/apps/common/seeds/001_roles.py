@@ -1,6 +1,6 @@
 from apps.users.models import Role
 
-def run():
+def seed():
     roles = {
         'admin': 'Administrador del Sistema',
         'staff': 'Personal del Gimnasio',
