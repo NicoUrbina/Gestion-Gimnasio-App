@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DollarSign, Plus, Download, CheckCircle, XCircle, Eye, Image, Search, X } from 'lucide-react';
+import { DollarSign, Plus, Download, CheckCircle, XCircle, Eye, Image, Search, X, Loader } from 'lucide-react';
 import { paymentService } from '../../services/payments';
 import api from '../../services/api';
 import PaymentStatusBadge from '../../components/payments/PaymentStatusBadge';
@@ -151,62 +151,65 @@ export default function PaymentsPage() {
         </button>
       </div>
 
+
       {/* Filters and Export */}
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-        <div className="flex flex-col gap-4">
-          {/* Search */}
-          <div className="flex items-center gap-2">
-            <div className="flex-1 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
+          {/* Search - ocupa más espacio */}
+          <div className="lg:col-span-5">
+            <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Buscar por nombre de miembro..."
+                placeholder="Buscar por nombre..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                className="w-full pl-9 pr-9 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
               />
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm('')}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-gray-400 hover:text-white transition-colors"
                   title="Limpiar búsqueda"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>
           </div>
-          
-          {/* Date filters and export */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div>
-              <label className="block text-xs text-gray-400 mb-1">Desde</label>
+
+          {/* Date filters */}
+          <div className="lg:col-span-4 flex gap-2">
+            <div className="flex-1">
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white focus:outline-none focus:border-orange-500 transition-colors"
+                className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500 transition-colors"
+                placeholder="Desde"
               />
             </div>
-            <div>
-              <label className="block text-xs text-gray-400 mb-1">Hasta</label>
+            <div className="flex-1">
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white focus:outline-none focus:border-orange-500 transition-colors"
+                className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500 transition-colors"
+                placeholder="Hasta"
               />
             </div>
-            </div>
           </div>
-          <button
-            onClick={handleExport}
-            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-700 transition-colors"
-          >
-            <Download className="w-4 h-4" />
-            Exportar Excel
-          </button>
+
+          {/* Export button */}
+          <div className="lg:col-span-3">
+            <button
+              onClick={handleExport}
+              className="w-full px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2"
+            >
+              <Download className="w-4 h-4" />
+              Exportar Excel
+            </button>
+          </div>
         </div>
       </div>
 
@@ -240,7 +243,7 @@ export default function PaymentsPage() {
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
+            <Loader className="w-8 h-8 text-orange-500 animate-spin" />
           </div>
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-gray-400">
