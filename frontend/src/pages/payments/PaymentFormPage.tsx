@@ -100,8 +100,11 @@ export default function PaymentFormPage() {
     if (membershipId) {
       const selected = memberships.find(m => m.id === parseInt(membershipId));
       if (selected) {
-        setFormData(prev => ({ ...prev, amount: selected.plan_price }));
+        setFormData(prev => ({ ...prev, amount: selected.plan_price || '' }));
       }
+    } else {
+      // Si se deselecciona, volver a string vacío
+      setFormData(prev => ({ ...prev, amount: '' }));
     }
   };
 
