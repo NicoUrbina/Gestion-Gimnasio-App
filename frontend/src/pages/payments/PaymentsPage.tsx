@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Loader2, DollarSign, CheckCircle, XCircle, Download } from 'lucide-react';
+import { Plus, Loader2, DollarSign, CheckCircle, XCircle, Download, Eye, Image } from 'lucide-react';
 import { paymentService } from '../../services/payments';
+import api from '../../services/api';
 import PaymentStatusBadge from '../../components/payments/PaymentStatusBadge';
 import PaymentMethodIcon from '../../components/payments/PaymentMethodIcon';
 import type { Payment } from '../../types';
@@ -85,13 +86,34 @@ export default function PaymentsPage() {
 
   const filtered = filterPayments();
 
-  const handleExport = () => {
+  const handleExport = async () => {
+    // Validar que fecha inicio no sea posterior a fecha fin
+    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+      alert('La fecha de inicio no puede ser posterior a la fecha de fin');
+      return;
+    }
+
     const params = new URLSearchParams();
     if (startDate) params.append('start_date', startDate);
     if (endDate) params.append('end_date', endDate);
 
-    const url = `http://localhost:8000/api/payments/export_report/?${params.toString()}`;
-    window.open(url, '_blank');
+    try {
+      const response = await api.get(`/payments/export_report/?${params.toString()}`, {
+        responseType: 'blob',
+      });
+      
+      // Crear enlace de descarga
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `pagos_${new Date().getTime()}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error: any) {
+      alert(error.response?.data?.detail || 'Error al exportar el reporte');
+    }
   };
 
   return (
@@ -216,6 +238,11 @@ export default function PaymentsPage() {
                       <div className="flex items-center gap-2 text-sm text-gray-400">
                         <PaymentMethodIcon method={payment.payment_method} className="w-4 h-4" />
                         {payment.payment_method_display}
+                        {payment.receipt_image && (
+                          <span title="Tiene comprobante">
+                            <Image className="w-4 h-4 text-green-400 ml-auto" />
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -223,6 +250,16 @@ export default function PaymentsPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-2">
+                        {/* Botón ver detalles para todos los pagos */}
+                        <button
+                          onClick={() => navigate(`/payments/${payment.id}`)}
+                          className="p-2 text-blue-400 hover:text-blue-300 hover:bg-zinc-800 rounded-lg transition-colors"
+                          title="Ver detalles"
+                        >
+                          <Eye className="w-5 h-5" />
+                        </button>
+                        
+                        {/* Botones aprobar/rechazar solo para pendientes */}
                         {payment.status === 'pending' && (
                           <>
                             <button
