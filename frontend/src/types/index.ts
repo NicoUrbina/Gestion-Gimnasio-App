@@ -245,11 +245,14 @@ export interface Reservation {
 }
 
 // Payments
+export type PaymentType = 'membership' | 'product' | 'service' | 'other';
 export type PaymentMethod = 'cash' | 'card' | 'transfer' | 'mobile' | 'other';
 export type PaymentStatus = 'pending' | 'completed' | 'cancelled' | 'refunded';
 
 export interface Payment {
   id: number;
+  payment_type: PaymentType;
+  payment_type_display: string;
   member: number;
   member_name: string;
   membership: number | null;

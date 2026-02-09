@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Loader2, DollarSign, CheckCircle, XCircle, Download } from 'lucide-react';
+import { DollarSign, Plus, Download, CheckCircle, XCircle, Eye, Image, Search, X, Loader } from 'lucide-react';
 import { paymentService } from '../../services/payments';
+import api from '../../services/api';
 import PaymentStatusBadge from '../../components/payments/PaymentStatusBadge';
 import PaymentMethodIcon from '../../components/payments/PaymentMethodIcon';
 import type { Payment } from '../../types';
@@ -17,6 +18,7 @@ export default function PaymentsPage() {
   const [acting, setActing] = useState<number | null>(null);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchPayments();
@@ -79,19 +81,53 @@ export default function PaymentsPage() {
   };
 
   const filterPayments = () => {
-    if (activeTab === 'all') return payments;
-    return payments.filter(p => p.status === activeTab);
+    let result = payments;
+    
+    // Filtrar por estado
+    if (activeTab !== 'all') {
+      result = result.filter(p => p.status === activeTab);
+    }
+    
+    // Filtrar por término de búsqueda
+    if (searchTerm.trim()) {
+      result = result.filter(p => 
+        p.member_name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    return result;
   };
 
   const filtered = filterPayments();
 
-  const handleExport = () => {
+  const handleExport = async () => {
+    // Validar que fecha inicio no sea posterior a fecha fin
+    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+      alert('La fecha de inicio no puede ser posterior a la fecha de fin');
+      return;
+    }
+
     const params = new URLSearchParams();
     if (startDate) params.append('start_date', startDate);
     if (endDate) params.append('end_date', endDate);
 
-    const url = `http://localhost:8000/api/payments/export_report/?${params.toString()}`;
-    window.open(url, '_blank');
+    try {
+      const response = await api.get(`/payments/export_report/?${params.toString()}`, {
+        responseType: 'blob',
+      });
+      
+      // Crear enlace de descarga
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `pagos_${new Date().getTime()}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error: any) {
+      alert(error.response?.data?.detail || 'Error al exportar el reporte');
+    }
   };
 
   return (
@@ -115,36 +151,65 @@ export default function PaymentsPage() {
         </button>
       </div>
 
+
       {/* Filters and Export */}
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div>
-              <label className="block text-xs text-gray-400 mb-1">Desde</label>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
+          {/* Search - ocupa más espacio */}
+          <div className="lg:col-span-5">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Buscar por nombre..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-9 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+              />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-gray-400 hover:text-white transition-colors"
+                  title="Limpiar búsqueda"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Date filters */}
+          <div className="lg:col-span-4 flex gap-2">
+            <div className="flex-1">
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white focus:outline-none focus:border-orange-500 transition-colors"
+                className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500 transition-colors"
+                placeholder="Desde"
               />
             </div>
-            <div>
-              <label className="block text-xs text-gray-400 mb-1">Hasta</label>
+            <div className="flex-1">
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white focus:outline-none focus:border-orange-500 transition-colors"
+                className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500 transition-colors"
+                placeholder="Hasta"
               />
             </div>
           </div>
-          <button
-            onClick={handleExport}
-            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-700 transition-colors"
-          >
-            <Download className="w-4 h-4" />
-            Exportar Excel
-          </button>
+
+          {/* Export button */}
+          <div className="lg:col-span-3">
+            <button
+              onClick={handleExport}
+              className="w-full px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2"
+            >
+              <Download className="w-4 h-4" />
+              Exportar Excel
+            </button>
+          </div>
         </div>
       </div>
 
@@ -178,7 +243,7 @@ export default function PaymentsPage() {
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
+            <Loader className="w-8 h-8 text-orange-500 animate-spin" />
           </div>
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-gray-400">
@@ -216,6 +281,11 @@ export default function PaymentsPage() {
                       <div className="flex items-center gap-2 text-sm text-gray-400">
                         <PaymentMethodIcon method={payment.payment_method} className="w-4 h-4" />
                         {payment.payment_method_display}
+                        {payment.receipt_image && (
+                          <span title="Tiene comprobante">
+                            <Image className="w-4 h-4 text-green-400 ml-auto" />
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -223,6 +293,16 @@ export default function PaymentsPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-2">
+                        {/* Botón ver detalles para todos los pagos */}
+                        <button
+                          onClick={() => navigate(`/payments/${payment.id}`)}
+                          className="p-2 text-blue-400 hover:text-blue-300 hover:bg-zinc-800 rounded-lg transition-colors"
+                          title="Ver detalles"
+                        >
+                          <Eye className="w-5 h-5" />
+                        </button>
+                        
+                        {/* Botones aprobar/rechazar solo para pendientes */}
                         {payment.status === 'pending' && (
                           <>
                             <button

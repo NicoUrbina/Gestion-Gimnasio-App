@@ -9,6 +9,7 @@ import MainLayout from "./layouts/MainLayout"
 
 // Pages
 import LoginPage from "./pages/LoginPage"
+import ContactPage from "./pages/ContactPage"
 import RegisterPage from "./pages/auth/RegisterPage"
 import DashboardPage from "./pages/DashboardPage"
 import MembersPage from "./pages/MembersPage"
@@ -132,6 +133,7 @@ function App() {
         <Route path="/terminos" element={<TermsAndConditionsPage />} />
         <Route path="/privacidad" element={<PrivacyPage />} />
         <Route path="/planes-y-precios" element={<PlantsPricesPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/entrenadores" element={<InstructorsPage />} />
         <Route path="/step1-schedule" element={<Step1SchedulePage />} />
         <Route path="/step2-schedule" element={<Step2SchedulePage />} />

@@ -26,7 +26,7 @@ export default function Navbar({
     { label: "MEMBRESÍAS", href: "/planes-y-precios" },
     { label: "AGENDA Y CLASES", href: "/step1-schedule" },
     { label: "INSTRUCTORES", href: "/entrenadores" },
-    { label: "CONTACTO", href: "/#contact" },
+    { label: "CONTACTO", href: "/contact" },
   ]
   const logoSrc = `/Img/nexo-logo.png`
 
