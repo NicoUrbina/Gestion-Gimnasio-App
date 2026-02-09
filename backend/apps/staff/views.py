@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.db.models import Count, Q
 from datetime import timedelta, datetime
 from .models import Staff, Schedule
-from .serializers import StaffSerializer, StaffListSerializer, ScheduleSerializer
+from .serializers import StaffSerializer, StaffListSerializer, ScheduleSerializer, TrainerListSerializer, TrainerSerializer
 from apps.common.permissions import role_required, is_trainer
 
 
@@ -42,6 +42,159 @@ class StaffViewSet(viewsets.ModelViewSet):
         
         return queryset
     
+    @action(detail=False, methods=['get', 'post'], url_path='trainers')
+    def trainers(self, request):
+        """
+        Endpoint específico para gestión de entrenadores
+        GET /api/staff/trainers/ - Listar entrenadores
+        POST /api/staff/trainers/ - Crear entrenador
+        """
+        if request.method == 'GET':
+            # Filtrar solo entrenadores
+            queryset = Staff.objects.filter(
+                staff_type='trainer'
+            ).select_related('user').order_by('user__first_name')
+            
+            # Aplicar búsqueda
+            search = request.query_params.get('search')
+            if search:
+                queryset = queryset.filter(
+                    Q(user__first_name__icontains=search) |
+                    Q(user__last_name__icontains=search) |
+                    Q(user__email__icontains=search) |
+                    Q(bio__icontains=search)
+                )
+            
+            # Filtrar por estado activo (opcional)
+            is_active = request.query_params.get('is_active')
+            if is_active is not None:
+                if is_active.lower() in ['true', '1']:
+                    queryset = queryset.filter(is_active=True)
+                elif is_active.lower() in ['false', '0']:
+                    queryset = queryset.filter(is_active=False)
+                # Si is_active no es true/false, mostrar todos
+            
+            serializer = TrainerListSerializer(queryset, many=True)
+            return Response(serializer.data)
+        
+        elif request.method == 'POST':
+            serializer = TrainerSerializer(data=request.data)
+            if serializer.is_valid():
+                trainer = serializer.save()
+                return Response(
+                    TrainerSerializer(trainer).data,
+                    status=status.HTTP_201_CREATED
+                )
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=True, methods=['get', 'put', 'patch'], url_path='trainer')
+    def trainer_detail(self, request, pk=None):
+        """
+        Endpoint para detalle de entrenador específico
+        GET /api/staff/{id}/trainer/ - Obtener entrenador
+        PUT /api/staff/{id}/trainer/ - Actualizar entrenador completo
+        PATCH /api/staff/{id}/trainer/ - Actualizar entrenador parcial
+        """
+        try:
+            trainer = Staff.objects.select_related('user').get(
+                pk=pk, 
+                staff_type='trainer'
+            )
+        except Staff.DoesNotExist:
+            return Response(
+                {'detail': 'Entrenador no encontrado'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        if request.method == 'GET':
+            serializer = TrainerSerializer(trainer)
+            return Response(serializer.data)
+        
+        elif request.method in ['PUT', 'PATCH']:
+            partial = request.method == 'PATCH'
+            serializer = TrainerSerializer(trainer, data=request.data, partial=partial)
+            if serializer.is_valid():
+                trainer = serializer.save()
+                return Response(TrainerSerializer(trainer).data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=True, methods=['post'], url_path='trainer/toggle-active')
+    def toggle_trainer_active(self, request, pk=None):
+        """
+        Activar/desactivar entrenador
+        POST /api/staff/{id}/trainer/toggle-active/
+        """
+        try:
+            trainer = Staff.objects.select_related('user').get(pk=pk, staff_type='trainer')
+        except Staff.DoesNotExist:
+            return Response(
+                {'detail': 'Entrenador no encontrado'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        is_active = request.data.get('is_active')
+        if is_active is not None:
+            is_active_bool = bool(is_active)
+            
+            # Actualizar ambos objetos
+            trainer.is_active = is_active_bool
+            trainer.user.is_active = is_active_bool
+            
+            # Guardar en orden correcto
+            trainer.user.save(update_fields=['is_active'])
+            trainer.save(update_fields=['is_active'])
+            
+            return Response({
+                'id': trainer.id,
+                'is_active': trainer.is_active,
+                'user_is_active': trainer.user.is_active,
+                'message': f'Entrenador {"activado" if trainer.is_active else "desactivado"} correctamente'
+            })
+        
+        return Response(
+            {'detail': 'Campo is_active requerido'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    @action(detail=False, methods=['get'], url_path='trainers/stats')
+    def trainers_stats(self, request):
+        """
+        Estadísticas de entrenadores
+        GET /api/staff/trainers/stats/
+        """
+        total_trainers = Staff.objects.filter(staff_type='trainer').count()
+        active_trainers = Staff.objects.filter(staff_type='trainer', is_active=True).count()
+        inactive_trainers = total_trainers - active_trainers
+        
+        # Entrenadores con más clases este mes
+        from apps.classes.models import GymClass
+        from django.utils import timezone
+        
+        month_start = timezone.now().replace(day=1, hour=0, minute=0, second=0)
+        top_trainers = Staff.objects.filter(
+            staff_type='trainer',
+            is_active=True
+        ).annotate(
+            classes_this_month=Count(
+                'gymclass',
+                filter=Q(gymclass__start_datetime__gte=month_start)
+            )
+        ).order_by('-classes_this_month')[:5]
+        
+        top_trainers_data = []
+        for trainer in top_trainers:
+            top_trainers_data.append({
+                'id': trainer.id,
+                'name': trainer.user.get_full_name(),
+                'classes_count': trainer.classes_this_month
+            })
+        
+        return Response({
+            'total': total_trainers,
+            'active': active_trainers,
+            'inactive': inactive_trainers,
+            'top_trainers': top_trainers_data
+        })
     
     @action(detail=False, methods=['get'])
     def dashboard(self, request):

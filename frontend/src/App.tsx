@@ -45,6 +45,9 @@ import ComparisonView from "./pages/progress/ComparisonView"
 import ExerciseLibraryPage from "./pages/workouts/ExerciseLibraryPage"
 import RoutineBuilderPage from "./pages/workouts/RoutineBuilderPage"
 import MyRoutinePage from "./pages/workouts/MyRoutinePage"
+import RoutinesPage from "./pages/routines/RoutinesPage"
+import StartSessionPage from "./pages/workouts/StartSessionPage"
+import ActiveSessionPage from "./pages/workouts/ActiveSessionPage"
 
 // Evaluations & Goals
 import RequestEvaluationPage from "./pages/evaluations/RequestEvaluationPage"
@@ -71,6 +74,8 @@ import {
   SecuritySettingsPage,
   SystemSettingsPage,
 } from "./pages/settings"
+import TrainersPage from "./pages/trainers/TrainersPage"
+import TrainerFormPage from "./pages/trainers/TrainerFormPage"
 import AuditLogsPage from "./components/settings/audit/AuditLogsPage"
 
 // Components
@@ -175,8 +180,12 @@ function App() {
 
             {/* Workouts & Exercises */}
             <Route path="/workouts/exercises" element={<ExerciseLibraryPage />} />
-            <Route path="/workouts/routines" element={<RoutineBuilderPage />} />
+            <Route path="/workouts/routines" element={<RoutinesPage />} />
+            <Route path="/workouts/routines/create" element={<RoutineBuilderPage />} />
+            <Route path="/workouts/routines/:id/edit" element={<RoutineBuilderPage />} />
             <Route path="/workouts/my-routine" element={<MyRoutinePage />} />
+            <Route path="/workouts/sessions/start" element={<StartSessionPage />} />
+            <Route path="/workouts/sessions/:id" element={<ActiveSessionPage />} />
 
             {/* Evaluations & Goals */}
             <Route path="/evaluations/request" element={<RequestEvaluationPage />} />
@@ -197,6 +206,11 @@ function App() {
             <Route path="/progress/evolution" element={<EvolutionCharts />} />
             <Route path="/progress/history" element={<ProgressHistory />} />
             <Route path="/progress/compare" element={<ComparisonView />} />
+
+            {/* Trainers - Admin/Staff Only */}
+            <Route path="/trainers" element={<TrainersPage />} />
+            <Route path="/trainers/new" element={<TrainerFormPage />} />
+            <Route path="/trainers/:id/edit" element={<TrainerFormPage />} />
 
             {/* Settings - Admin Only */}
             <Route element={<AdminRoute />}>

@@ -41,21 +41,24 @@ def create_user_profile(sender, instance, created, **kwargs):
             )
             print(f'✓ Perfil Member creado automáticamente para: {instance.email}')
     
-    # AUTO-CREAR STAFF PROFILE
-    elif role_name == Role.STAFF:
+    # AUTO-CREAR STAFF PROFILE para STAFF y TRAINER
+    elif role_name in [Role.STAFF, Role.TRAINER]:
         from apps.staff.models import Staff
         from django.utils import timezone
         
         # Verificar si ya existe el perfil
         if not hasattr(instance, 'staff_profile'):
+            # Determinar tipo de staff según el rol
+            staff_type = 'trainer' if role_name == Role.TRAINER else 'admin'
+            
             Staff.objects.create(
                 user=instance,
-                hire_date=timezone.now().date(),  # Fecha de hoy por defecto
-                staff_type='admin',  # Por defecto administrativo, se puede cambiar después
+                hire_date=timezone.now().date(),
+                staff_type=staff_type,
             )
-            print(f'✓ Perfil Staff creado automáticamente para: {instance.email}')
+            print(f'✓ Perfil Staff creado automáticamente para {role_name}: {instance.email}')
     
-    # TRAINER y ADMIN no requieren perfil separado
+    # ADMIN no requiere perfil separado
     # Solo se usa el User con el rol correspondiente
 
 
@@ -85,14 +88,15 @@ def update_user_profile(sender, instance, created, **kwargs):
             )
             print(f'✓ Perfil Member creado por cambio de rol para: {instance.email}')
     
-    # Si cambió a STAFF y no tiene perfil Staff, crearlo
-    elif role_name == Role.STAFF:
+    # Si cambió a STAFF o TRAINER y no tiene perfil Staff, crearlo
+    elif role_name in [Role.STAFF, Role.TRAINER]:
         from apps.staff.models import Staff
         from django.utils import timezone
         if not hasattr(instance, 'staff_profile'):
+            staff_type = 'trainer' if role_name == Role.TRAINER else 'admin'
             Staff.objects.create(
                 user=instance,
                 hire_date=timezone.now().date(),
-                staff_type='admin',
+                staff_type=staff_type,
             )
-            print(f'✓ Perfil Staff creado por cambio de rol para: {instance.email}')
+            print(f'✓ Perfil Staff creado por cambio de rol para {role_name}: {instance.email}')
