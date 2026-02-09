@@ -22,5 +22,5 @@ urlpatterns = [
     path('api/analytics/', include('apps.analytics.urls')),
     path('api/audit/', include('apps.audit.urls')),  # Audit and logs
     path('api/', include('apps.assessments.urls')),  # Evaluaciones y metas
-    path('api/', include('apps.workouts.urls')),  # Rutinas y ejercicios
+    path('api/workouts/', include('apps.workouts.urls')),  # Rutinas y ejercicios
 ]

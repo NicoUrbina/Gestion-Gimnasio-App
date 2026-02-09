@@ -25,6 +25,8 @@ const navigation = [
   { name: 'Pagos', href: '/payments', icon: DollarSign, allowedRoles: ['admin', 'staff'] },
   { name: 'Clases', href: '/classes', icon: Calendar, allowedRoles: ['admin', 'staff', 'trainer', 'member'] },
   { name: 'Entrenadores', href: '/trainers', icon: Dumbbell, allowedRoles: ['admin', 'staff'] },
+  { name: 'Rutinas', href: '/workouts/routines', icon: Dumbbell, allowedRoles: ['admin', 'trainer'] },
+  { name: 'Mi Rutina', href: '/workouts/my-routine', icon: Dumbbell, allowedRoles: ['member'] },
   { name: 'Progreso', href: '/progress', icon: TrendingUp, allowedRoles: ['admin', 'trainer', 'member'] },
   { name: 'Configuración', href: '/settings', icon: Settings, allowedRoles: ['admin'] },
 ];
