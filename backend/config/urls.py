@@ -5,6 +5,8 @@ Sistema de Gestión de Gimnasio - API Routes
 from django.contrib import admin
 from django.urls import path, include
 
+from apps.common.views import bcv_exchange_rate
+
 urlpatterns = [
     # Admin
     path('admin/', admin.site.urls),
@@ -23,4 +25,5 @@ urlpatterns = [
     path('api/audit/', include('apps.audit.urls')),  # Audit and logs
     path('api/', include('apps.assessments.urls')),  # Evaluaciones y metas
     path('api/', include('apps.workouts.urls')),  # Rutinas y ejercicios
+    path('api/exchange-rate/bcv/', bcv_exchange_rate),
 ]

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, CreditCard, Lock, CheckCircle2, Loader2, User, ShieldCheck } from 'lucide-react';
+import PriceDisplay from './PriceDisplay';
 
 interface PaymentModalProps {
     isOpen: boolean;
@@ -102,10 +103,10 @@ export default function PaymentModal({ isOpen, onClose, plan }: PaymentModalProp
                         <h3 className="text-xl font-black text-gray-900 uppercase tracking-tight">
                             {step === 'success' ? '¡Bienvenido!' : 'Finalizar Plan'}
                         </h3>
-                        <div className="flex items-center gap-2 mt-1">
+                        <div className="flex items-center gap-2 mt-1 flex-wrap">
                             <span className="text-sm text-gray-500">Plan: <span className="text-gray-900 font-semibold">{plan.title}</span></span>
-                            <span className="w-1 h-1 rounded-full bg-gray-300" />
-                            <span className="text-sm font-bold text-orange-600">{plan.priceLine}</span>
+                            <span className="w-1 h-1 rounded-full bg-gray-300 hidden sm:block" />
+                            <PriceDisplay priceLine={plan.priceLine} size="sm" className="inline" />
                         </div>
                     </div>
                     <button

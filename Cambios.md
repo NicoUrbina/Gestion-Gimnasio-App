@@ -75,4 +75,7 @@
 
 ## Cambio General para el Panel de Membresias
 
--14 Scrapear desde el backend la pagina de https://www.bcv.org.ve/ para conseguir el precio del dolar
+-14 Scrapear desde el backend la pagina de https://www.bcv.org.ve/ para conseguir el precio del dolar LISTO
+  - Se agregó endpoint GET /api/exchange-rate/bcv/ que obtiene la tasa USD del BCV (scraping)
+  - En toda la web los planes muestran el precio en USD y debajo en texto más pequeño el equivalente en Bs según la tasa BCV
+  - La tasa se actualiza automáticamente (cache 1h en backend, refetch cada hora en frontend)

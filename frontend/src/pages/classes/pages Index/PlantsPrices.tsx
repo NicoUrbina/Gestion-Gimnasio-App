@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '../../../components/Navbar'
 import Footer from '../../../components/footer';
 import PaymentModal from '../../../components/PaymentModal';
+import PriceDisplay from '../../../components/PriceDisplay';
 
 interface PlanFeature {
     feature: string;
@@ -150,7 +151,7 @@ export default function PlantsPrices() {
                                                 Flexible
                                             </div>
                                             <h3 className="text-xl font-bold text-gray-900 mb-1">Por Día</h3>
-                                            <div className="text-3xl font-black text-orange-600 mb-1">3$ <span className="text-base font-normal text-gray-500">/día</span></div>
+                                            <div className="mb-1"><PriceDisplay amountUsd={3} suffix="/día" size="lg" /></div>
                                             <p className="text-xs text-gray-500 mb-4">Acceso básico</p>
                                             <button
                                                 onClick={() => handleSelectPlan("Por Día", "3$ /día")}
@@ -165,7 +166,7 @@ export default function PlantsPrices() {
                                                 Más Popular
                                             </div>
                                             <h3 className="text-xl font-bold text-gray-900 mb-1">Por Mes</h3>
-                                            <div className="text-3xl font-black text-orange-600 mb-1">25$ <span className="text-base font-normal text-gray-500">/mes</span></div>
+                                            <div className="mb-1"><PriceDisplay amountUsd={25} suffix="/mes" size="lg" /></div>
                                             <p className="text-xs text-gray-500 mb-4">Para constantes</p>
                                             <button
                                                 onClick={() => handleSelectPlan("Por Mes", "25$ /mes")}
@@ -179,7 +180,7 @@ export default function PlantsPrices() {
                                                 Ahorro
                                             </div>
                                             <h3 className="text-xl font-bold text-gray-900 mb-1">3 Meses</h3>
-                                            <div className="text-3xl font-black text-orange-600 mb-1">50$ <span className="text-base font-normal text-gray-500">/3 meses</span></div>
+                                            <div className="mb-1"><PriceDisplay amountUsd={50} suffix="/3 meses" size="lg" /></div>
                                             <p className="text-xs text-gray-500 mb-4">Mejor valor</p>
                                             <button
                                                 onClick={() => handleSelectPlan("3 Meses", "50$ / 3 meses")}
@@ -191,7 +192,7 @@ export default function PlantsPrices() {
                                         <th className="p-6 align-bottom text-center min-w-[180px]">
                                             <div className="invisible px-3 py-1 mb-4 text-xs">Spacer</div>
                                             <h3 className="text-xl font-bold text-gray-900 mb-1">6 Meses</h3>
-                                            <div className="text-3xl font-black text-orange-600 mb-1">90$ <span className="text-base font-normal text-gray-500">/6 meses</span></div>
+                                            <div className="mb-1"><PriceDisplay amountUsd={90} suffix="/6 meses" size="lg" /></div>
                                             <p className="text-xs text-gray-500 mb-4">Compromiso medio</p>
                                             <button
                                                 onClick={() => handleSelectPlan("6 Meses", "90$ / 6 meses")}
@@ -205,7 +206,7 @@ export default function PlantsPrices() {
                                                 VIP
                                             </div>
                                             <h3 className="text-xl font-bold text-gray-900 mb-1">Anual</h3>
-                                            <div className="text-3xl font-black text-orange-600 mb-1">160$ <span className="text-base font-normal text-gray-500">/año</span></div>
+                                            <div className="mb-1"><PriceDisplay amountUsd={160} suffix="/año" size="lg" /></div>
                                             <p className="text-xs text-gray-500 mb-4">Máximo ahorro</p>
                                             <button
                                                 onClick={() => handleSelectPlan("Anual", "160$ / año")}
@@ -224,7 +225,7 @@ export default function PlantsPrices() {
                                     </tr>
                                     {planFeatures.slice(0, 4).map((feature, index) => (
                                         <tr key={index} className="hover:bg-gray-50 transition-colors">
-                                            <td className="sticky left-0 p-4 pl-6 bg-white text-gray-700 font-m grande en todas las barras de navegacionedium border-r border-gray-200 z-10">
+                                            <td className="sticky left-0 p-4 pl-6 bg-white text-gray-700 font-medium border-r border-gray-200 z-10">
                                                 {feature.feature}
                                             </td>
                                             <td className="p-4 text-center">{renderFeatureValue(feature.daily)}</td>

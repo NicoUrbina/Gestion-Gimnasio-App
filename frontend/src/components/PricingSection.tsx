@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import PaymentModal from "./PaymentModal"
+import PriceDisplay from "./PriceDisplay"
 
 type PricingPlan = {
   badge: string
@@ -144,7 +145,7 @@ export default function PricingSection({ fontClassName }: PricingSectionProps) {
                 </div>
 
                 <div className="mb-2">
-                  <div className="text-white text-lg font-bold">{plan.priceLine}</div>
+                  <PriceDisplay priceLine={plan.priceLine} size="md" priceColorClass="text-white" />
                   <div className="text-slate-400 text-sm mt-2">{plan.subtitle}</div>
                 </div>
 

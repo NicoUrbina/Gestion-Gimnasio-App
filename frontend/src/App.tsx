@@ -88,6 +88,7 @@ import Step2SchedulePage from "./pages/classes/pages Index/Step2Schedule"
 import Step3SchedulePage from "./pages/classes/pages Index/Step3Schedule"
 import Step4SchedulePage from "./pages/classes/pages Index/Step4Schedule"
 import ScrollToTop from "./components/ScrollToTop"
+import { ExchangeRateProvider } from "./contexts/ExchangeRateContext"
 
 
 function App() {
@@ -107,6 +108,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ExchangeRateProvider>
       <ScrollToTop />
       <Toaster
         position="top-right"
@@ -219,6 +221,7 @@ function App() {
         {/* Default redirect */}
         < Route path="*" element={< Navigate to="/dashboard" replace />} />
       </Routes >
+      </ExchangeRateProvider>
     </BrowserRouter >
   )
 }

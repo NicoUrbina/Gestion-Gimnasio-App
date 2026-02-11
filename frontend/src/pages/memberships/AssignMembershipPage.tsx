@@ -4,6 +4,7 @@ import { ArrowLeft, UserPlus, Loader2 } from 'lucide-react';
 import { membershipService, membershipPlanService } from '../../services/memberships';
 import api from '../../services/api';
 import PlanCard from '../../components/memberships/PlanCard';
+import PriceDisplay from '../../components/PriceDisplay';
 import type { MembershipPlan, Member } from '../../types';
 
 export default function AssignMembershipPage() {
@@ -223,9 +224,9 @@ export default function AssignMembershipPage() {
                   <span className="text-gray-400">Duración:</span>
                   <span className="text-white font-medium">{selectedPlan.duration_days} días</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center">
                   <span className="text-gray-400">Precio:</span>
-                  <span className="text-orange-400 font-bold">${selectedPlan.price}</span>
+                  <PriceDisplay amountUsd={parseFloat(selectedPlan.price.toString())} size="sm" priceColorClass="text-orange-400" />
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">Vence:</span>

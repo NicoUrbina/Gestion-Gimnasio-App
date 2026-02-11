@@ -4,6 +4,7 @@ import { CreditCard, Calendar, CheckCircle, AlertCircle, Clock } from 'lucide-re
 import api from '../../services/api';
 import toast from 'react-hot-toast';
 import Spinner from '../../components/Spinner';
+import PriceDisplay from '../../components/PriceDisplay';
 
 interface Membership {
   id: number;
@@ -201,7 +202,7 @@ export default function RenewalPortalPage() {
 
               <div>
                 <div className="text-xs text-gray-500 uppercase font-medium">Precio Mensual</div>
-                <div className="font-bold text-white">${membership.plan_price}</div>
+                <PriceDisplay amountUsd={membership.plan_price} size="md" priceColorClass="text-white" />
               </div>
             </div>
           </div>
@@ -271,9 +272,9 @@ export default function RenewalPortalPage() {
                 <span className="font-bold">{selectedDuration} mes{selectedDuration !== 1 ? 'es' : ''}</span>
               </div>
               
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span className="opacity-90">Precio base:</span>
-                <span className="font-bold">${membership.plan_price * selectedDuration}</span>
+                <PriceDisplay amountUsd={membership.plan_price * selectedDuration} size="sm" priceColorClass="text-white" bsColorClass="text-white/80" className="text-right" />
               </div>
 
               {discount > 0 && (
@@ -286,7 +287,7 @@ export default function RenewalPortalPage() {
               <div className="border-t border-white/20 pt-2 mt-2">
                 <div className="flex justify-between items-center">
                   <span className="text-xl font-bold">Total a Pagar:</span>
-                  <span className="text-3xl font-black">${totalPrice.toFixed(2)}</span>
+                  <PriceDisplay amountUsd={totalPrice} size="lg" priceColorClass="text-white" bsColorClass="text-white/80" />
                 </div>
               </div>
             </div>

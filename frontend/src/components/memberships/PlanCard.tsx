@@ -1,5 +1,6 @@
 import { Check, Dumbbell, Snowflake, Calendar, Trash2 } from 'lucide-react';
 import type { MembershipPlan } from '../../types';
+import PriceDisplay from '../PriceDisplay';
 
 interface PlanCardProps {
   plan: MembershipPlan;
@@ -51,10 +52,12 @@ export default function PlanCard({ plan, onSelect, onEdit, onDelete, selected, i
 
         {/* Precio */}
         <div className="mb-6">
-          <div className="flex items-baseline gap-2">
-            <span className="text-4xl font-bold text-white">${plan.price}</span>
-            <span className="text-gray-400">/ {duration}</span>
-          </div>
+          <PriceDisplay
+            amountUsd={parseFloat(plan.price.toString())}
+            suffix={`/ ${duration}`}
+            size="lg"
+            priceColorClass="text-white"
+          />
           <p className="text-sm text-gray-500 mt-1">
             ${(parseFloat(plan.price.toString()) / plan.duration_days).toFixed(2)} por día
           </p>
