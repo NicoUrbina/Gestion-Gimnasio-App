@@ -153,6 +153,16 @@ class Achievement(models.Model):
 class WorkoutSession(models.Model):
     """Sesión de entrenamiento registrada por el atleta"""
     
+    WEEKDAY_CHOICES = [
+        (1, 'Lunes'),
+        (2, 'Martes'),
+        (3, 'Miércoles'),
+        (4, 'Jueves'),
+        (5, 'Viernes'),
+        (6, 'Sábado'),
+        (7, 'Domingo'),
+    ]
+    
     member = models.ForeignKey(
         'members.Member',
         on_delete=models.CASCADE,
@@ -169,6 +179,13 @@ class WorkoutSession(models.Model):
     )
     date = models.DateTimeField(
         verbose_name='Fecha'
+    )
+    day_of_week = models.IntegerField(
+        choices=WEEKDAY_CHOICES,
+        null=True,
+        blank=True,
+        verbose_name='Día de la semana',
+        help_text='Día que corresponde al plan de la rutina'
     )
     completed = models.BooleanField(
         default=False,
@@ -260,11 +277,16 @@ class ExerciseLog(models.Model):
         blank=True,
         verbose_name='Notas'
     )
+    completed_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Completado el',
+        help_text='Fecha y hora de registro'
+    )
     
     class Meta:
         verbose_name = 'Log de Ejercicio'
         verbose_name_plural = 'Logs de Ejercicios'
-        ordering = ['id']
+        ordering = ['-completed_at']
     
     def __str__(self):
         return f"{self.exercise.name} - {self.actual_sets}x{self.actual_reps} @ {self.weight_used}kg"

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Calendar, Dumbbell, Clock, Info, AlertCircle } from 'lucide-react';
-import { workoutService } from '../../services/workouts';
+import workoutsService from '../../services/workoutsService';
 import type { WorkoutRoutine, RoutineExercise } from '../../types/workouts';
 import Spinner from '../../components/Spinner';
 
@@ -18,10 +18,15 @@ export default function MyRoutinePage() {
   const loadRoutine = async () => {
     try {
       setLoading(true);
-      const data = await workoutService.getMyRoutine();
+      console.log('🔍 Loading member routine...');
+      const data = await workoutsService.getMyRoutine();
+      console.log('✅ Routine loaded:', data);
       setRoutine(data);
     } catch (error: any) {
+      console.error('❌ Error loading routine:', error);
+      console.error('Error response:', error.response);
       if (error.response?.status === 404) {
+        console.log('ℹ️ No routine found (404)');
         setRoutine(null);
       } else {
         console.error('Error loading routine:', error);
@@ -86,7 +91,7 @@ export default function MyRoutinePage() {
       </div>
 
       {/* Info Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-zinc-900 rounded-xl border-2 border-zinc-800 p-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center shadow-sm">
@@ -95,6 +100,18 @@ export default function MyRoutinePage() {
             <div>
               <div className="text-xs text-gray-500 uppercase tracking-wide font-medium">Duración</div>
               <div className="font-bold text-white">{routine.duration_weeks} semanas</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-zinc-900 rounded-xl border-2 border-zinc-800 p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-sm">
+              <Info className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <div className="text-xs text-gray-500 uppercase tracking-wide font-medium">Asignado por</div>
+              <div className="font-bold text-white">{routine.trainer_name || 'No asignado'}</div>
             </div>
           </div>
         </div>
@@ -136,13 +153,12 @@ export default function MyRoutinePage() {
               <button
                 key={dayNum}
                 onClick={() => setSelectedDay(dayNum)}
-                className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
-                  isSelected
-                    ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
-                    : hasExercises
+                className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${isSelected
+                  ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
+                  : hasExercises
                     ? 'bg-gray-100 text-white hover:bg-gray-200'
                     : 'bg-zinc-800/50 text-gray-400 cursor-not-allowed'
-                }`}
+                  }`}
                 disabled={!hasExercises}
               >
                 {day}
@@ -191,7 +207,7 @@ export default function MyRoutinePage() {
                         </span>
                         <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-lg font-medium">
                           {routineEx.exercise_detail.difficulty === 'beginner' ? 'Principiante' :
-                           routineEx.exercise_detail.difficulty === 'intermediate' ? 'Intermedio' : 'Avanzado'}
+                            routineEx.exercise_detail.difficulty === 'intermediate' ? 'Intermedio' : 'Avanzado'}
                         </span>
                       </div>
                     </div>

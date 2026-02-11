@@ -45,6 +45,9 @@ import ComparisonView from "./pages/progress/ComparisonView"
 import ExerciseLibraryPage from "./pages/workouts/ExerciseLibraryPage"
 import RoutineBuilderPage from "./pages/workouts/RoutineBuilderPage"
 import MyRoutinePage from "./pages/workouts/MyRoutinePage"
+import RoutinesPage from "./pages/routines/RoutinesPage"
+import StartSessionPage from "./pages/workouts/StartSessionPage"
+import ActiveSessionPage from "./pages/workouts/ActiveSessionPage"
 
 // Evaluations & Goals
 import RequestEvaluationPage from "./pages/evaluations/RequestEvaluationPage"
@@ -71,7 +74,8 @@ import {
   SecuritySettingsPage,
   SystemSettingsPage,
 } from "./pages/settings"
-import TrainersPage from "./pages/TrainersPage"
+import TrainersPage from "./pages/trainers/TrainersPage"
+import TrainerFormPage from "./pages/trainers/TrainerFormPage"
 import AuditLogsPage from "./components/settings/audit/AuditLogsPage"
 
 // Components
@@ -109,118 +113,127 @@ function App() {
   return (
     <BrowserRouter>
       <ExchangeRateProvider>
-      <ScrollToTop />
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: "#1e293b",
-            color: "#fff",
-            borderRadius: "12px",
-          },
-        }}
-      />
-      <Routes>
-        {/* Public routes */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/preguntas-frecuentes" element={<QuestionsPage />} />
-        <Route path="/trabaja-con-nosotros" element={<WorkWithUsPage />} />
-        <Route path="/terminos" element={<TermsAndConditionsPage />} />
-        <Route path="/privacidad" element={<PrivacyPage />} />
-        <Route path="/planes-y-precios" element={<PlantsPricesPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/entrenadores" element={<InstructorsPage />} />
-        <Route path="/step1-schedule" element={<Step1SchedulePage />} />
-        <Route path="/step2-schedule" element={<Step2SchedulePage />} />
-        <Route path="/step3-schedule" element={<Step3SchedulePage />} />
-        <Route path="/step4-schedule" element={<Step4SchedulePage />} />
+        <ScrollToTop />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: "#1e293b",
+              color: "#fff",
+              borderRadius: "12px",
+            },
+          }}
+        />
+        <Routes>
+          {/* Public routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/preguntas-frecuentes" element={<QuestionsPage />} />
+          <Route path="/trabaja-con-nosotros" element={<WorkWithUsPage />} />
+          <Route path="/terminos" element={<TermsAndConditionsPage />} />
+          <Route path="/privacidad" element={<PrivacyPage />} />
+          <Route path="/planes-y-precios" element={<PlantsPricesPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/entrenadores" element={<InstructorsPage />} />
+          <Route path="/step1-schedule" element={<Step1SchedulePage />} />
+          <Route path="/step2-schedule" element={<Step2SchedulePage />} />
+          <Route path="/step3-schedule" element={<Step3SchedulePage />} />
+          <Route path="/step4-schedule" element={<Step4SchedulePage />} />
 
-        {/* Protected routes */}
-        <Route element={<ProtectedRoute />}>
-          <Route element={<MainLayout />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
+          {/* Protected routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route element={<MainLayout />}>
+              <Route path="/dashboard" element={<DashboardPage />} />
 
-            {/* Members */}
-            <Route path="/members" element={<MembersPage />} />
-            <Route path="/members/new" element={<MemberFormPage />} />
-            <Route path="/members/:id" element={<MemberDetailPage />} />
-            <Route path="/members/:id/edit" element={<MemberFormPage />} />
+              {/* Members */}
+              <Route path="/members" element={<MembersPage />} />
+              <Route path="/members/new" element={<MemberFormPage />} />
+              <Route path="/members/:id" element={<MemberDetailPage />} />
+              <Route path="/members/:id/edit" element={<MemberFormPage />} />
 
-            {/* Memberships */}
-            <Route path="/memberships" element={<MembershipsListPage />} />
-            <Route path="/memberships/plans" element={<MembershipPlansPage />} />
-            <Route path="/memberships/plans/new" element={<MembershipPlanFormPage />} />
-            <Route path="/memberships/plans/:id/edit" element={<MembershipPlanFormPage />} />
-            <Route path="/memberships/assign" element={<AssignMembershipPage />} />
+              {/* Memberships */}
+              <Route path="/memberships" element={<MembershipsListPage />} />
+              <Route path="/memberships/plans" element={<MembershipPlansPage />} />
+              <Route path="/memberships/plans/new" element={<MembershipPlanFormPage />} />
+              <Route path="/memberships/plans/:id/edit" element={<MembershipPlanFormPage />} />
+              <Route path="/memberships/assign" element={<AssignMembershipPage />} />
 
-            {/* Classes */}
-            <Route path="/classes" element={<ClassesCalendarPage />} />
-            <Route path="/classes/new" element={<ClassFormPage />} />
-            <Route path="/classes" element={<ClassesCalendarPage />} />
-            <Route path="/classes/new" element={<ClassFormPage />} />
-            <Route path="/classes/:id" element={<ClassDetailPage />} />
-            <Route path="/classes/:id/edit" element={<ClassFormPage />} />
-            <Route path="/classes/my-reservations" element={<MyReservationsPage />} />
-            <Route path="/classes/my-reservations" element={<MyReservationsPage />} />
+              {/* Classes */}
+              <Route path="/classes" element={<ClassesCalendarPage />} />
+              <Route path="/classes/new" element={<ClassFormPage />} />
+              <Route path="/classes" element={<ClassesCalendarPage />} />
+              <Route path="/classes/new" element={<ClassFormPage />} />
+              <Route path="/classes/:id" element={<ClassDetailPage />} />
+              <Route path="/classes/:id/edit" element={<ClassFormPage />} />
+              <Route path="/classes/my-reservations" element={<MyReservationsPage />} />
+              <Route path="/classes/my-reservations" element={<MyReservationsPage />} />
 
-            {/* Payments */}
-            <Route path="/payments" element={<PaymentsPage />} />
-            <Route path="/payments/my-payments" element={<MyPaymentsPage />} />
-            <Route path="/payments/submit" element={<PaymentFormPage />} />
-            <Route path="/payments/new" element={<PaymentFormPage />} />
-            <Route path="/payments/:id" element={<PaymentDetailPage />} />
+              {/* Payments */}
+              <Route path="/payments" element={<PaymentsPage />} />
+              <Route path="/payments/my-payments" element={<MyPaymentsPage />} />
+              <Route path="/payments/submit" element={<PaymentFormPage />} />
+              <Route path="/payments/new" element={<PaymentFormPage />} />
+              <Route path="/payments/:id" element={<PaymentDetailPage />} />
 
-            {/* Staff / Trainers */}
-            <Route path="/staff" element={<TrainersPage />} />
+              {/* Staff / Trainers */}
+              <Route path="/staff" element={<TrainersPage />} />
 
-            {/* Workouts & Exercises */}
-            <Route path="/workouts/exercises" element={<ExerciseLibraryPage />} />
-            <Route path="/workouts/routines" element={<RoutineBuilderPage />} />
-            <Route path="/workouts/my-routine" element={<MyRoutinePage />} />
+              {/* Workouts & Exercises */}
+              <Route path="/workouts/exercises" element={<ExerciseLibraryPage />} />
+              <Route path="/workouts/routines" element={<RoutinesPage />} />
+              <Route path="/workouts/routines/create" element={<RoutineBuilderPage />} />
+              <Route path="/workouts/routines/:id/edit" element={<RoutineBuilderPage />} />
+              <Route path="/workouts/my-routine" element={<MyRoutinePage />} />
+              <Route path="/workouts/sessions/start" element={<StartSessionPage />} />
+              <Route path="/workouts/sessions/:id" element={<ActiveSessionPage />} />
 
-            {/* Evaluations & Goals */}
-            <Route path="/evaluations/request" element={<RequestEvaluationPage />} />
-            <Route path="/evaluations/new" element={<EvaluationFormPage />} />
-            <Route path="/evaluations/history" element={<EvaluationHistoryPage />} />
+              {/* Evaluations & Goals */}
+              <Route path="/evaluations/request" element={<RequestEvaluationPage />} />
+              <Route path="/evaluations/new" element={<EvaluationFormPage />} />
+              <Route path="/evaluations/history" element={<EvaluationHistoryPage />} />
 
-            {/* Access Control */}
-            <Route path="/access/logs" element={<AccessLogsPage />} />
-            <Route path="/access/alerts" element={<AbandonmentAlertsPage />} />
+              {/* Access Control */}
+              <Route path="/access/logs" element={<AccessLogsPage />} />
+              <Route path="/access/alerts" element={<AbandonmentAlertsPage />} />
 
-            {/* Equipment Management */}
-            <Route path="/equipment" element={<EquipmentListPage />} />
-            <Route path="/equipment/new" element={<EquipmentFormPage />} />
-            <Route path="/equipment/:id/edit" element={<EquipmentFormPage />} />
-            {/* Progress */}
-            <Route path="/progress" element={<ProgressDashboard />} />
-            <Route path="/progress/update" element={<UpdateProgressPage />} />
-            <Route path="/progress/evolution" element={<EvolutionCharts />} />
-            <Route path="/progress/history" element={<ProgressHistory />} />
-            <Route path="/progress/compare" element={<ComparisonView />} />
+              {/* Equipment Management */}
+              <Route path="/equipment" element={<EquipmentListPage />} />
+              <Route path="/equipment/new" element={<EquipmentFormPage />} />
+              <Route path="/equipment/:id/edit" element={<EquipmentFormPage />} />
+              {/* Progress */}
+              <Route path="/progress" element={<ProgressDashboard />} />
+              <Route path="/progress/update" element={<UpdateProgressPage />} />
+              <Route path="/progress/evolution" element={<EvolutionCharts />} />
+              <Route path="/progress/history" element={<ProgressHistory />} />
+              <Route path="/progress/compare" element={<ComparisonView />} />
 
-            {/* Settings - Admin Only */}
-            <Route element={<AdminRoute />}>
-              <Route path="/settings" element={<SettingsPage />} />
-              <Route path="/settings/users" element={<UsersSettingsPage />} />
-              <Route path="/settings/users/new" element={<UserFormPage />} />
-              <Route path="/settings/users/:id/edit" element={<UserFormPage />} />
-              <Route path="/settings/roles" element={<RolesSettingsPage />} />
-              <Route path="/settings/gym" element={<GymSettingsPage />} />
-              <Route path="/settings/notifications" element={<NotificationsSettingsPage />} />
-              <Route path="/settings/payments" element={<PaymentsSettingsPage />} />
-              <Route path="/settings/security" element={<SecuritySettingsPage />} />
-              <Route path="/settings/system" element={<SystemSettingsPage />} />
-              <Route path="/settings/audit" element={<AuditLogsPage />} />
-            </Route>
+              {/* Trainers - Admin/Staff Only */}
+              <Route path="/trainers" element={<TrainersPage />} />
+              <Route path="/trainers/new" element={<TrainerFormPage />} />
+              <Route path="/trainers/:id/edit" element={<TrainerFormPage />} />
+
+              {/* Settings - Admin Only */}
+              <Route element={<AdminRoute />}>
+                <Route path="/settings" element={<SettingsPage />} />
+                <Route path="/settings/users" element={<UsersSettingsPage />} />
+                <Route path="/settings/users/new" element={<UserFormPage />} />
+                <Route path="/settings/users/:id/edit" element={<UserFormPage />} />
+                <Route path="/settings/roles" element={<RolesSettingsPage />} />
+                <Route path="/settings/gym" element={<GymSettingsPage />} />
+                <Route path="/settings/notifications" element={<NotificationsSettingsPage />} />
+                <Route path="/settings/payments" element={<PaymentsSettingsPage />} />
+                <Route path="/settings/security" element={<SecuritySettingsPage />} />
+                <Route path="/settings/system" element={<SystemSettingsPage />} />
+                <Route path="/settings/audit" element={<AuditLogsPage />} />
+              </Route>
+            </Route >
           </Route >
-        </Route >
 
-        {/* Default redirect */}
-        < Route path="*" element={< Navigate to="/dashboard" replace />} />
-      </Routes >
+          {/* Default redirect */}
+          < Route path="*" element={< Navigate to="/dashboard" replace />} />
+        </Routes >
       </ExchangeRateProvider>
     </BrowserRouter >
   )

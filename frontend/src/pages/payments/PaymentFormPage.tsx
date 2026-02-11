@@ -100,8 +100,11 @@ export default function PaymentFormPage() {
     if (membershipId) {
       const selected = memberships.find(m => m.id === parseInt(membershipId));
       if (selected) {
-        setFormData(prev => ({ ...prev, amount: selected.plan_price }));
+        setFormData(prev => ({ ...prev, amount: selected.plan_price || '' }));
       }
+    } else {
+      // Si se deselecciona, volver a string vacío
+      setFormData(prev => ({ ...prev, amount: '' }));
     }
   };
 
@@ -137,9 +140,17 @@ export default function PaymentFormPage() {
       data.append('membership', formData.membership);
       data.append('amount', formData.amount);
       data.append('payment_method', formData.payment_method);
-      data.append('reference_number', formData.reference_number);
-      data.append('description', formData.description);
-      data.append('notes', formData.notes);
+      
+      // Solo agregar campos opcionales si tienen valor
+      if (formData.reference_number) {
+        data.append('reference_number', formData.reference_number);
+      }
+      if (formData.description) {
+        data.append('description', formData.description);
+      }
+      if (formData.notes) {
+        data.append('notes', formData.notes);
+      }
 
       if (receiptFile) {
         data.append('receipt_image', receiptFile);
@@ -151,7 +162,9 @@ export default function PaymentFormPage() {
     } catch (error: any) {
       console.error('Error:', error);
       const errorMsg = error.response?.data?.membership?.[0] ||
+        error.response?.data?.detail ||
         error.response?.data?.message ||
+        JSON.stringify(error.response?.data) ||
         'Error al registrar el pago';
       alert(errorMsg);
     } finally {

@@ -111,7 +111,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
         method_values = []
         
         for pm in payment_methods:
-            method_labels.append(dict(Payment.PAYMENT_METHOD_CHOICES).get(pm['payment_method'], pm['payment_method']))
+            method_labels.append(dict(Payment.PAYMENT_METHODS).get(pm['payment_method'], pm['payment_method']))
             method_values.append(pm['count'])
         
         return Response({
@@ -183,9 +183,13 @@ class PaymentViewSet(viewsets.ModelViewSet):
         count = Payment.objects.filter(status='pending').count()
         return Response({'count': count})
     
-    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAdminUser])
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def export_report(self, request):
         """Exportar reporte de pagos a Excel"""
+        # Verificar que el usuario sea staff
+        if not request.user.is_staff:
+            return Response({'detail': 'No tienes permisos'}, status=403)
+        
         from openpyxl import Workbook
         from openpyxl.styles import Font, Alignment, PatternFill
         from django.http import HttpResponse
