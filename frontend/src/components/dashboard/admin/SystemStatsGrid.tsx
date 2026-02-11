@@ -11,40 +11,45 @@ interface SystemStatsGridProps {
       expired: number;
     };
     revenue: {
-      month: number;
-      today: number;
+      month: { total: number; count: number };
+      today: { total: number; count: number };
     };
   };
 }
 
 export default function SystemStatsGrid({ stats }: SystemStatsGridProps) {
+  const monthTotal = stats.revenue?.month?.total ?? 0;
+  const todayTotal = stats.revenue?.today?.total ?? 0;
+  const membersTotal = stats.members?.total ?? 0;
+  const membersActive = stats.members?.active ?? 0;
+
   return (
     <StatsGrid columns={4}>
       <StatsCard
         title="Miembros Totales"
-        value={stats.members.total}
+        value={membersTotal}
         icon={Users}
         color="blue"
       />
-      
+
       <StatsCard
         title="Miembros Activos"
-        value={stats.members.active}
-        subtitle={`${((stats.members.active / stats.members.total) * 100).toFixed(0)}% del total`}
+        value={membersActive}
+        subtitle={membersTotal > 0 ? `${((membersActive / membersTotal) * 100).toFixed(0)}% del total` : '0% del total'}
         icon={CheckCircle}
         color="green"
       />
-      
+
       <StatsCard
         title="Ingresos del Mes"
-        value={`$${stats.revenue.month.toLocaleString()}`}
+        value={`$${monthTotal.toLocaleString()}`}
         icon={DollarSign}
         color="emerald"
       />
-      
+
       <StatsCard
         title="Ingresos Hoy"
-        value={`$${stats.revenue.today.toLocaleString()}`}
+        value={`$${todayTotal.toLocaleString()}`}
         icon={TrendingUp}
         color="orange"
       />

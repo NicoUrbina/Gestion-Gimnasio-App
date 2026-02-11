@@ -20,7 +20,7 @@ export default function ProgressHistory() {
       setLoading(true);
       const data = await progressService.getLogs();
       // Sort by date descending (newest first)
-      const sorted = data.sort((a, b) => 
+      const sorted = data.sort((a, b) =>
         new Date(b.date).getTime() - new Date(a.date).getTime()
       );
       setLogs(sorted);
@@ -73,7 +73,7 @@ export default function ProgressHistory() {
       {/* Empty State */}
       {logs.length === 0 && (
         <div className="text-center py-16 px-6">
-          <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-20 h-20 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4">
             <History className="w-10 h-10 text-gray-400" />
           </div>
           <h3 className="text-xl font-bold text-white mb-2">
@@ -100,9 +100,8 @@ export default function ProgressHistory() {
           return (
             <div
               key={log.id}
-              className={`bg-white rounded-2xl border-2 transition-all ${
-                isLatest ? 'border-orange-500/50' : 'border-gray-100'
-              } overflow-hidden`}
+              className={`bg-zinc-900 rounded-2xl border-2 transition-all ${isLatest ? 'border-orange-500/50' : 'border-zinc-800'
+                } overflow-hidden`}
             >
               {/* Header */}
               <div className="p-6">
@@ -125,7 +124,7 @@ export default function ProgressHistory() {
                       </p>
                     </div>
                     {isLatest && (
-                      <span className="px-2.5 py-1 bg-orange-100 text-orange-600 text-xs font-bold rounded-full">
+                      <span className="px-2.5 py-1 bg-orange-500/20 text-orange-400 text-xs font-bold rounded-full">
                         MÁS RECIENTE
                       </span>
                     )}
@@ -134,17 +133,17 @@ export default function ProgressHistory() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => toggleExpand(log.id)}
-                      className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      className="p-2 hover:bg-zinc-700 rounded-lg transition-colors"
                     >
                       {isExpanded ? (
-                        <ChevronUp className="w-5 h-5 text-gray-600" />
+                        <ChevronUp className="w-5 h-5 text-gray-400" />
                       ) : (
-                        <ChevronDown className="w-5 h-5 text-gray-600" />
+                        <ChevronDown className="w-5 h-5 text-gray-400" />
                       )}
                     </button>
                     <button
                       onClick={() => handleDelete(log.id)}
-                      className="p-2 hover:bg-red-50 rounded-lg transition-colors group"
+                      className="p-2 hover:bg-red-500/10 rounded-lg transition-colors group"
                     >
                       <Trash2 className="w-5 h-5 text-gray-400 group-hover:text-red-500" />
                     </button>
@@ -182,11 +181,11 @@ export default function ProgressHistory() {
 
               {/* Expanded Details */}
               {isExpanded && (
-                <div className="px-6 pb-6 border-t border-gray-100 pt-6">
+                <div className="px-6 pb-6 border-t border-zinc-800 pt-6">
                   <h4 className="text-sm font-bold text-white uppercase tracking-wide mb-4">
                     Detalles Completos
                   </h4>
-                  
+
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                     {log.height && (
                       <div>
@@ -215,9 +214,9 @@ export default function ProgressHistory() {
                   </div>
 
                   {log.notes && (
-                    <div className="bg-blue-50 rounded-lg p-4">
-                      <p className="text-xs text-blue-600 font-bold mb-2">NOTAS</p>
-                      <p className="text-sm text-blue-900">{log.notes}</p>
+                    <div className="bg-zinc-800/50 rounded-lg p-4">
+                      <p className="text-xs text-orange-400 font-bold mb-2">NOTAS</p>
+                      <p className="text-sm text-gray-300">{log.notes}</p>
                     </div>
                   )}
                 </div>

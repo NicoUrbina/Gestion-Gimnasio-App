@@ -59,7 +59,7 @@ export default function MembershipPlanFormPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       setSaving(true);
       setError(null);
@@ -117,8 +117,8 @@ export default function MembershipPlanFormPage() {
 
       {/* Error */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-          <p className="text-red-700 text-sm">{error}</p>
+        <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4">
+          <p className="text-red-400 text-sm">{error}</p>
         </div>
       )}
 
@@ -128,7 +128,7 @@ export default function MembershipPlanFormPage() {
           {/* Información Básica */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Nombre del Plan *
               </label>
               <input
@@ -137,12 +137,12 @@ export default function MembershipPlanFormPage() {
                 value={formData.name}
                 onChange={(e) => handleChange('name', e.target.value)}
                 placeholder="Ej: Mensual Básico"
-                className="w-full px-4 py-2.5 bg-zinc-800/30 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-2.5 bg-zinc-800/30 border border-zinc-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Precio *
               </label>
               <div className="relative">
@@ -155,7 +155,7 @@ export default function MembershipPlanFormPage() {
                   value={formData.price}
                   onChange={(e) => handleChange('price', e.target.value)}
                   placeholder="0.00"
-                  className="w-full pl-8 pr-4 py-2.5 bg-zinc-800/30 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  className="w-full pl-8 pr-4 py-2.5 bg-zinc-800/30 border border-zinc-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500"
                 />
               </div>
             </div>
@@ -163,7 +163,7 @@ export default function MembershipPlanFormPage() {
 
           {/* Descripción */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Descripción
             </label>
             <textarea
@@ -171,21 +171,21 @@ export default function MembershipPlanFormPage() {
               value={formData.description}
               onChange={(e) => handleChange('description', e.target.value)}
               placeholder="Describe los beneficios del plan..."
-              className="w-full px-4 py-2.5 bg-zinc-800/30 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
+              className="w-full px-4 py-2.5 bg-zinc-800/30 border border-zinc-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500 resize-none"
             />
           </div>
 
           {/* Duración y Clases */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Duración (días) *
               </label>
               <select
                 required
                 value={formData.duration_days}
                 onChange={(e) => handleChange('duration_days', parseInt(e.target.value))}
-                className="w-full px-4 py-2.5 bg-zinc-800/30 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-4 py-2.5 bg-zinc-800/30 border border-zinc-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
               >
                 <option value={30}>30 días (Mensual)</option>
                 <option value={90}>90 días (Trimestral)</option>
@@ -195,7 +195,7 @@ export default function MembershipPlanFormPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Clases por mes
               </label>
               <input
@@ -204,7 +204,7 @@ export default function MembershipPlanFormPage() {
                 value={formData.max_classes_per_month || ''}
                 onChange={(e) => handleChange('max_classes_per_month', e.target.value ? parseInt(e.target.value) : null)}
                 placeholder="Dejar vacío para ilimitadas"
-                className="w-full px-4 py-2.5 bg-zinc-800/30 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-2.5 bg-zinc-800/30 border border-zinc-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500"
               />
             </div>
           </div>
@@ -212,7 +212,7 @@ export default function MembershipPlanFormPage() {
           {/* Opciones de Congelamiento */}
           {formData.can_freeze && (
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Días máximos de congelamiento
               </label>
               <input
@@ -221,7 +221,7 @@ export default function MembershipPlanFormPage() {
                 max="90"
                 value={formData.max_freeze_days}
                 onChange={(e) => handleChange('max_freeze_days', parseInt(e.target.value))}
-                className="w-full px-4 py-2.5 bg-zinc-800/30 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-2.5 bg-zinc-800/30 border border-zinc-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500"
               />
             </div>
           )}
@@ -270,11 +270,11 @@ export default function MembershipPlanFormPage() {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 mt-8 pt-6 border-t border-slate-200">
+        <div className="flex items-center justify-end gap-3 mt-8 pt-6 border-t border-zinc-700">
           <button
             type="button"
             onClick={() => navigate('/memberships/plans')}
-            className="px-4 py-2.5 text-slate-700 hover:bg-zinc-800 rounded-xl transition-colors"
+            className="px-4 py-2.5 text-gray-300 hover:bg-zinc-800 rounded-xl transition-colors"
           >
             Cancelar
           </button>

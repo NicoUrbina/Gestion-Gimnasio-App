@@ -1,33 +1,33 @@
 # Dashboards a arreglar
 
-- Boton en la pagina principal para regresar al dashboard
+-1 Boton en la pagina principal para regresar al dashboard LISTO
 
 ## Panel de Admin
 
 - Panel Dashboard principal:
--- Label de "Ingresos del Mes" no esta cargando la informacion (Archivo StatsCard)
--- Label de "Ingresos Hoy" no esta cargando la informacion (Archivo StatsCard)
+--2 Label de "Ingresos del Mes" no esta cargando la informacion (Archivo StatsCard) LISTO
+--3 Label de "Ingresos Hoy" no esta cargando la informacion (Archivo StatsCard) LISTO
 
 - Panel Miembros:
--- Tabla de miembros la columna "Menu de acciones" no realiza ninguna accion
--- Seccion "Nuevo miembro" las letras del formulario estan en negro, no se leen
+--4 Tabla de miembros la columna "Menu de acciones" no realiza ninguna accion LISTO
+--5 Seccion "Nuevo miembro" las letras del formulario estan en negro, no se leen LISTO
 
 - Panel Membresias:
--- Seccion de Crear Nuevo Plan las letras del formulario estan en negro, no se leen
+--6 Seccion de Crear Nuevo Plan las letras del formulario estan en negro, no se leen LISTO
 
 - Panel Pagos:
--- Boton de Exportar Excel no funciona, error de la api: Las credenciales de autenticación no se proveyeron.
+--7 Boton de Exportar Excel no funciona, error de la api: Las credenciales de autenticación no se proveyeron. LISTO
 
 - Panel Clases:
--- Rediseñar el panel, agregar tabla para visualizar las clases, mantener la informacion mostrada en las cards, que tenga paginacion y se maneje inspirado en un calendario.
--- Error al reservar la clase (❌ Error al reservar) Failed to load resource: the server responded with a status of 400 (Bad Request) :8000/api/classes/reservations/:1
+--8 Rediseñar el panel, agregar tabla para visualizar las clases, mantener la informacion mostrada en las cards, que tenga paginacion y se maneje inspirado en un calendario. LISTO
+--9 Error al reservar la clase (❌ Error al reservar) Failed to load resource: the server responded with a status of 400 (Bad Request) :8000/api/classes/reservations/:1 LISTO
 
 - Panel Entrenadores:
--- Diseñar el panel completo, hay que mostarr una tabla con los entrenadores, con columnas de informacion basica y una columna de acciones que permita editar, eliminar y ver detalles.
+--10 Diseñar el panel completo, hay que mostarr una tabla con los entrenadores, con columnas de informacion basica y una columna de acciones que permita editar, eliminar y ver detalles. LISTO
 
 - Panel Progreso:
--- El Registrar progreso, cambiar las letras negras del formulario no se leen
--- Al intentar registrar el progreso sale (Error al guardar progreso) 
+--11 El Registrar progreso, cambiar las letras negras del formulario no se leen LISTO
+--12 Al intentar registrar el progreso sale (Error al guardar progreso) 
 {
     "message": "Request failed with status code 400",
     "name": "AxiosError",
@@ -69,10 +69,10 @@
     "code": "ERR_BAD_REQUEST",
     "status": 400
 }
-- Revisar funcionalidad luego de registrar el progreso inicial, muestreo de datos con estadisticas
+-13 Revisar funcionalidad luego de registrar el progreso inicial, muestreo de datos con estadisticas
 
 
 
 ## Cambio General para el Panel de Membresias
 
-- Scrapear desde el backend la pagina de https://www.bcv.org.ve/ para conseguir el precio del dolar
+-14 Scrapear desde el backend la pagina de https://www.bcv.org.ve/ para conseguir el precio del dolar

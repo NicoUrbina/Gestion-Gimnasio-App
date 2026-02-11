@@ -85,13 +85,28 @@ export default function PaymentsPage() {
 
   const filtered = filterPayments();
 
-  const handleExport = () => {
-    const params = new URLSearchParams();
-    if (startDate) params.append('start_date', startDate);
-    if (endDate) params.append('end_date', endDate);
+  const [exporting, setExporting] = useState(false);
 
-    const url = `http://localhost:8000/api/payments/export_report/?${params.toString()}`;
-    window.open(url, '_blank');
+  const handleExport = async () => {
+    try {
+      setExporting(true);
+      const blob = await paymentService.exportReport(startDate, endDate);
+
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `reporte_pagos_${new Date().toISOString().slice(0, 10)}.xlsx`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error: any) {
+      console.error('Error exportando:', error);
+      alert(error.response?.data?.detail || 'Error al exportar el reporte');
+    } finally {
+      setExporting(false);
+    }
   };
 
   return (
@@ -140,10 +155,15 @@ export default function PaymentsPage() {
           </div>
           <button
             onClick={handleExport}
-            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-700 transition-colors"
+            disabled={exporting}
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Download className="w-4 h-4" />
-            Exportar Excel
+            {exporting ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Download className="w-4 h-4" />
+            )}
+            {exporting ? 'Exportando...' : 'Exportar Excel'}
           </button>
         </div>
       </div>

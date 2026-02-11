@@ -110,11 +110,7 @@ class ReservationViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         """Usar serializer específico para creación"""
         if self.action == 'create':
-            # Para miembros regulares, usar el serializer simplificado
-            user = self.request.user
-            if not (user.is_staff or (hasattr(user, 'role') and user.role and user.role.name in ['admin', 'staff', 'trainer'])):
-                from .serializers import ReservationCreateSerializer
-                return ReservationCreateSerializer
+            return ReservationCreateSerializer
         
         return ReservationSerializer
     

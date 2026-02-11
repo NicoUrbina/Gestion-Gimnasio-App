@@ -17,6 +17,10 @@ class ProgressLogSerializer(serializers.ModelSerializer):
         model = ProgressLog
         fields = '__all__'
         read_only_fields = ['created_at', 'updated_at']
+        extra_kwargs = {
+            'member': {'required': False},
+            'registered_by': {'required': False},
+        }
 
 
 class AchievementSerializer(serializers.ModelSerializer):

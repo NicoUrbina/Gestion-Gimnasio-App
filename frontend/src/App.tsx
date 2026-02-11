@@ -71,6 +71,7 @@ import {
   SecuritySettingsPage,
   SystemSettingsPage,
 } from "./pages/settings"
+import TrainersPage from "./pages/TrainersPage"
 import AuditLogsPage from "./components/settings/audit/AuditLogsPage"
 
 // Components
@@ -170,8 +171,8 @@ function App() {
             <Route path="/payments/new" element={<PaymentFormPage />} />
             <Route path="/payments/:id" element={<PaymentDetailPage />} />
 
-            {/* Placeholder pages */}
-            <Route path="/staff" element={<PlaceholderPage title="Entrenadores" />} />
+            {/* Staff / Trainers */}
+            <Route path="/staff" element={<TrainersPage />} />
 
             {/* Workouts & Exercises */}
             <Route path="/workouts/exercises" element={<ExerciseLibraryPage />} />

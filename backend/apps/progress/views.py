@@ -40,22 +40,34 @@ class ProgressLogViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         
-        if user.role.name == 'Miembro':
+        if user.role.name == 'member':
             return ProgressLog.objects.filter(member__user=user)
-        elif user.role.name in ['Entrenador', 'Administrador']:
+        elif user.role.name in ['trainer', 'admin', 'staff']:
             return ProgressLog.objects.all().select_related('member__user')
         
         return ProgressLog.objects.none()
     
     def perform_create(self, serializer):
-        """Auto-asignar member si es cliente"""
-        if self.request.user.role.name == 'Miembro':
+        """Auto-asignar member si es cliente, o buscar/crear para admin/trainer"""
+        user = self.request.user
+        
+        if user.role.name == 'member':
             serializer.save(
-                member=self.request.user.member,
-                registered_by=self.request.user
+                member=user.member_profile,
+                registered_by=user
             )
         else:
-            serializer.save(registered_by=self.request.user)
+            # Admin or trainer: check if member was provided in request
+            if 'member' not in serializer.validated_data or serializer.validated_data.get('member') is None:
+                # Try to use their own member_profile, or create one
+                from apps.members.models import Member
+                member_profile, created = Member.objects.get_or_create(
+                    user=user,
+                    defaults={'subscription_status': 'active'}
+                )
+                serializer.save(member=member_profile, registered_by=user)
+            else:
+                serializer.save(registered_by=user)
     
     @action(detail=False, methods=['get'])
     def evolution(self, request):
@@ -66,16 +78,22 @@ class ProgressLogViewSet(viewsets.ModelViewSet):
         """
         days = int(request.query_params.get('days', 90))
         
-        if request.user.role.name == 'Miembro':
-            member = request.user.member
+        if request.user.role.name == 'member':
+            member = request.user.member_profile
         else:
             member_id = request.query_params.get('member_id')
-            if not member_id:
-                return Response(
-                    {'error': 'Se requiere member_id'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            member = member_id
+            if member_id:
+                member = member_id
+            else:
+                # Use own member profile if available
+                from apps.members.models import Member
+                try:
+                    member = Member.objects.get(user=request.user)
+                except Member.DoesNotExist:
+                    return Response(
+                        {'error': 'No tienes un perfil de miembro. Registra tu progreso primero.'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
         
         since_date = timezone.now().date() - timedelta(days=days)
         logs = ProgressLog.objects.filter(
@@ -107,9 +125,9 @@ class AchievementViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         
-        if user.role.name == 'Miembro':
+        if user.role.name == 'member':
             return Achievement.objects.filter(member__user=user)
-        elif user.role.name in ['Entrenador', 'Administrador']:
+        elif user.role.name in ['trainer', 'admin', 'staff']:
             return Achievement.objects.all().select_related('member__user')
         
         return Achievement.objects.none()
@@ -137,17 +155,17 @@ class WorkoutSessionViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         
-        if user.role.name == 'Miembro':
+        if user.role.name == 'member':
             return WorkoutSession.objects.filter(member__user=user).prefetch_related('exercise_logs__exercise')
-        elif user.role.name in ['Entrenador', 'Administrador']:
+        elif user.role.name in ['trainer', 'admin', 'staff']:
             return WorkoutSession.objects.all().select_related('member__user', 'routine').prefetch_related('exercise_logs__exercise')
         
         return WorkoutSession.objects.none()
     
     def perform_create(self, serializer):
         """Auto-asignar member si es cliente"""
-        if self.request.user.role.name == 'Miembro':
-            serializer.save(member=self.request.user.member)
+        if self.request.user.role.name == 'member':
+            serializer.save(member=self.request.user.member_profile)
         else:
             serializer.save()
     
@@ -172,17 +190,22 @@ class WorkoutSessionViewSet(viewsets.ModelViewSet):
         Estadísticas de entrenamiento
         GET /progress/sessions/stats/
         """
-        if request.user.role.name == 'Miembro':
-            member = request.user.member
+        if request.user.role.name == 'member':
+            member = request.user.member_profile
         else:
             member_id = request.query_params.get('member_id')
-            if not member_id:
-                return Response(
-                    {'error': 'Se requiere member_id'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            from apps.members.models import Member
-            member = Member.objects.get(id=member_id)
+            if member_id:
+                from apps.members.models import Member
+                member = Member.objects.get(id=member_id)
+            else:
+                from apps.members.models import Member
+                try:
+                    member = Member.objects.get(user=request.user)
+                except Member.DoesNotExist:
+                    return Response(
+                        {'error': 'No tienes un perfil de miembro.'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
         
         sessions = WorkoutSession.objects.filter(member=member)
         completed_sessions = sessions.filter(completed=True)
@@ -232,8 +255,8 @@ class ExerciseLogViewSet(viewsets.ReadOnlyModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        if request.user.role.name == 'Miembro':
-            member = request.user.member
+        if request.user.role.name == 'member':
+            member = request.user.member_profile
         else:
             member_id = request.query_params.get('member_id')
             if not member_id:

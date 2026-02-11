@@ -73,6 +73,12 @@ export default function Navbar({
                 <div className="hidden sm:block">
                   <p className="text-white font-semibold text-sm">{userName}</p>
                 </div>
+                <Link
+                  to="/dashboard"
+                  className="px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold text-sm uppercase tracking-wide hover:bg-orange-600 shadow-lg shadow-orange-500/40 hover:shadow-orange-500/60 transition-all duration-200"
+                >
+                  Ir al Panel
+                </Link>
                 <button
                   onClick={onLogoutClick}
                   className="p-2 text-white hover:text-orange-500 transition-colors"

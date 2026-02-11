@@ -95,7 +95,7 @@ export default function MainLayout() {
               className={({ isActive }) =>
                 `flex items-center gap-4 px-4 py-3.5 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all group ${isActive
                   ? 'bg-orange-600 text-white shadow-xl shadow-orange-600/20 active:scale-95'
-                  : 'text-gray-500 hover:text-white hover:bg-white/5'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`
               }
             >

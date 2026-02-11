@@ -18,7 +18,7 @@ export const paymentService = {
     if (filters?.status) params.append('status', filters.status);
     if (filters?.payment_method) params.append('payment_method', filters.payment_method);
     if (filters?.member) params.append('member', filters.member.toString());
-    
+
     const response = await api.get(`/payments/?${params.toString()}`);
     if (response.data.results) return response.data.results;
     return response.data;
@@ -48,7 +48,7 @@ export const paymentService = {
     const config = data instanceof FormData ? {
       headers: { 'Content-Type': 'multipart/form-data' }
     } : {};
-    
+
     const response = await api.post('/payments/', data, config);
     return response.data;
   },
@@ -105,6 +105,20 @@ export const paymentService = {
     payment_methods: { labels: string[]; values: number[] };
   }> => {
     const response = await api.get('/payments/chart_data/');
+    return response.data;
+  },
+
+  /**
+   * Export payments report as Excel file
+   */
+  exportReport: async (startDate?: string, endDate?: string): Promise<Blob> => {
+    const params = new URLSearchParams();
+    if (startDate) params.append('start_date', startDate);
+    if (endDate) params.append('end_date', endDate);
+
+    const response = await api.get(`/payments/export_report/?${params.toString()}`, {
+      responseType: 'blob',
+    });
     return response.data;
   },
 };

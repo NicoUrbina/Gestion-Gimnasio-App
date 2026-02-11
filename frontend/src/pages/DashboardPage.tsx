@@ -112,7 +112,7 @@ export default function DashboardPage() {
       // Set default data para evitar crashes
       setStats({
         members: { total: 0, active: 0, inactive: 0, expired: 0 },
-        revenue: { month: 0, today: 0 },
+        revenue: { month: { total: 0, count: 0 }, today: { total: 0, count: 0 } },
         expiring: [],
         membership: { days_remaining: 0, expiring_soon: false },
         reservations: { upcoming: 0, list: [] },

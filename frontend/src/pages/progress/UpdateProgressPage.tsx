@@ -30,7 +30,7 @@ export default function UpdateProgressPage() {
 
     try {
       setSaving(true);
-      
+
       // Convert empty strings to null
       const dataToSend = {
         date: formData.date,
@@ -49,7 +49,11 @@ export default function UpdateProgressPage() {
       navigate('/progress/evolution');
     } catch (error: any) {
       console.error('Error saving progress:', error);
-      toast.error(error.response?.data?.detail || 'Error al guardar progreso');
+      toast.error(
+        error.response?.data?.detail ||
+        error.response?.data?.non_field_errors?.[0] ||
+        (error.response?.data ? JSON.stringify(error.response.data).slice(0, 100) : 'Error al guardar progreso')
+      );
     } finally {
       setSaving(false);
     }
@@ -82,7 +86,7 @@ export default function UpdateProgressPage() {
               value={formData.date}
               onChange={(e) => updateField('date', e.target.value)}
               max={new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
+              className="w-full px-4 py-3 bg-zinc-800 text-white border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               required
             />
           </div>
@@ -94,10 +98,10 @@ export default function UpdateProgressPage() {
             <Scale className="w-5 h-5 text-orange-500" />
             Peso y Composición Corporal
           </h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Peso (kg)
               </label>
               <input
@@ -108,12 +112,12 @@ export default function UpdateProgressPage() {
                 value={formData.weight}
                 onChange={(e) => updateField('weight', e.target.value)}
                 placeholder="75.5"
-                className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 bg-zinc-800 text-white border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Altura (cm)
               </label>
               <input
@@ -124,13 +128,13 @@ export default function UpdateProgressPage() {
                 value={formData.height}
                 onChange={(e) => updateField('height', e.target.value)}
                 placeholder="175"
-                className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 bg-zinc-800 text-white placeholder-gray-500 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               />
               <p className="text-xs text-gray-500 mt-1">Para calcular tu IMC</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 % Grasa Corporal
               </label>
               <input
@@ -141,12 +145,12 @@ export default function UpdateProgressPage() {
                 value={formData.body_fat_percentage}
                 onChange={(e) => updateField('body_fat_percentage', e.target.value)}
                 placeholder="18.5"
-                className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 bg-zinc-800 text-white placeholder-gray-500 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Masa Muscular (kg)
               </label>
               <input
@@ -157,7 +161,7 @@ export default function UpdateProgressPage() {
                 value={formData.muscle_mass}
                 onChange={(e) => updateField('muscle_mass', e.target.value)}
                 placeholder="60.5"
-                className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 bg-zinc-800 text-white placeholder-gray-500 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               />
             </div>
           </div>
@@ -169,10 +173,10 @@ export default function UpdateProgressPage() {
             <Ruler className="w-5 h-5 text-orange-500" />
             Medidas Corporales (cm)
           </h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Pecho
               </label>
               <input
@@ -183,12 +187,12 @@ export default function UpdateProgressPage() {
                 value={formData.chest}
                 onChange={(e) => updateField('chest', e.target.value)}
                 placeholder="95"
-                className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 bg-zinc-800 text-white placeholder-gray-500 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Cintura
               </label>
               <input
@@ -199,12 +203,12 @@ export default function UpdateProgressPage() {
                 value={formData.waist}
                 onChange={(e) => updateField('waist', e.target.value)}
                 placeholder="80"
-                className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 bg-zinc-800 text-white placeholder-gray-500 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Cadera
               </label>
               <input
@@ -215,7 +219,7 @@ export default function UpdateProgressPage() {
                 value={formData.hips}
                 onChange={(e) => updateField('hips', e.target.value)}
                 placeholder="95"
-                className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 bg-zinc-800 text-white placeholder-gray-500 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500"
               />
             </div>
           </div>
@@ -231,14 +235,14 @@ export default function UpdateProgressPage() {
             onChange={(e) => updateField('notes', e.target.value)}
             placeholder="Cómo te sientes, cambios que has notado, nivel de energía, etc."
             rows={4}
-            className="w-full px-4 py-3 border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500 resize-none"
+            className="w-full px-4 py-3 bg-zinc-800 text-white border-2 border-zinc-700 rounded-xl focus:outline-none focus:border-orange-500 resize-none placeholder-gray-500"
           />
         </div>
 
         {/* Info Box */}
-        <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
-          <h3 className="font-bold text-blue-900 mb-2">💡 Consejos</h3>
-          <ul className="text-sm text-blue-800 space-y-1">
+        <div className="bg-zinc-900 border-l-4 border-orange-500 rounded-lg p-4 border border-zinc-800">
+          <h3 className="font-bold text-orange-400 mb-2">💡 Consejos</h3>
+          <ul className="text-sm text-gray-400 space-y-1">
             <li>• Regístrate siempre a la misma hora (preferiblemente en ayunas por la mañana)</li>
             <li>• Usa la misma báscula y cinta métrica para consistencia</li>
             <li>• No es necesario completar todos los campos, solo los que tengas disponibles</li>

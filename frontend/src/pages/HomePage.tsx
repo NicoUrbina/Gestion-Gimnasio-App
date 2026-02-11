@@ -19,9 +19,11 @@ export default function HomePage() {
     navigate("/register")
   }
 
+  const { logout } = useAuthStore()
+
   const handleLogoutClick = () => {
-    // Handle logout if needed
-    navigate("/dashboard")
+    logout()
+    navigate("/")
   }
 
   return (

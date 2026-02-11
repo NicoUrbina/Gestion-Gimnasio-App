@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Plus,
@@ -15,8 +15,12 @@ import {
   ChevronLeft,
   ChevronRight,
   Users,
+  Eye,
+  Pencil,
+  Trash2,
 } from 'lucide-react';
 import api from '../services/api';
+import toast from 'react-hot-toast';
 import type { Member } from '../types';
 
 type SubscriptionStatus = 'all' | 'active' | 'inactive' | 'expired' | 'frozen';
@@ -29,10 +33,23 @@ export default function MembersPage() {
   const [statusFilter, setStatusFilter] = useState<SubscriptionStatus>('all');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchMembers();
   }, [statusFilter, page]);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpenMenuId(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const fetchMembers = async () => {
     setLoading(true);
@@ -62,6 +79,21 @@ export default function MembersPage() {
     e.preventDefault();
     setPage(1);
     fetchMembers();
+  };
+
+  const handleDeleteMember = async (memberId: number) => {
+    if (!window.confirm('¿Estás seguro de que deseas eliminar este miembro? Esta acción no se puede deshacer.')) {
+      return;
+    }
+    try {
+      await api.delete(`/members/${memberId}/`);
+      toast.success('Miembro eliminado correctamente');
+      setOpenMenuId(null);
+      fetchMembers();
+    } catch (error: any) {
+      console.error('Error deleting member:', error);
+      toast.error(error.response?.data?.detail || 'Error al eliminar el miembro');
+    }
   };
 
   const getStatusConfig = (status: string) => {
@@ -249,15 +281,55 @@ export default function MembersPage() {
                           </span>
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              // TODO: Menu de acciones
-                            }}
-                            className="p-2 text-gray-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
-                          >
-                            <MoreVertical className="w-5 h-5" />
-                          </button>
+                          <div className="relative inline-block" ref={openMenuId === member.id ? menuRef : null}>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenMenuId(openMenuId === member.id ? null : member.id);
+                              }}
+                              className="p-2 text-gray-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+                            >
+                              <MoreVertical className="w-5 h-5" />
+                            </button>
+
+                            {openMenuId === member.id && (
+                              <div className="absolute right-0 top-full mt-1 w-48 bg-zinc-800 border border-zinc-700 rounded-xl shadow-2xl shadow-black/50 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setOpenMenuId(null);
+                                    navigate(`/members/${member.id}`);
+                                  }}
+                                  className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-300 hover:bg-zinc-700 hover:text-white transition-colors"
+                                >
+                                  <Eye className="w-4 h-4" />
+                                  Ver detalles
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setOpenMenuId(null);
+                                    navigate(`/members/${member.id}/edit`);
+                                  }}
+                                  className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-300 hover:bg-zinc-700 hover:text-white transition-colors"
+                                >
+                                  <Pencil className="w-4 h-4" />
+                                  Editar
+                                </button>
+                                <div className="border-t border-zinc-700" />
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteMember(member.id);
+                                  }}
+                                  className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                  Eliminar
+                                </button>
+                              </div>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     );

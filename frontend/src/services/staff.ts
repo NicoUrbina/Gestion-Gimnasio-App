@@ -27,5 +27,12 @@ export const staffService = {
     async getById(id: number): Promise<Staff> {
         const response = await api.get(`/staff/${id}/`);
         return response.data;
+    },
+
+    /**
+     * Eliminar un miembro del staff
+     */
+    async delete(id: number): Promise<void> {
+        await api.delete(`/staff/${id}/`);
     }
 };

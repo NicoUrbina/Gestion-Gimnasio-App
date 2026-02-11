@@ -149,11 +149,11 @@ export default function MemberFormPage() {
           .filter(([key]) => key !== 'detail')
           .map(([key, value]: [string, any]) => {
             const fieldName = key === 'email' ? 'Email' :
-                            key === 'password' ? 'Contraseña' :
-                            key === 'first_name' ? 'Nombre' :
-                            key === 'last_name' ? 'Apellido' :
-                            key === 'phone' ? 'Teléfono' :
-                            key;
+              key === 'password' ? 'Contraseña' :
+                key === 'first_name' ? 'Nombre' :
+                  key === 'last_name' ? 'Apellido' :
+                    key === 'phone' ? 'Teléfono' :
+                      key;
             if (Array.isArray(value)) return `${fieldName}: ${value[0]}`;
             return `${fieldName}: ${value}`;
           })
@@ -212,7 +212,7 @@ export default function MemberFormPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
                 Email *
               </label>
               <input
@@ -221,9 +221,8 @@ export default function MemberFormPage() {
                 value={formData.email}
                 onChange={handleChange}
                 disabled={isEditing}
-                className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all ${
-                  errors.email ? "border-red-500" : "border-slate-200"
-                } ${isEditing ? "bg-zinc-800/30" : ""}`}
+                className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all text-white ${errors.email ? "border-red-500" : "border-zinc-700"
+                  } ${isEditing ? "bg-zinc-800/30" : ""}`}
                 placeholder="correo@ejemplo.com"
               />
               {errors.email && (
@@ -233,7 +232,7 @@ export default function MemberFormPage() {
 
             {!isEditing && (
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                <label className="block text-sm font-medium text-gray-300 mb-1.5">
                   Contraseña *
                 </label>
                 <input
@@ -241,9 +240,8 @@ export default function MemberFormPage() {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all ${
-                    errors.password ? "border-red-500" : "border-slate-200"
-                  }`}
+                  className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all text-white ${errors.password ? "border-red-500" : "border-zinc-700"
+                    }`}
                   placeholder="Mínimo 8 caracteres"
                 />
                 {errors.password && (
@@ -261,7 +259,7 @@ export default function MemberFormPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
                 Nombre *
               </label>
               <input
@@ -270,9 +268,8 @@ export default function MemberFormPage() {
                 value={formData.first_name}
                 onChange={handleChange}
                 disabled={isEditing}
-                className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all ${
-                  errors.first_name ? "border-red-500" : "border-slate-200"
-                } ${isEditing ? "bg-zinc-800/30" : ""}`}
+                className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all text-white ${errors.first_name ? "border-red-500" : "border-zinc-700"
+                  } ${isEditing ? "bg-zinc-800/30" : ""}`}
                 placeholder="Nombre"
               />
               {errors.first_name && (
@@ -281,7 +278,7 @@ export default function MemberFormPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
                 Apellido *
               </label>
               <input
@@ -290,9 +287,8 @@ export default function MemberFormPage() {
                 value={formData.last_name}
                 onChange={handleChange}
                 disabled={isEditing}
-                className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all ${
-                  errors.last_name ? "border-red-500" : "border-slate-200"
-                } ${isEditing ? "bg-zinc-800/30" : ""}`}
+                className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all text-white ${errors.last_name ? "border-red-500" : "border-zinc-700"
+                  } ${isEditing ? "bg-zinc-800/30" : ""}`}
                 placeholder="Apellido"
               />
               {errors.last_name && (
@@ -301,7 +297,7 @@ export default function MemberFormPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
                 Teléfono
               </label>
               <input
@@ -309,13 +305,13 @@ export default function MemberFormPage() {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                className="w-full px-4 py-2.5 border border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all text-white"
                 placeholder="+1 234 567 8900"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
                 Fecha de Nacimiento
               </label>
               <input
@@ -323,19 +319,19 @@ export default function MemberFormPage() {
                 name="date_of_birth"
                 value={formData.date_of_birth}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                className="w-full px-4 py-2.5 border border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all text-white"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
                 Género
               </label>
               <select
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                className="w-full px-4 py-2.5 border border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all text-white"
               >
                 <option value="">Seleccionar</option>
                 <option value="M">Masculino</option>
@@ -345,7 +341,7 @@ export default function MemberFormPage() {
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
                 Dirección
               </label>
               <input
@@ -353,7 +349,7 @@ export default function MemberFormPage() {
                 name="address"
                 value={formData.address}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                className="w-full px-4 py-2.5 border border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all text-white"
                 placeholder="Calle, número, ciudad..."
               />
             </div>
@@ -367,7 +363,7 @@ export default function MemberFormPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
                 Nombre del Contacto
               </label>
               <input
@@ -375,13 +371,13 @@ export default function MemberFormPage() {
                 name="emergency_contact_name"
                 value={formData.emergency_contact_name}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                className="w-full px-4 py-2.5 border border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all text-white"
                 placeholder="Nombre completo"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
                 Teléfono del Contacto
               </label>
               <input
@@ -389,7 +385,7 @@ export default function MemberFormPage() {
                 name="emergency_contact_phone"
                 value={formData.emergency_contact_phone}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                className="w-full px-4 py-2.5 border border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all text-white"
                 placeholder="+1 234 567 8900"
               />
             </div>
@@ -406,7 +402,7 @@ export default function MemberFormPage() {
             value={formData.medical_notes}
             onChange={handleChange}
             rows={4}
-            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all resize-none"
+            className="w-full px-4 py-2.5 border border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all text-white resize-none"
             placeholder="Alergias, condiciones médicas, restricciones de ejercicio..."
           />
         </div>
@@ -416,7 +412,7 @@ export default function MemberFormPage() {
           <button
             type="button"
             onClick={() => navigate("/members")}
-            className="px-6 py-2.5 border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-zinc-800/30 transition-colors"
+            className="px-6 py-2.5 border border-zinc-700 text-gray-300 font-medium rounded-xl hover:bg-zinc-800 transition-colors"
           >
             Cancelar
           </button>
