@@ -1,5 +1,8 @@
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/footer';
+import { useState } from 'react';
+import { careersService, JobApplicationData } from '../../services/careers';
+import Swal from 'sweetalert2';
 
 interface JobPosition {
     id: number;
@@ -23,7 +26,7 @@ const jobPositions: JobPosition[] = [
         id: 1,
         title: "Entrenador Personal",
         department: "Departamento de Fitness",
-        location: "Madrid, España",
+        location: "Caracas, Venezuela",
         type: "Tiempo Completo",
         typeColor: "green",
         responsibilities: [
@@ -39,7 +42,7 @@ const jobPositions: JobPosition[] = [
         id: 2,
         title: "Nutricionista Deportivo",
         department: "Salud y Bienestar",
-        location: "Barcelona, España",
+        location: "Valencia, Venezuela",
         type: "Medio Tiempo",
         typeColor: "blue",
         responsibilities: [
@@ -55,7 +58,7 @@ const jobPositions: JobPosition[] = [
         id: 3,
         title: "Gerente de Recepción",
         department: "Operaciones",
-        location: "Valencia, España",
+        location: "Maracaibo, Venezuela",
         type: "Tiempo Completo",
         typeColor: "green",
         responsibilities: [
@@ -103,7 +106,191 @@ const getTypeColorClasses = (color: string) => {
     }
 };
 
+const ApplicationModal = ({
+    isOpen,
+    onClose,
+    positionTitle
+}: {
+    isOpen: boolean;
+    onClose: () => void;
+    positionTitle: string;
+}) => {
+    const [formData, setFormData] = useState<JobApplicationData>({
+        first_name: '',
+        last_name: '',
+        email: '',
+        phone: '',
+        position: positionTitle,
+        experience_summary: '',
+        portfolio_url: ''
+    });
+    const [loading, setLoading] = useState(false);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            await careersService.submitApplication({
+                ...formData,
+                position: positionTitle // Ensure position is set to the one being applied for
+            });
+            Swal.fire({
+                icon: 'success',
+                title: '¡Solicitud Enviada!',
+                text: 'Hemos recibido tu solicitud correctamente. Te contactaremos pronto.',
+                confirmButtonColor: '#ea580c'
+            });
+            onClose();
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema al enviar tu solicitud. Por favor intenta de nuevo.',
+                confirmButtonColor: '#ea580c'
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+            <div className="bg-gray-900 border border-gray-700 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
+                <div className="p-6 border-b border-gray-700 flex justify-between items-center sticky top-0 bg-gray-900 z-10">
+                    <div>
+                        <h3 className="text-xl font-bold text-white">Aplicar a: <span className="text-orange-500">{positionTitle}</span></h3>
+                        <p className="text-gray-400 text-sm">Completa el formulario para postularte</p>
+                    </div>
+                    <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors">
+                        <span className="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+
+                <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex flex-col gap-2">
+                            <label className="text-sm font-medium text-gray-300">Nombre *</label>
+                            <input
+                                type="text"
+                                name="first_name"
+                                required
+                                value={formData.first_name}
+                                onChange={handleChange}
+                                className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-orange-600 focus:border-transparent outline-none transition-all"
+                                placeholder="Tu nombre"
+                            />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <label className="text-sm font-medium text-gray-300">Apellido *</label>
+                            <input
+                                type="text"
+                                name="last_name"
+                                required
+                                value={formData.last_name}
+                                onChange={handleChange}
+                                className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-orange-600 focus:border-transparent outline-none transition-all"
+                                placeholder="Tu apellido"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex flex-col gap-2">
+                            <label className="text-sm font-medium text-gray-300">Email *</label>
+                            <input
+                                type="email"
+                                name="email"
+                                required
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-orange-600 focus:border-transparent outline-none transition-all"
+                                placeholder="ejemplo@correo.com"
+                            />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <label className="text-sm font-medium text-gray-300">Teléfono *</label>
+                            <input
+                                type="tel"
+                                name="phone"
+                                required
+                                value={formData.phone}
+                                onChange={handleChange}
+                                className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-orange-600 focus:border-transparent outline-none transition-all"
+                                placeholder="+58 412 1234567"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                        <label className="text-sm font-medium text-gray-300">Resumen de Experiencia / Motivación *</label>
+                        <textarea
+                            name="experience_summary"
+                            required
+                            value={formData.experience_summary}
+                            onChange={handleChange}
+                            rows={4}
+                            className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-orange-600 focus:border-transparent outline-none transition-all resize-none"
+                            placeholder="Cuéntanos brevemente sobre tu experiencia relevante y por qué quieres unirte a NEXO..."
+                        ></textarea>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                        <label className="text-sm font-medium text-gray-300">LinkedIn / Portafolio (Opcional)</label>
+                        <input
+                            type="url"
+                            name="portfolio_url"
+                            value={formData.portfolio_url}
+                            onChange={handleChange}
+                            className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-orange-600 focus:border-transparent outline-none transition-all"
+                            placeholder="https://linkedin.com/in/tu-perfil"
+                        />
+                    </div>
+
+                    <div className="flex justify-end gap-3 pt-4 border-t border-gray-700">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="px-6 py-2.5 rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors font-medium"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="px-6 py-2.5 rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-bold shadow-lg shadow-orange-600/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                        >
+                            {loading ? (
+                                <>
+                                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                                    Enviando...
+                                </>
+                            ) : (
+                                'Enviar Solicitud'
+                            )}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
+
 const WorkWithUs = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedPosition, setSelectedPosition] = useState<string>('');
+
+    const openModal = (title: string) => {
+        setSelectedPosition(title);
+        setIsModalOpen(true);
+    };
     return (
         <div className="bg-white min-h-screen font-sans text-gray-900">
             <Navbar bgColor="bg-gray-900" />
@@ -250,7 +437,7 @@ const WorkWithUs = () => {
                                                     <td className="px-6 py-6 align-top">
                                                         <div className="flex flex-col gap-3">
                                                             <div className="flex items-center gap-2 text-gray-300 text-sm">
-                                                                <span className="material-symbols-outlined text-[18px]">location_on</span>
+
                                                                 {position.location}
                                                             </div>
                                                             <span className={`inline-flex items-center w-fit rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase border ${getTypeColorClasses(position.typeColor)}`}>
@@ -278,13 +465,11 @@ const WorkWithUs = () => {
                                                                     </ul>
                                                                 </div>
                                                             </div>
-                                                            <button className="w-64 mx-auto bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 shadow-lg shadow-orange-600/20 flex items-center justify-center gap-2">
+                                                            <button
+                                                                onClick={() => openModal(position.title)}
+                                                                className="w-full sm:w-64 mx-auto bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 shadow-lg shadow-orange-600/20 flex items-center justify-center gap-2"
+                                                            >
                                                                 <span>Aplicar al Puesto</span>
-                                                                <img
-                                                                    src={`${import.meta.env.BASE_URL}img/FlechaTrabajaNosotros.png`}
-                                                                    alt="Flecha"
-                                                                    className="w-4 h-4 object-contain"
-                                                                />
                                                             </button>
                                                         </div>
                                                     </td>
@@ -294,18 +479,19 @@ const WorkWithUs = () => {
                                     </table>
                                 </div>
                             </div>
-                            <div className="flex justify-center mt-4">
-                                <button className="text-gray-400 hover:text-white text-sm font-medium transition-colors flex items-center gap-2">
-                                    Ver todas las vacantes antiguas
-                                    <span className="material-symbols-outlined text-[16px]">history</span>
-                                </button>
-                            </div>
+
                         </div>
                     </div>
                 </div>
             </main>
 
             <Footer />
+
+            <ApplicationModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                positionTitle={selectedPosition}
+            />
         </div>
     );
 };
