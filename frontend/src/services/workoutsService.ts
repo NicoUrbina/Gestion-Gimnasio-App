@@ -17,7 +17,7 @@ import type {
     PaginatedResponse
 } from '../types/workouts';
 
-const BASE_URL = '/workouts';
+const BASE_URL = '';
 
 // ==================== MUSCLE GROUPS ====================
 

@@ -17,10 +17,37 @@ class ProgressLogSerializer(serializers.ModelSerializer):
         model = ProgressLog
         fields = '__all__'
         read_only_fields = ['created_at', 'updated_at']
-        extra_kwargs = {
-            'member': {'required': False},
-            'registered_by': {'required': False},
-        }
+
+
+class ProgressLogCreateSerializer(serializers.ModelSerializer):
+    """Serializer para crear registros de progreso (sin member, se asigna automáticamente)"""
+    
+    class Meta:
+        model = ProgressLog
+        exclude = ['member', 'registered_by']
+        
+    def create(self, validated_data):
+        """Asignar member y registered_by desde el contexto"""
+        request = self.context.get('request')
+        user = request.user
+        
+        # Obtener o crear el perfil de miembro del usuario
+        if user.role.name == 'member':
+            member = user.member_profile
+        else:
+            # Para admin/trainer, obtener o crear su propio perfil
+            from apps.members.models import Member
+            member, created = Member.objects.get_or_create(
+                user=user,
+                defaults={'subscription_status': 'active'}
+            )
+        
+        # Crear el log con member y registered_by asignados
+        return ProgressLog.objects.create(
+            member=member,
+            registered_by=user,
+            **validated_data
+        )
 
 
 class AchievementSerializer(serializers.ModelSerializer):
