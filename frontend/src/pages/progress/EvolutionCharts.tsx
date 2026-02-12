@@ -61,8 +61,8 @@ export default function EvolutionCharts() {
           <ResponsiveContainer width="100%" height={400}>
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-              <XAxis 
-                dataKey="date" 
+              <XAxis
+                dataKey="date"
                 stroke="#71717a"
                 style={{ fontSize: '12px' }}
               />
@@ -103,8 +103,8 @@ export default function EvolutionCharts() {
           <ResponsiveContainer width="100%" height={400}>
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-              <XAxis 
-                dataKey="date" 
+              <XAxis
+                dataKey="date"
                 stroke="#71717a"
                 style={{ fontSize: '12px' }}
               />
@@ -145,8 +145,8 @@ export default function EvolutionCharts() {
           <ResponsiveContainer width="100%" height={400}>
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-              <XAxis 
-                dataKey="date" 
+              <XAxis
+                dataKey="date"
                 stroke="#71717a"
                 style={{ fontSize: '12px' }}
               />
@@ -178,8 +178,8 @@ export default function EvolutionCharts() {
           <ResponsiveContainer width="100%" height={400}>
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-              <XAxis 
-                dataKey="date" 
+              <XAxis
+                dataKey="date"
                 stroke="#71717a"
                 style={{ fontSize: '12px' }}
               />
@@ -264,11 +264,10 @@ export default function EvolutionCharts() {
               <button
                 key={btn.value}
                 onClick={() => setSelectedMetric(btn.value)}
-                className={`px-4 py-3 rounded-xl font-bold transition-all ${
-                  selectedMetric === btn.value
-                    ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
-                    : 'bg-gray-100 text-white hover:bg-gray-200'
-                }`}
+                className={`px-4 py-3 rounded-xl font-bold transition-all ${selectedMetric === btn.value
+                  ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
+                  : 'bg-zinc-800 border-2 border-zinc-700 text-gray-300 hover:bg-zinc-700'
+                  }`}
               >
                 {btn.label}
               </button>
@@ -284,11 +283,10 @@ export default function EvolutionCharts() {
               <button
                 key={btn.value}
                 onClick={() => setSelectedRange(btn.value)}
-                className={`px-4 py-3 rounded-xl font-bold transition-all ${
-                  selectedRange === btn.value
-                    ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30'
-                    : 'bg-gray-100 text-white hover:bg-gray-200'
-                }`}
+                className={`px-4 py-3 rounded-xl font-bold transition-all ${selectedRange === btn.value
+                  ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30'
+                  : 'bg-zinc-800 border-2 border-zinc-700 text-gray-300 hover:bg-zinc-700'
+                  }`}
               >
                 {btn.label}
               </button>
@@ -301,9 +299,9 @@ export default function EvolutionCharts() {
       <ChartWrapper
         title={
           selectedMetric === 'weight' ? 'Peso e Índice de Masa Corporal' :
-          selectedMetric === 'body_fat' ? 'Composición Corporal' :
-          selectedMetric === 'muscle_mass' ? 'Masa Muscular' :
-          'Medidas Corporales'
+            selectedMetric === 'body_fat' ? 'Composición Corporal' :
+              selectedMetric === 'muscle_mass' ? 'Masa Muscular' :
+                'Medidas Corporales'
         }
         subtitle={`Últimos ${selectedRange} días`}
         isLoading={loading}
@@ -315,9 +313,9 @@ export default function EvolutionCharts() {
 
       {/* Info Box */}
       {hasData && (
-        <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
-          <h3 className="font-bold text-blue-900 mb-2">💡 Interpreting Your Charts</h3>
-          <ul className="text-sm text-blue-800 space-y-1">
+        <div className="bg-zinc-900 border-l-4 border-orange-500 rounded-lg p-4 border border-zinc-800">
+          <h3 className="font-bold text-orange-400 mb-2">💡 Consejos para Interpretar tus Gráficas</h3>
+          <ul className="text-sm text-gray-400 space-y-1">
             <li>• Las líneas conectan tus registros a lo largo del tiempo</li>
             <li>• Los puntos vacíos indican fechas sin datos para esa métrica</li>
             <li>• Haz hover sobre los puntos para ver valores exactos</li>

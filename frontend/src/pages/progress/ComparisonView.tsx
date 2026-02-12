@@ -17,8 +17,10 @@ export default function ComparisonView() {
   const loadData = async () => {
     try {
       setLoading(true);
-      const data = await progressService.getLogs();
-      const sorted = data.sort((a, b) => 
+      const response = await progressService.getLogs();
+      // Handle paginated response
+      const logsData = Array.isArray(response) ? response : response.results || [];
+      const sorted = logsData.sort((a: any, b: any) =>
         new Date(a.date).getTime() - new Date(b.date).getTime()
       );
       setLogs(sorted);

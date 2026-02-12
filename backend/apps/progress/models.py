@@ -93,7 +93,7 @@ class ProgressLog(models.Model):
     def bmi(self):
         """Calcula el Índice de Masa Corporal"""
         if self.weight and self.height:
-            height_m = self.height / 100
+            height_m = float(self.height) / 100
             return round(float(self.weight) / (height_m ** 2), 2)
         return None
 

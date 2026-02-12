@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Scale, Activity, TrendingUp, Plus, Calendar, BarChart3, History, GitCompare } from 'lucide-react';
+import { Activity, TrendingUp, Scale, Calendar, Plus, BarChart3, History, GitCompare } from 'lucide-react';
 import ProgressStatsCard from '../../components/progress/ProgressStatsCard';
 import EmptyProgressState from '../../components/progress/EmptyProgressState';
 import ChartWrapper from '../../components/progress/ChartWrapper';
 import { progressService } from '../../services/progress';
 import type { ProgressLog } from '../../types/progress';
 import toast from 'react-hot-toast';
+import MemberSelector from '../../components/progress/MemberSelector';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer
@@ -17,26 +18,45 @@ export default function ProgressDashboard() {
   const [loading, setLoading] = useState(true);
   const [logs, setLogs] = useState<ProgressLog[]>([]);
   const [latestLog, setLatestLog] = useState<ProgressLog | null>(null);
+  const [selectedMemberId, setSelectedMemberId] = useState<number | null>(null);
+
+  // Filter logs by selected member
+  const filteredLogs = useMemo(() => {
+    if (!selectedMemberId) return logs;
+    return logs.filter(log => log.member === selectedMemberId);
+  }, [logs, selectedMemberId]);
 
   useEffect(() => {
     loadData();
   }, []);
 
+  // Update latest log when filtered logs change
+  useEffect(() => {
+    if (filteredLogs.length > 0) {
+      const sorted = [...filteredLogs].sort((a, b) =>
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+      setLatestLog(sorted[0]);
+    } else {
+      setLatestLog(null);
+    }
+  }, [filteredLogs]);
+
   const loadData = async () => {
     try {
+      console.log('🔍 Loading progress logs...');
       setLoading(true);
       const logsData = await progressService.getLogs();
-      setLogs(logsData);
-      
-      if (logsData.length > 0) {
-        // Get the most recent log
-        const sorted = [...logsData].sort((a, b) => 
-          new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-        setLatestLog(sorted[0]);
-      }
+      console.log('📊 Logs received:', logsData);
+      // Handle paginated response: if logsData has a 'results' property, use it; otherwise use logsData as-is
+      const actualLogs = (logsData as any).results || logsData;
+      console.log('📊 Actual logs array:', actualLogs);
+      console.log('📊 Logs count:', actualLogs.length);
+      setLogs(actualLogs);
+
+
     } catch (error: any) {
-      console.error('Error loading progress data:', error);
+      console.error('❌ Error loading progress data:', error);
       toast.error('Error al cargar datos de progreso');
     } finally {
       setLoading(false);
@@ -45,15 +65,15 @@ export default function ProgressDashboard() {
 
   // Calculate change from first log to latest
   const getChange = (metric: keyof ProgressLog) => {
-    if (logs.length < 2 || !latestLog) return null;
-    
-    const firstLog = [...logs].sort((a, b) => 
+    if (filteredLogs.length < 2 || !latestLog) return null;
+
+    const firstLog = [...filteredLogs].sort((a, b) =>
       new Date(a.date).getTime() - new Date(b.date).getTime()
     )[0];
-    
+
     const firstValue = firstLog[metric] as number | null;
     const latestValue = latestLog[metric] as number | null;
-    
+
     if (firstValue && latestValue) {
       return latestValue - firstValue;
     }
@@ -62,10 +82,10 @@ export default function ProgressDashboard() {
 
   // Prepare mini chart data (last 7 entries)
   const getMiniChartData = () => {
-    const sorted = [...logs]
+    const sorted = [...filteredLogs]
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
       .slice(-7);
-    
+
     return sorted.map(log => ({
       date: new Date(log.date).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' }),
       peso: log.weight || null,
@@ -94,6 +114,12 @@ export default function ProgressDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
+      {/* Member Selector (only for trainers/admins) */}
+      <MemberSelector
+        selectedMemberId={selectedMemberId}
+        onMemberChange={setSelectedMemberId}
+      />
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -102,8 +128,8 @@ export default function ProgressDashboard() {
             Mi Progreso
           </h1>
           <p className="text-gray-500 mt-1">
-            Último registro: {new Date(latestLog.date).toLocaleDateString('es-ES', { 
-              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+            Último registro: {new Date(latestLog.date).toLocaleDateString('es-ES', {
+              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
             })}
           </p>
         </div>
@@ -121,7 +147,7 @@ export default function ProgressDashboard() {
         {latestLog.weight && (
           <ProgressStatsCard
             title="Peso Actual"
-            value={latestLog.weight.toFixed(1)}
+            value={parseFloat(latestLog.weight).toFixed(1)}
             unit="kg"
             change={weightChange}
             changeLabel="desde inicio"
@@ -129,20 +155,20 @@ export default function ProgressDashboard() {
             color="blue"
           />
         )}
-        
+
         {latestLog.bmi && (
           <ProgressStatsCard
             title="IMC"
-            value={latestLog.bmi.toFixed(1)}
+            value={parseFloat(latestLog.bmi).toFixed(1)}
             icon={Activity}
             color="purple"
           />
         )}
-        
+
         {latestLog.body_fat_percentage && (
           <ProgressStatsCard
             title="Grasa Corporal"
-            value={latestLog.body_fat_percentage.toFixed(1)}
+            value={parseFloat(latestLog.body_fat_percentage).toFixed(1)}
             unit="%"
             change={bodyFatChange}
             changeLabel="desde inicio"
@@ -150,11 +176,11 @@ export default function ProgressDashboard() {
             color="orange"
           />
         )}
-        
+
         {latestLog.muscle_mass && (
           <ProgressStatsCard
             title="Masa Muscular"
-            value={latestLog.muscle_mass.toFixed(1)}
+            value={parseFloat(latestLog.muscle_mass).toFixed(1)}
             unit="kg"
             change={muscleMassChange}
             changeLabel="desde inicio"
@@ -175,8 +201,8 @@ export default function ProgressDashboard() {
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={miniChartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-              <XAxis 
-                dataKey="date" 
+              <XAxis
+                dataKey="date"
                 stroke="#71717a"
                 style={{ fontSize: '12px' }}
               />

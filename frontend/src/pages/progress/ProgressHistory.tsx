@@ -18,15 +18,16 @@ export default function ProgressHistory() {
   const loadData = async () => {
     try {
       setLoading(true);
-      const data = await progressService.getLogs();
-      // Sort by date descending (newest first)
-      const sorted = data.sort((a, b) =>
+      const response = await progressService.getLogs();
+      // Handle paginated response
+      const logsData = Array.isArray(response) ? response : response.results || [];
+      const sorted = logsData.sort((a, b) =>
         new Date(b.date).getTime() - new Date(a.date).getTime()
       );
       setLogs(sorted);
     } catch (error: any) {
       console.error('Error loading progress history:', error);
-      toast.error('Error al cargar historial');
+      toast.error('Error al cargar el historial');
     } finally {
       setLoading(false);
     }
@@ -161,7 +162,7 @@ export default function ProgressHistory() {
                   {log.bmi && (
                     <div className="bg-zinc-800/50 rounded-lg p-3">
                       <p className="text-xs text-gray-500 mb-1">IMC</p>
-                      <p className="text-lg font-bold text-white">{log.bmi.toFixed(1)}</p>
+                      <p className="text-lg font-bold text-white">{parseFloat(log.bmi).toFixed(1)}</p>
                     </div>
                   )}
                   {log.body_fat_percentage && (

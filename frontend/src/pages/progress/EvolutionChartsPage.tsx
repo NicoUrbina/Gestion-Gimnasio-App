@@ -168,9 +168,10 @@ export default function EvolutionChartsPage() {
         labels: {
           usePointStyle: true,
           padding: 15,
+          color: '#d4d4d8',
           font: {
             size: 12,
-            weight: '600'
+            weight: 'bold' as const
           }
         }
       },
@@ -192,7 +193,7 @@ export default function EvolutionChartsPage() {
       y: {
         beginAtZero: false,
         grid: {
-          color: '#f1f5f9',
+          color: '#27272a',
         },
         ticks: {
           font: {
@@ -205,6 +206,7 @@ export default function EvolutionChartsPage() {
           display: false,
         },
         ticks: {
+          color: '#a1a1aa',
           font: {
             size: 11
           }
@@ -256,31 +258,28 @@ export default function EvolutionChartsPage() {
         <div className="flex gap-2">
           <button
             onClick={() => setSelectedMetric('weight')}
-            className={`px-4 py-2 rounded-xl font-medium transition-all ${
-              selectedMetric === 'weight'
-                ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
-                : 'bg-gray-100 text-white hover:bg-gray-200'
-            }`}
+            className={`px-4 py-2 rounded-xl font-medium transition-all ${selectedMetric === 'weight'
+              ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
+              : 'bg-zinc-800 border-2 border-zinc-700 text-gray-300 hover:bg-zinc-700'
+              }`}
           >
             Peso
           </button>
           <button
             onClick={() => setSelectedMetric('composition')}
-            className={`px-4 py-2 rounded-xl font-medium transition-all ${
-              selectedMetric === 'composition'
-                ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
-                : 'bg-gray-100 text-white hover:bg-gray-200'
-            }`}
+            className={`px-4 py-2 rounded-xl font-medium transition-all ${selectedMetric === 'composition'
+              ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
+              : 'bg-zinc-800 border-2 border-zinc-700 text-gray-300 hover:bg-zinc-700'
+              }`}
           >
             Composición
           </button>
           <button
             onClick={() => setSelectedMetric('measurements')}
-            className={`px-4 py-2 rounded-xl font-medium transition-all ${
-              selectedMetric === 'measurements'
-                ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
-                : 'bg-gray-100 text-white hover:bg-gray-200'
-            }`}
+            className={`px-4 py-2 rounded-xl font-medium transition-all ${selectedMetric === 'measurements'
+              ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
+              : 'bg-zinc-800 border-2 border-zinc-700 text-gray-300 hover:bg-zinc-700'
+              }`}
           >
             Medidas
           </button>
@@ -314,8 +313,8 @@ export default function EvolutionChartsPage() {
               <div className="font-black text-2xl text-white">{latestBMI?.toFixed(1)}</div>
               <div className="text-xs text-gray-500">
                 {latestBMI && latestBMI < 18.5 ? 'Bajo peso' :
-                 latestBMI && latestBMI < 25 ? 'Normal' :
-                 latestBMI && latestBMI < 30 ? 'Sobrepeso' : 'Obesidad'}
+                  latestBMI && latestBMI < 25 ? 'Normal' :
+                    latestBMI && latestBMI < 30 ? 'Sobrepeso' : 'Obesidad'}
               </div>
             </div>
           </div>

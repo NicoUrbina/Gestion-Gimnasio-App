@@ -14,6 +14,7 @@ from datetime import timedelta
 from .models import ProgressLog, Achievement, WorkoutSession, ExerciseLog
 from .serializers import (
     ProgressLogSerializer,
+    ProgressLogCreateSerializer,
     AchievementSerializer,
     WorkoutSessionSerializer,
     WorkoutSessionCreateSerializer,
@@ -34,40 +35,33 @@ class ProgressLogViewSet(viewsets.ModelViewSet):
     - GET /progress/logs/evolution/ - Datos para gráficas
     """
     
-    serializer_class = ProgressLogSerializer
     permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        """Usar serializer diferente para crear vs listar/obtener"""
+        if self.action == 'create':
+            return ProgressLogCreateSerializer
+        return ProgressLogSerializer
     
     def get_queryset(self):
         user = self.request.user
         
+        print(f"🔍 DEBUG: User: {user.email}, Role: {user.role.name}")
+        
         if user.role.name == 'member':
-            return ProgressLog.objects.filter(member__user=user)
+            queryset = ProgressLog.objects.filter(member__user=user)
+            print(f"🔍 DEBUG: Member queryset count: {queryset.count()}")
+            print(f"🔍 DEBUG: Member has member_profile: {hasattr(user, 'member_profile')}")
+            if hasattr(user, 'member_profile'):
+                print(f"🔍 DEBUG: Member profile ID: {user.member_profile.id}")
+            return queryset
         elif user.role.name in ['trainer', 'admin', 'staff']:
-            return ProgressLog.objects.all().select_related('member__user')
+            queryset = ProgressLog.objects.all().select_related('member__user')
+            print(f"🔍 DEBUG: Admin/trainer queryset count: {queryset.count()}")
+            return queryset
         
+        print(f"🔍 DEBUG: No matching role, returning empty queryset")
         return ProgressLog.objects.none()
-    
-    def perform_create(self, serializer):
-        """Auto-asignar member si es cliente, o buscar/crear para admin/trainer"""
-        user = self.request.user
-        
-        if user.role.name == 'member':
-            serializer.save(
-                member=user.member_profile,
-                registered_by=user
-            )
-        else:
-            # Admin or trainer: check if member was provided in request
-            if 'member' not in serializer.validated_data or serializer.validated_data.get('member') is None:
-                # Try to use their own member_profile, or create one
-                from apps.members.models import Member
-                member_profile, created = Member.objects.get_or_create(
-                    user=user,
-                    defaults={'subscription_status': 'active'}
-                )
-                serializer.save(member=member_profile, registered_by=user)
-            else:
-                serializer.save(registered_by=user)
     
     @action(detail=False, methods=['get'])
     def evolution(self, request):
@@ -79,11 +73,27 @@ class ProgressLogViewSet(viewsets.ModelViewSet):
         days = int(request.query_params.get('days', 90))
         
         if request.user.role.name == 'member':
-            member = request.user.member_profile
+            # Get member profile, or create if doesn't exist
+            from apps.members.models import Member
+            try:
+                member = request.user.member_profile
+            except Member.DoesNotExist:
+                # Create member profile if it doesn't exist
+                member = Member.objects.create(
+                    user=request.user,
+                    subscription_status='active'
+                )
         else:
             member_id = request.query_params.get('member_id')
             if member_id:
-                member = member_id
+                from apps.members.models import Member
+                try:
+                    member = Member.objects.get(id=member_id)
+                except Member.DoesNotExist:
+                    return Response(
+                        {'error': 'Miembro no encontrado'},
+                        status=status.HTTP_404_NOT_FOUND
+                    )
             else:
                 # Use own member profile if available
                 from apps.members.models import Member
